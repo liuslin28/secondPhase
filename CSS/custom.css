@@ -1,0 +1,81 @@
+html, body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+label {
+    margin: 0;
+}
+
+.wrapper {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+
+
+.card-body {
+    padding: 0.5rem;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+/*------------地图页面------------------*/
+.mapWrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    border: none;
+}
+
+
+
+/*------------选择框页面------------------*/
+.selectWrapper{
+    width: 20%;
+    position: absolute;
+    top: 2%;
+    left: 1%;
+}
+
+
+
+
+/*------------图层切换页面------------------*/
+.layerWrapper{
+    width: 10%;
+    position: absolute;
+    top: 10%;
+    left: 1%;
+    background-color: white;
+}
+
+.layerWrapper-boundary {
+    margin: auto;
+    width: 90%;
+}
+
+
+/*------------线路调整结果页面------------------*/
+.lineResultWrapper{
+    width: 17.5%;
+    position: absolute;
+    top:3%;
+    right: 1%;
+    margin: 0;
+
+}
