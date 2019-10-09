@@ -27,7 +27,7 @@ let map_layer_config = [
             "visibility": "visible"
         },
         "layer_paint": {
-            "line-color": "#e97f4c",
+            "line-color": "#34a4ff",
             "line-opacity": 1,
             "line-width": 2
         },
@@ -44,7 +44,7 @@ let map_layer_config = [
             "visibility": "visible"
         },
         "layer_paint": {
-            "line-color": "#e952c9",
+            "line-color": "#e95db5",
             "line-opacity": 1,
             "line-width": 2
         },
