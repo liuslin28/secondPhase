@@ -1,0 +1,50 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.75098183,
+          31.31326912
+        ]
+      },
+      "properties": {
+        "routeId": "aaaa-01",
+        "stationType": "pass",
+        "connectRoute": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.75098183,
+          31.31326912
+        ]
+      },
+      "properties": {
+        "routeId": "aaaa-01",
+        "stationType": "addConnect",
+        "connectRoute": "1, 4, 19, 22, 89"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.75098183,
+          31.31326912
+        ]
+      },
+      "properties": {
+        "routeId": "aaaa-01",
+        "stationType": "removeOD",
+        "connectRoute": ""
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "data": [
+    {
+      "routeId": "aaaa-01",
+      "routeWarning":  true
+    },
+    {
+      "routeId": "aaaa-02",
+      "routeWarning":  false
+    }
+  ]
+}
