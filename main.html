@@ -28,6 +28,7 @@
             </div>
             <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon2">
         </div>
+        <button onclick="test()">快点这里</button>
 
     </div>
     <div class="layerWrapper">
@@ -76,7 +77,7 @@
         </div>
 
     </div>
-    <div class="lineResultWrapper">
+    <div class="lineResultWrapper" style="display: none;">
         <div class="card border-dark text-white">
             <div class="card-header bg-dark">线路调整对比</div>
             <div class="card-body bg-light">
@@ -93,33 +94,33 @@
                     <tbody class="table-active">
                     <tr>
                         <th scope="row">线路长度</th>
-                        <td id="original-length">A</td>
-                        <td id="modify-length">B</td>
+                        <td id="original-length">/</td>
+                        <td id="modify-length">/</td>
                     </tr>
                     <tr>
                         <th scope="row">非直线系数</th>
-                        <td id="original-nonlinear">A</td>
-                        <td id="modify-nonlinear">B</td>
+                        <td id="original-nonlinear">/</td>
+                        <td id="modify-nonlinear">/</td>
                     </tr>
                     <tr>
                         <th scope="row">与其他线路的重复比例</th>
-                        <td id="original-repetition">A</td>
-                        <td id="modify-repetition">B</td>
+                        <td id="original-repetition">/</td>
+                        <td id="modify-repetition">/</td>
                     </tr>
                     <tr>
                         <th scope="row">平均站间距</th>
-                        <td id="original-dis">A</td>
-                        <td id="modify-dis">B</td>
+                        <td id="original-dis">/</td>
+                        <td id="modify-dis">/</td>
                     </tr>
                     <tr>
                         <th scope="row">途径专用道长度</th>
-                        <td id="original-lane">A</td>
-                        <td id="modify-lane">B</td>
+                        <td id="original-lane">/</td>
+                        <td id="modify-lane">/</td>
                     </tr>
                     <tr>
                         <th scope="row">轨道交通接驳能力</th>
-                        <td id="original-connect">A</td>
-                        <td id="modify-connect">B</td>
+                        <td id="original-connect">/</td>
+                        <td id="modify-connect">/</td>
                     </tr>
                     </tbody>
                 </table>
@@ -158,7 +159,6 @@
 <script src="//minedata.cn/minemapapi/v2.0.0/minemap.js"></script>
 
 <script src="JS/library/turf.min.js"></script>
-<script src="JS/library/echarts.min.js"></script>
 <script src="JS/library/wgs2mars.min.js"></script>
 <script src="JS/library/axios.js"></script>
 <script src="JS/wgsToGcj.js"></script>
