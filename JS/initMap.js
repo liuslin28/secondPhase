@@ -1,6 +1,7 @@
-var map, stationInfoPopup, stationPopup, frePopup, marker;//地图Map，地图POPUP框，地图中marker点
-var edit;
-
+let map; //地图Map
+let originalIs = false; //原始数据是否有值返回
+let modifiedIs = false; //修改后数据是否有值返回
+let polyData = [];
 
 /**
  * 基本地图加载
@@ -28,64 +29,118 @@ $(document).ready(function () {
 
 
     map.on("load", function () {
-        getOriginalData();
-        getModifiedlData();
+        let params = {
+            routeId1: "aaaaa-01",
+            routeId2: "bbbbb-01"
+        };
+        getData(params);
     });
 
 });
 
+function test() {
+    let params = {
+        routeId1: "aaaaa-01",
+        routeId2: "bbbbb-01"
+    };
+    getData(params);
+}
 
-function getOriginalData() {
-    axios.get('./dataSample/1.json', {})
+
+function getData(data) {
+    axios.get('./dataSample/data.json', {params: data})
         .then(function (response) {
-            let originalData = response.data;
-            let gcjData = wgsToGcj(originalData);
+            originalIs = false;
+            modifiedIs = false;
+            let orginalData = {
+                "type": "FeatureCollection",
+                "features": []
+            };
+            let modifiedData = {
+                "type": "FeatureCollection",
+                "features": []
+            };
+            if(response.status === 200) {
+                response.data.features.forEach(function (value) {
+                    let dataType = value.geometry.properties.type;
+                    if(dataType === '1' && originalIs === false) {
+                        orginalData.features.push(value);
+                        originalIs = true;
+                    } else if(dataType === '2' && modifiedIs === false) {
+                        modifiedData.features.push(value);
+                        modifiedIs = true;
+                    } else {
 
-            if (map.getLayer("originalRouteLayer")) {
-                map.getSource("originalSource").setData(gcjData);
-                layerVisibilityToggle('originalRouteLayer', 'visible');
-            } else {
-                map.addSource('originalSource', {
-                    'type': 'geojson',
-                    'data': gcjData
+                    }
                 });
-                addMapLayer("originalSource");
+                // console.log(orginalData);
+                // console.log(modifiedData);
+
+                if(originalIs && modifiedData) {
+                    // 2个都有数据
+                    orginalDataGet(orginalData);
+                    modifiedDataGet(modifiedData);
+                } else if(originalIs || modifiedData) {
+                    // 1个有数据
+                    if(originalIs) {
+                        orginalDataGet(orginalData);
+                        modifiedEmptyHtml();
+                    } else {
+                        modifiedDataGet(modifiedData);
+                        originalEmptyHtml();
+                    }
+
+                } else {
+                    //都没有数据
+                    originalEmptyHtml();
+                    modifiedEmptyHtml();
+                }
+                $('.lineResultWrapper').show();
+
+            } else {
+                alert(response.status);
             }
-            let originalResult = calculateData(originalData);
-            originalHtml(originalResult);
-            console.log(originalResult);
 
         })
         .catch(function (error) {
-            console.log(error);
-        });
+        console.log(error);
+    });
 }
 
-function getModifiedlData() {
-    axios.get('./dataSample/40.json', {})
-        .then(function (response) {
-            let modifiedData = response.data;
-            let gcjData = wgsToGcj(modifiedData);
 
-            if (map.getLayer("modifiedRouteLayer")) {
-                map.getSource("modifiedSource").setData(gcjData);
-                layerVisibilityToggle('modifiedRouteLayer', 'visible');
-            } else {
-                map.addSource('modifiedSource', {
-                    'type': 'geojson',
-                    'data': gcjData
-                });
-                addMapLayer("modifiedSource");
-            }
-            let modifiedResult = calculateData(modifiedData);
-            modifiedHtml(modifiedResult);
-            console.log(modifiedResult);
-        })
-        .catch(function (error) {
-            console.log(error);
+function orginalDataGet(data) {
+    let gcjData = wgsToGcj(data);
+
+    if (map.getLayer("originalRouteLayer")) {
+        map.getSource("originalSource").setData(gcjData);
+        layerVisibilityToggle('originalRouteLayer', 'visible');
+    } else {
+        map.addSource('originalSource', {
+            'type': 'geojson',
+            'data': gcjData
         });
+        addMapLayer("originalSource");
+    }
+    let originalResult = calculateData(data);
+    originalHtml(originalResult);
 }
 
+function modifiedDataGet(data) {
+    let gcjData = wgsToGcj(data);
+
+    if (map.getLayer("modifiedRouteLayer")) {
+        map.getSource("modifiedSource").setData(gcjData);
+        layerVisibilityToggle('modifiedRouteLayer', 'visible');
+    } else {
+        map.addSource('modifiedSource', {
+            'type': 'geojson',
+            'data': gcjData
+        });
+        addMapLayer("modifiedSource");
+    }
+    let modifiedResult = calculateData(data);
+    modifiedHtml(modifiedResult);
+}
 
 // -----------------------------------
 // 图层显示切换
@@ -143,39 +198,43 @@ function addMapLayer(sourceId) {
 }
 
 // -----------------------------------
+// 计算
 function calculateData(data) {
     let routeLength; //线路长度 km
     let nonlinear; //非直线系数
     let stationDistance; //平均站间距 km
     let stationDistanceList = []; //站间距 km
-    let routeRepetition;
+    let routeRepetition; //与其它线路的重复比例
 
     let routeData = data['features'];
-    let routeCoordinate = routeData[0].geometry.coordinates;
+    let routeCoordinate = routeData[0].geometry.coordinates; //线路坐标
     let routeTurf = turf.lineString(routeCoordinate);
-    routeLength = routeData[0].geometry.properties.lineLength;
-    let nonlinearIs = routeData[0].geometry.properties.isLoop;
-    let stationCount = routeData[0].geometry.properties.stationNum;
-    let routeStationList = routeData[0].geometry.properties.stationList;
+    routeLength = routeData[0].geometry.properties.routeLength;
+    let nonlinearIs = routeData[0].geometry.properties.isLoop; //是否环线
+    let stationCount = routeData[0].geometry.properties.stationNum; //公交站点数量
+    let routeStationList = routeData[0].geometry.properties.stationList; //公交站点坐标
+    let routeDataType = routeData[0].geometry.properties.type;
 
     if (!routeLength) {
         routeLength = (turf.length(data, {units: 'kilometers'})).toFixed(2);
     }
 
+    // 非直线系数计算
     if (nonlinearIs) {
         nonlinear = "None";
     } else {
         let firstStation = turf.point(routeCoordinate[0]);
         let endStation = turf.point(routeCoordinate[routeCoordinate.length - 1]);
-        // let options = {units: 'kilometers'};
         let terminalDistance = turf.distance(firstStation, endStation, {units: 'kilometers'});
         nonlinear = (routeLength / terminalDistance).toFixed(2);
     }
 
     routeRepetition = routeData[0].geometry.properties.repetition;
 
-    stationDistance = (routeLength/stationCount).toFixed(2);
+    // 平均站间距计算
+    stationDistance = (routeLength / stationCount).toFixed(2);
 
+    // 站间距计算
     for (let i = 0; i < routeStationList.length - 1; i++) {
         let startCoordinate = routeStationList[i];
         let endCoordinate = routeStationList[i + 1];
@@ -185,6 +244,8 @@ function calculateData(data) {
         let length = Number(turf.length(sliced, {units: 'kilometers'}).toFixed(2));
         stationDistanceList.push(length);
     }
+
+    pointWithin(routeStationList,routeDataType);
 
     let calResult = {
         "routeLength": routeLength,
@@ -197,9 +258,61 @@ function calculateData(data) {
     return calResult;
 }
 
+//轨道交通接驳能力计算
+function pointWithin(pointData, type) {
+    let ptsWithin = turf.points(pointData);
+    let insideData = ptsWithin;
+    let insideDataList = [];
+    let searchWithin;
+    let connectRatio;
+
+    axios.get('./dataSample/suzhouDistrict.json')
+        .then(function (response) {
+            if(response.status === 200) {
+                response.data.features.forEach(function (value) {
+                    if(value.geometry.type === "MultiPolygon") {
+                        searchWithin = turf.multiPolygon(value.geometry.coordinates);
+                        insideData = turf.pointsWithinPolygon(ptsWithin, searchWithin);
+                        insideData.features.forEach(function (tempValue) {
+                            insideDataList.push(tempValue.geometry.coordinates);
+
+                        })
+                        // console.log(insideData);
+                    } else {
+                        searchWithin = turf.polygon(value.geometry.coordinates);
+                        insideData = turf.pointsWithinPolygon(ptsWithin, searchWithin);
+                        insideData.features.forEach(function (tempValue) {
+                            insideDataList.push(tempValue.geometry.coordinates);
+
+                        })
+                        // console.log(insideData);
+                    }
+                });
+                let allPoint = turf.multiPoint(insideDataList);
+                let insidePointList = turf.cleanCoords(allPoint).geometry.coordinates;  //无重复的站点数据
+                console.log(insidePointList);
+
+                connectRatio = ((insidePointList.length /pointData.length)*100).toFixed(2);
+                // console.log(connectRatio);
+
+                if(type === '1') {
+                    $('#original-connect').empty().text(connectRatio + "%");
+                } else {
+                    $('#modify-connect').empty().text(connectRatio + "%");
+
+                }
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
+
+// 调整前数据赋值
 function originalHtml(data) {
     $('#original-length').empty().text(data.routeLength + "km");
-    if(data.nonlinear === "None") {
+    if (data.nonlinear === "None") {
         $('#original-nonlinear').empty().text("/");
     } else {
         $('#original-nonlinear').empty().text(data.nonlinear);
@@ -208,13 +321,34 @@ function originalHtml(data) {
     $('#original-dis').empty().text(data.stationDistance + "km");
 }
 
+// 调整前，无数据赋空值
+function originalEmptyHtml() {
+    $('#original-length').empty().text("/");
+    $('#original-nonlinear').empty().text("/");
+    $('#original-repetition').empty().text("/");
+    $('#original-dis').empty().text("/");
+    $('#original-connect').empty().text("/");
+    $('#original-lane').empty().text("/");
+}
+
+// 调整后数据赋值
 function modifiedHtml(data) {
     $('#modify-length').empty().text(data.routeLength + "km");
-    if(data.nonlinear === "None") {
+    if (data.nonlinear === "None") {
         $('#modify-nonlinear').empty().text("/");
     } else {
         $('#modify-nonlinear').empty().text(data.nonlinear);
     }
     $('#modify-repetition').empty().text(data.routeRepetition + "%");
     $('#modify-dis').empty().text(data.stationDistance + "km");
+}
+
+// 调整后，无数据赋空值
+function modifiedEmptyHtml() {
+    $('#modify-length').empty().text("/");
+    $('#modify-nonlinear').empty().text("/");
+    $('#modify-repetition').empty().text("/");
+    $('#modify-dis').empty().text("/");
+    $('#modify-connect').empty().text("/");
+    $('#modify-lane').empty().text("/");
 }
