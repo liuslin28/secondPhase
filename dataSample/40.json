@@ -393,14 +393,33 @@
         ],
         "properties": {
           "routeId": "bbbbb-1",
-          "lineName": "40",
-          "lineCategory": "",
+          "routeName": "40(体育中心首末站-体育中心首末站)",
           "stationNum": 49,
-          "lineLength": "28.5",
+          "routeLength": 28.5,
           "repetition": 20.00,
+          "repetitonList": [
+            [
+              [
+                120.575127,
+                31.296749
+              ],
+              [
+                120.577599,
+                31.298691
+              ]
+            ],
+            [
+              [
+                120.608086,
+                31.302256
+              ],
+              [
+                120.611763,
+                31.302597
+              ]
+            ]
+          ],
           "isLoop": true,
-          "initStation": "体育中心首末站",
-          "finalStation": "体育中心首末站",
           "stationList": [
             [
               120.575127,
