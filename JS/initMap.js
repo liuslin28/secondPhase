@@ -149,15 +149,15 @@ function maskLayer(checkValue) {
 
 
 function addMapLayer(data, LayerId, SourceId) {
-    // let gcjData = wgsToGcj(data);
+    let gcjData = wgsToGcj(data);
 
     if (map.getLayer(LayerId)) {
-        map.getSource(SourceId).setData(data);
+        map.getSource(SourceId).setData(gcjData);
         layerVisibilityToggle(LayerId, 'visible');
     } else {
         map.addSource(SourceId, {
             'type': 'geojson',
-            'data': data
+            'data': gcjData
         });
         setMapLayer(SourceId);
     }
@@ -426,9 +426,6 @@ function calLaneLength(data) {
                     .then(function (response) {
                         if(response.status === 200) {
                             let outputData = transData(response.data.features);
-                            // let gcjData = wgsToGcj(outputData);
-                            // console.log(gcjData);
-
                             addMapLayer(outputData, 'originalLaneLayer', 'originalLaneSource');
                             map.moveLayer('originalLaneLayer');
 
@@ -515,13 +512,7 @@ function calLaneLength2(data) {
                 axios.get(outUrl)
                     .then(function (response) {
                         if(response.status === 200) {
-                            // let gcjData = transData(response.data.features);
                             let outputData = transData(response.data.features);
-                            // console.log(outputData);
-                            console.log(".......")
-                            // let gcjData = wgsToGcj(outputData);
-                            // console.log(gcjData);
-
                             addMapLayer(outputData, 'modifiedLaneLayer', 'modifiedLaneSource');
                             map.moveLayer('modifiedLaneLayer');
 
