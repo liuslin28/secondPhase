@@ -20,7 +20,7 @@ $(document).ready(function () {
         style: conf_style, /*底图样式*/
         center: conf_centerPoint, /*地图中心点*/
         zoom: 11, /*地图默认缩放等级*/
-        pitch: 90, /*地图俯仰角度*/
+        pitch: 0, /*地图俯仰角度*/
         maxZoom: 17, /*地图最大缩放等级*/
         minZoom: 3, /*地图最小缩放等级*/
         trackResize: true, /*地图会自动匹配浏览器窗口大小*/
@@ -47,8 +47,8 @@ function test() {
 }
 
 
-function getData(data) {
-    axios.get('./dataSample/data.json', {params: data})
+function getData(params) {
+    axios.get('./dataSample/data.json', {params:params})
         .then(function (response) {
             originalIs = false;
             modifiedIs = false;
@@ -60,13 +60,13 @@ function getData(data) {
                 "type": "FeatureCollection",
                 "features": []
             };
-            if(response.status === 200) {
+            if (response.status === 200) {
                 response.data.features.forEach(function (value) {
                     let dataType = value.geometry.properties.type;
-                    if(dataType === '1' && originalIs === false) {
+                    if (dataType === '1' && originalIs === false) {
                         orginalData.features.push(value);
                         originalIs = true;
-                    } else if(dataType === '2' && modifiedIs === false) {
+                    } else if (dataType === '2' && modifiedIs === false) {
                         modifiedData.features.push(value);
                         modifiedIs = true;
                     } else {
@@ -76,13 +76,13 @@ function getData(data) {
                 // console.log(orginalData);
                 // console.log(modifiedData);
 
-                if(originalIs && modifiedData) {
+                if (originalIs && modifiedData) {
                     // 2个都有数据
                     orginalDataGet(orginalData);
                     modifiedDataGet(modifiedData);
-                } else if(originalIs || modifiedData) {
+                } else if (originalIs || modifiedData) {
                     // 1个有数据
-                    if(originalIs) {
+                    if (originalIs) {
                         orginalDataGet(orginalData);
                         modifiedEmptyHtml();
                     } else {
@@ -103,43 +103,23 @@ function getData(data) {
 
         })
         .catch(function (error) {
-        console.log(error);
-    });
+            console.log(error);
+        });
 }
 
 
 function orginalDataGet(data) {
-    let gcjData = wgsToGcj(data);
-
-    if (map.getLayer("originalRouteLayer")) {
-        map.getSource("originalSource").setData(gcjData);
-        layerVisibilityToggle('originalRouteLayer', 'visible');
-    } else {
-        map.addSource('originalSource', {
-            'type': 'geojson',
-            'data': gcjData
-        });
-        addMapLayer("originalSource");
-    }
+    let orData = data;
     let originalResult = calculateData(data);
     originalHtml(originalResult);
+    addMapLayer(orData, 'originalRouteLayer', 'originalSource');
 }
 
 function modifiedDataGet(data) {
-    let gcjData = wgsToGcj(data);
-
-    if (map.getLayer("modifiedRouteLayer")) {
-        map.getSource("modifiedSource").setData(gcjData);
-        layerVisibilityToggle('modifiedRouteLayer', 'visible');
-    } else {
-        map.addSource('modifiedSource', {
-            'type': 'geojson',
-            'data': gcjData
-        });
-        addMapLayer("modifiedSource");
-    }
+    let orData = data;
     let modifiedResult = calculateData(data);
     modifiedHtml(modifiedResult);
+    addMapLayer(orData, 'modifiedRouteLayer', 'modifiedSource');
 }
 
 // -----------------------------------
@@ -167,7 +147,23 @@ function maskLayer(checkValue) {
     }
 }
 
-function addMapLayer(sourceId) {
+
+function addMapLayer(data, LayerId, SourceId) {
+    // let gcjData = wgsToGcj(data);
+
+    if (map.getLayer(LayerId)) {
+        map.getSource(SourceId).setData(data);
+        layerVisibilityToggle(LayerId, 'visible');
+    } else {
+        map.addSource(SourceId, {
+            'type': 'geojson',
+            'data': data
+        });
+        setMapLayer(SourceId);
+    }
+}
+
+function setMapLayer(sourceId) {
     map_layer_config.forEach(function (value) {
         if (value.source_id === sourceId) {
             if (map.getLayer(value.layer_id)) {
@@ -245,7 +241,13 @@ function calculateData(data) {
         stationDistanceList.push(length);
     }
 
-    pointWithin(routeStationList,routeDataType);
+    calPointWithin(routeStationList, routeDataType);
+
+    if (routeDataType === '1') {
+        calLaneLength(routeCoordinate);
+    } else {
+        calLaneLength2(routeCoordinate);
+    }
 
     let calResult = {
         "routeLength": routeLength,
@@ -259,7 +261,7 @@ function calculateData(data) {
 }
 
 //轨道交通接驳能力计算
-function pointWithin(pointData, type) {
+function calPointWithin(pointData, type) {
     let ptsWithin = turf.points(pointData);
     let insideData = ptsWithin;
     let insideDataList = [];
@@ -268,9 +270,9 @@ function pointWithin(pointData, type) {
 
     axios.get('./dataSample/suzhouDistrict.json')
         .then(function (response) {
-            if(response.status === 200) {
+            if (response.status === 200) {
                 response.data.features.forEach(function (value) {
-                    if(value.geometry.type === "MultiPolygon") {
+                    if (value.geometry.type === "MultiPolygon") {
                         searchWithin = turf.multiPolygon(value.geometry.coordinates);
                         insideData = turf.pointsWithinPolygon(ptsWithin, searchWithin);
                         insideData.features.forEach(function (tempValue) {
@@ -290,12 +292,12 @@ function pointWithin(pointData, type) {
                 });
                 let allPoint = turf.multiPoint(insideDataList);
                 let insidePointList = turf.cleanCoords(allPoint).geometry.coordinates;  //无重复的站点数据
-                console.log(insidePointList);
+                // console.log(insidePointList);
 
-                connectRatio = ((insidePointList.length /pointData.length)*100).toFixed(2);
+                connectRatio = ((insidePointList.length / pointData.length) * 100).toFixed(2);
                 // console.log(connectRatio);
 
-                if(type === '1') {
+                if (type === '1') {
                     $('#original-connect').empty().text(connectRatio + "%");
                 } else {
                     $('#modify-connect').empty().text(connectRatio + "%");
@@ -352,3 +354,216 @@ function modifiedEmptyHtml() {
     $('#modify-connect').empty().text("/");
     $('#modify-lane').empty().text("/");
 }
+
+// ----------------GP服务-------------------
+function calLaneLength(data) {
+    require(["esri/SpatialReference", "esri/graphic", "esri/tasks/Geoprocessor"], function (SpatialReference, Graphic, Geoprocessor) {
+        let lineFeature = {
+            "displayFieldName": "",
+            "fieldAliases": {
+                "FID": "FID"
+            },
+            "geometryType": "esriGeometryPolyline",
+            "spatialReference": {
+                "wkid": 4326,
+                "latestWkid": 4326
+            },
+            "fields": [
+                {
+                    "name": "FID",
+                    "type": "esriFieldTypeOID",
+                    "alias": "FID"
+                }
+            ],
+            "features": [
+                {
+                    "attributes": {
+                        "FID": 0
+                    },
+                    "geometry": {
+                        "paths": [
+                            data
+                        ]
+                    }
+                }
+            ]
+        };
+
+        let Dis1 = {
+            "distance": 20,
+            "units": "esriMeters"
+        };
+
+        let busRouteFeatureSet = new esri.tasks.FeatureSet(lineFeature);
+        busRouteFeatureSet.spatialReference = new SpatialReference({wkid: 4326});
+
+        let gptask = new Geoprocessor("https://192.168.207.165:6443/arcgis/rest/services/GPTool/laneLength2/GPServer/laneLength2");
+        let gpParams = {
+            "Dis1": Dis1,
+            "line": busRouteFeatureSet
+        };
+
+        gptask.submitJob(gpParams, completeCallback, statusCallback);
+        // gptask.on("get-result-data-complete", displayResults);
+
+        // 结果图加载
+        function completeCallback(jobInfo) {
+            // 长度求算
+            gptask.getResultData(jobInfo.jobId, "output_length").then(function (value) {
+                if ((value.value.features).length > 0) {
+                    let laneLength = (((value.value.features)[0].attributes.SUM_Shape_Length) / 1000).toFixed(2);
+                    $('#original-lane').empty().text(laneLength + "km");
+                } else {
+                    $('#original-lane').empty().text("/");
+                }
+            });
+
+            gptask.getResultData(jobInfo.jobId, "output_json").then(function (value) {
+                // console.log(value);
+                let outUrl = value.value.url;
+                // console.log(outUrl);
+                axios.get(outUrl)
+                    .then(function (response) {
+                        if(response.status === 200) {
+                            let outputData = transData(response.data.features);
+                            // let gcjData = wgsToGcj(outputData);
+                            // console.log(gcjData);
+
+                            addMapLayer(outputData, 'originalLaneLayer', 'originalLaneSource');
+                            map.moveLayer('originalLaneLayer');
+
+                        } else {
+                            console.log(response.status);
+                        }
+                    })
+            });
+        }
+
+    });
+}
+
+
+function calLaneLength2(data) {
+    require(["esri/SpatialReference", "esri/graphic", "esri/tasks/Geoprocessor"], function (SpatialReference, Graphic, Geoprocessor) {
+        let lineFeature = {
+            "displayFieldName": "",
+            "fieldAliases": {
+                "FID": "FID"
+            },
+            "geometryType": "esriGeometryPolyline",
+            "spatialReference": {
+                "wkid": 4326,
+                "latestWkid": 4326
+            },
+            "fields": [
+                {
+                    "name": "FID",
+                    "type": "esriFieldTypeOID",
+                    "alias": "FID"
+                }
+            ],
+            "features": [
+                {
+                    "attributes": {
+                        "FID": 0
+                    },
+                    "geometry": {
+                        "paths": [
+                            data
+                        ]
+                    }
+                }
+            ]
+        };
+
+        let Dis1 = {
+            "distance": 20,
+            "units": "esriMeters"
+        };
+
+        let Dis2 = {
+            "distance": 30,
+            "units": "esriMeters"
+        };
+        let busRouteFeatureSet = new esri.tasks.FeatureSet(lineFeature);
+        busRouteFeatureSet.spatialReference = new SpatialReference({wkid: 4326});
+        let gptask = new Geoprocessor("https://192.168.207.165:6443/arcgis/rest/services/GPTool/laneLength2/GPServer/laneLength2");
+        let gpParams = {
+            "Dis1": Dis1,
+            "Dis2": Dis2,
+            "line": busRouteFeatureSet
+        };
+
+        gptask.submitJob(gpParams, completeCallback, statusCallback);
+        // gptask.on("get-result-data-complete", displayResults);
+
+        // 结果图加载
+        function completeCallback(jobInfo) {
+            // 长度求算
+            gptask.getResultData(jobInfo.jobId, "output_length").then(function (value) {
+                if ((value.value.features).length > 0) {
+                    let laneLength = (((value.value.features)[0].attributes.SUM_Shape_Length) / 1000).toFixed(2);
+                    $('#modify-lane').empty().text(laneLength + "km");
+                } else {
+                    $('#modify-lane').empty().text("/");
+                }
+            });
+            gptask.getResultData(jobInfo.jobId, "output_json").then(function (value) {
+                // console.log(value);
+                let outUrl = value.value.url;
+                // console.log(outUrl);
+                axios.get(outUrl)
+                    .then(function (response) {
+                        if(response.status === 200) {
+                            // let gcjData = transData(response.data.features);
+                            let outputData = transData(response.data.features);
+                            // console.log(outputData);
+                            console.log(".......")
+                            // let gcjData = wgsToGcj(outputData);
+                            // console.log(gcjData);
+
+                            addMapLayer(outputData, 'modifiedLaneLayer', 'modifiedLaneSource');
+                            map.moveLayer('modifiedLaneLayer');
+
+                        } else {
+                            console.log(response.status);
+                        }
+                    })
+            });
+        }
+    });
+}
+
+// 运行状态显示
+function statusCallback(jobInfo) {
+    console.log(jobInfo.jobStatus);
+    // statusModel(jobInfo.jobStatus);
+}
+
+//数据格式
+function transData(data) {
+    let lineFeature = {
+        "type": "FeatureCollection",
+        "features": []
+    };
+    let lineGeometry;
+    data.forEach(function (value) {
+        console.log(value);
+        lineGeometry = {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates":value.geometry.paths[0]
+            }
+        };
+        // value.geometry.paths.forEach(function (valueA) {
+        //     lineGeometry.geometry.coordinates.push(valueA);
+        // });
+        // console.log(value.geometry.paths);
+
+        lineFeature.features.push(lineGeometry)
+    });
+    console.log(lineFeature);
+    return lineFeature;
+}
+
