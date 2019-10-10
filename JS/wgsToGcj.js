@@ -137,23 +137,27 @@ function wgsToGcj(wgsData) {
 }
 
 function pointWgsGcj(geoData) {
+    let newData;
     const lngWGS = Number(geoData[0]);  //经度
     const latWGS = Number(geoData[1]);  //纬度
     let gcjCoordinate = transformFromWGSToGCJ(lngWGS, latWGS);
-    geoData[0] = gcjCoordinate.lng;
-    geoData[1] = gcjCoordinate.lat;
-    return geoData;
+    newData = [gcjCoordinate.lng, gcjCoordinate.lat];
+    // geoData[0] = gcjCoordinate.lng;
+    // geoData[1] = gcjCoordinate.lat;
+    return newData;
 }
 
 function multipointWgsGcj(geoData) {
+    let newData = [];
     geoData.forEach(function (value) {
         const lngWGS = Number(value[0]);  //经度
         const latWGS = Number(value[1]);  //纬度
         let gcjCoordinate = transformFromWGSToGCJ(lngWGS, latWGS);
-        value[0] = gcjCoordinate.lng;
-        value[1] = gcjCoordinate.lat;
+        newData.push([gcjCoordinate.lng, gcjCoordinate.lat]);
+        // value[0] = gcjCoordinate.lng;
+        // value[1] = gcjCoordinate.lat;
     });
-    return geoData;
+    return newData;
 }
 
 function lineWgsGcj(geoData) {
