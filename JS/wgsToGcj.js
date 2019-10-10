@@ -98,7 +98,6 @@ function wgsToGcj(wgsData) {
     let gcjFeatureData = [];
     wgsFeatrueData.forEach(function (value) {
         let geoType = value.geometry.type;
-        console.log(geoType);
         let geoData = value.geometry.coordinates;
 
         let gcjData;
@@ -158,14 +157,16 @@ function multipointWgsGcj(geoData) {
 }
 
 function lineWgsGcj(geoData) {
+    let newData = [];
     geoData.forEach(function (value) {
         const lngWGS = Number(value[0]);  //经度
         const latWGS = Number(value[1]);  //纬度
         let gcjCoordinate = transformFromWGSToGCJ(lngWGS, latWGS);
-        value[0] = gcjCoordinate.lng;
-        value[1] = gcjCoordinate.lat;
+        newData.push([gcjCoordinate.lng, gcjCoordinate.lat]);
+        // value[0] = gcjCoordinate.lng;
+        // value[1] = gcjCoordinate.lat;
     });
-    return geoData;
+    return newData;
 }
 
 function multilineWgsGcj(geoData) {
