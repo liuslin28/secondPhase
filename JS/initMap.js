@@ -556,12 +556,7 @@ function calSingleBuffer(data) {
             "displayFieldName" : "",
             "fieldAliases" : {
                 "FID" : "FID",
-                "route_id" : "route_id",
-                "geocode" : "geocode",
-                "route_stop" : "route_stop",
-                "from_stop" : "from_stop",
-                "to_stop" : "to_stop",
-                "route_name" : "route_name"
+                "route_id" : "route_id"
             },
             "geometryType" : "esriGeometryPolyline",
             "spatialReference" : {
@@ -578,36 +573,6 @@ function calSingleBuffer(data) {
                     "name" : "route_id",
                     "type" : "esriFieldTypeString",
                     "alias" : "route_id",
-                    "length" : 254
-                },
-                {
-                    "name" : "geocode",
-                    "type" : "esriFieldTypeString",
-                    "alias" : "geocode",
-                    "length" : 254
-                },
-                {
-                    "name" : "route_stop",
-                    "type" : "esriFieldTypeString",
-                    "alias" : "route_stop",
-                    "length" : 254
-                },
-                {
-                    "name" : "from_stop",
-                    "type" : "esriFieldTypeString",
-                    "alias" : "from_stop",
-                    "length" : 254
-                },
-                {
-                    "name" : "to_stop",
-                    "type" : "esriFieldTypeString",
-                    "alias" : "to_stop",
-                    "length" : 254
-                },
-                {
-                    "name" : "route_name",
-                    "type" : "esriFieldTypeString",
-                    "alias" : "route_name",
                     "length" : 254
                 }
             ],
