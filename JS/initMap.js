@@ -1,5 +1,6 @@
 let map; //地图Map
-
+let originalIs = false; //原始数据是否有值返回
+let modifiedIs = false; //修改后数据是否有值返回
 let polyData = [];
 
 /**
@@ -49,15 +50,14 @@ function test() {
 
 
 function getData(params) {
-    // 清空给所有图层数据功能
+    // 缺少清空给所有图层数据功能
     removeAllLayer();
-    originalEmptyHtml();
-    modifiedEmptyHtml();
-    let originalIs = false; //原始数据是否有值返回
-    let modifiedIs = false; //修改后数据是否有值返回
 
     axios.get('./dataSample/data.json', {params:params})
         .then(function (response) {
+            originalIs = false;
+            modifiedIs = false;
+
             let orginalData = {
                 "type": "FeatureCollection",
                 "features": []
@@ -67,12 +67,6 @@ function getData(params) {
                 "features": []
             };
             if (response.status === 200) {
-
-                // 若果无数据，直接返回，显示提示框
-                if(response.data.features.length === 0) {
-                    return;
-                }
-
                 response.data.features.forEach(function (value) {
                     let dataType = value.geometry.properties.type;
                     if (dataType === '1' && originalIs === false) {
@@ -82,13 +76,13 @@ function getData(params) {
                         modifiedData.features.push(value);
                         modifiedIs = true;
                     } else {
-                        return;
+
                     }
                 });
                 // console.log(orginalData);
                 // console.log(modifiedData);
 
-                if (originalIs && modifiedIs) {
+                if (originalIs && modifiedData) {
                     // 2个都有数据
                     orginalDataGet(orginalData);
                     modifiedDataGet(modifiedData);
@@ -96,70 +90,33 @@ function getData(params) {
                     axios.get('./dataSample/geoRoute1011.json')
                         .then(function (response) {
                             if(response.status === 200) {
-                                let oldData  = {
-                                    "type": "FeatureCollection",
-                                    "features": []
-                                };
-                                let newData = {
-                                    "type": "FeatureCollection",
-                                    "features": []
-                                };
-                                response.data.features.forEach(function (value) {
-                                    oldData.features.push(value);
-                                    newData.features.push(value);
-
-                                });
-                                oldData.features.push(orginalData.features);
-                                newData.features.push(modifiedData.features);
-                                calDoubleBuffer(oldData, newData);
+                                calSingleBuffer(response.data);
                             }
                         })
 
 
-                } else if (originalIs || modifiedIs) {
+                } else if (originalIs || modifiedData) {
                     // 1个有数据
                     if (originalIs) {
                         orginalDataGet(orginalData);
+                        modifiedEmptyHtml();
 
                         axios.get('./dataSample/geoRoute1011.json')
                             .then(function (response) {
                                 if(response.status === 200) {
-                                    let oldData  = {
-                                        "type": "FeatureCollection",
-                                        "features": []
-                                    };
-                                    response.data.features.forEach(function (value) {
-                                        oldData.features.push(value);
-
-                                    });
-                                    oldData.features.push(orginalData.features);
-                                    calSingleBuffer(oldData);
+                                    calSingleBuffer(response.data);
                                 }
                             })
 
                     } else {
                         modifiedDataGet(modifiedData);
-
-                        axios.get('./dataSample/geoRoute1011.json')
-                            .then(function (response) {
-                                if(response.status === 200) {
-                                    let newData = {
-                                        "type": "FeatureCollection",
-                                        "features": []
-                                    };
-                                    response.data.features.forEach(function (value) {
-                                        newData.features.push(value);
-
-                                    });
-                                    newData.features.push(modifiedData.features);
-                                    calSingleBuffer(newData);
-                                }
-                            })
+                        originalEmptyHtml();
                     }
 
                 } else {
                     //都没有数据
-
+                    originalEmptyHtml();
+                    modifiedEmptyHtml();
                 }
                 $('.lineResultWrapper').show();
 
@@ -660,102 +617,6 @@ function calSingleBuffer(data) {
                 let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(value.value);
                 addMapLayer(outputData, 'singleUnCoverLayer', 'singleUnCoverSource');
                 map.moveLayer('singleUnCoverLayer');
-            });
-
-        }
-    });
-}
-
-// 计算两条线路的缓冲区
-function calDoubleBuffer(data1, data2) {
-    let oldData =  ArcgisToGeojsonUtils.geojsonToArcGIS(data1);
-    let newData =  ArcgisToGeojsonUtils.geojsonToArcGIS(data2);
-    require(["esri/SpatialReference", "esri/graphic", "esri/tasks/Geoprocessor"], function (SpatialReference, Graphic, Geoprocessor) {
-
-        let routesFeature1 = {
-            "displayFieldName" : "",
-            "fieldAliases" : {
-                "FID" : "FID",
-                "route_id" : "route_id"
-            },
-            "geometryType" : "esriGeometryPolyline",
-            "spatialReference" : {
-                "wkid" : 4326,
-                "latestWkid" : 4326
-            },
-            "fields" : [
-                {
-                    "name" : "FID",
-                    "type" : "esriFieldTypeOID",
-                    "alias" : "FID"
-                },
-                {
-                    "name" : "route_id",
-                    "type" : "esriFieldTypeString",
-                    "alias" : "route_id",
-                    "length" : 254
-                }
-            ],
-            "features" :oldData
-        };
-
-        let routesFeature2 = {
-            "displayFieldName" : "",
-            "fieldAliases" : {
-                "FID" : "FID",
-                "route_id" : "route_id"
-            },
-            "geometryType" : "esriGeometryPolyline",
-            "spatialReference" : {
-                "wkid" : 4326,
-                "latestWkid" : 4326
-            },
-            "fields" : [
-                {
-                    "name" : "FID",
-                    "type" : "esriFieldTypeOID",
-                    "alias" : "FID"
-                },
-                {
-                    "name" : "route_id",
-                    "type" : "esriFieldTypeString",
-                    "alias" : "route_id",
-                    "length" : 254
-                }
-            ],
-            "features" :newData
-        };
-
-        let Dis = {
-            "distance": 500,
-            "units": "esriMeters"
-        };
-        let routesFeatureSet1 = new esri.tasks.FeatureSet(routesFeature1);
-        routesFeatureSet1.spatialReference = new SpatialReference({wkid: 4326});
-        let routesFeatureSet2 = new esri.tasks.FeatureSet(routesFeature2);
-        routesFeatureSet2.spatialReference = new SpatialReference({wkid: 4326});
-        let gptask = new Geoprocessor("https://192.168.207.165:6443/arcgis/rest/services/GPTool/lineDoubleBuffer/GPServer/lineDoubleBuffer");
-        let gpParams = {
-            "Dis": Dis,
-            "routesOld": routesFeatureSet1,
-            "routesNew": routesFeatureSet2
-        };
-        gptask.submitJob(gpParams, completeCallback, statusCallback);
-        // 结果图加载
-        function completeCallback(jobInfo) {
-            // 未覆盖区域
-            gptask.getResultData(jobInfo.jobId, "output_min_Select").then(function (value) {
-                console.log(value);
-                let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(value.value);
-                addMapLayer(outputData, 'doubleMinLayer', 'doubleMinSource');
-                map.moveLayer('doubleMinLayer');
-            });
-            // 覆盖区域
-            gptask.getResultData(jobInfo.jobId, "output_add_Select").then(function (value) {
-                console.log(value);
-                let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(value.value);
-                addMapLayer(outputData, 'doubleAddLayer', 'doubleAddSource');
-                map.moveLayer('doubleAddLayer');
             });
 
         }
