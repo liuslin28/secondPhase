@@ -1,51 +1,50 @@
 let source_layer_config = [
     {
         "source_id": "originalSource",
-        "source_title": "原始的公交线路",
+        "source_title": "调整前的公交线路",
         "source_type": "geojson"
     },
     {
         "source_id": "modifiedSource",
-        "source_title": "修改的公交线路",
+        "source_title": "调整后的公交线路",
         "source_type": "geojson"
     },
     {
         "source_id": "originalLaneSource",
-        "source_title": "原始的公交专用道",
+        "source_title": "调整前的公交专用道",
         "source_type": "geojson"
     },
     {
         "source_id": "modifiedLaneSource",
-        "source_title": "修改的公交专用道",
+        "source_title": "调整后的公交专用道",
         "source_type": "geojson"
     },
     {
         "source_id": "singleCoverSource",
-        "source_title": "单线路的覆盖",
+        "source_title": "线路覆盖区域",
         "source_type": "geojson"
     },
     {
         "source_id": "singleUnCoverSource",
-        "source_title": "单线路的未覆盖",
+        "source_title": "线路未覆盖区域",
         "source_type": "geojson"
     },
     {
-        "source_id": "bothCoverSource",
-        "source_title": "双线路的覆盖",
+        "source_id": "doubleAddSource",
+        "source_title": "增加的覆盖区域",
         "source_type": "geojson"
     },
     {
-        "source_id": "bothUnCoverSource",
-        "source_title": "双线路的未覆盖",
+        "source_id": "doubleMinSource",
+        "source_title": "减少的覆盖区域",
         "source_type": "geojson"
     }
 ];
 
 
 let map_layer_config = [
-
     {
-        "layer_title": "原始的公交线路",
+        "layer_title": "调整前的公交线路",
         "layer_id": "originalRouteLayer",
         "source_id": "originalSource",
         "layer_type": "line",
@@ -62,7 +61,7 @@ let map_layer_config = [
         "layer_filter": null
     },
     {
-        "layer_title": "修改的公交线路",
+        "layer_title": "调整后的公交线路",
         "layer_id": "modifiedRouteLayer",
         "source_id": "modifiedSource",
         "layer_type": "line",
@@ -79,7 +78,7 @@ let map_layer_config = [
         "layer_filter": null
     },
     {
-        "layer_title": "原始的公交专用道",
+        "layer_title": "调整前的公交专用道",
         "layer_id": "originalLaneLayer",
         "source_id": "originalLaneSource",
         "layer_type": "line",
@@ -96,7 +95,7 @@ let map_layer_config = [
         "layer_filter": null
     },
     {
-        "layer_title": "修改的公交专用道",
+        "layer_title": "调整后的公交专用道",
         "layer_id": "modifiedLaneLayer",
         "source_id": "modifiedLaneSource",
         "layer_type": "line",
@@ -113,7 +112,7 @@ let map_layer_config = [
         "layer_filter": null
     },
     {
-        "layer_title": "单线路的覆盖",
+        "layer_title": "线路覆盖区域",
         "layer_id": "singleCoverLayer",
         "source_id": "singleCoverSource",
         "layer_type": "fill",
@@ -127,7 +126,7 @@ let map_layer_config = [
         "layer_filter": null
     },
     {
-        "layer_title": "单线路的未覆盖",
+        "layer_title": "线路未覆盖区域",
         "layer_id": "singleUnCoverLayer",
         "source_id": "singleUnCoverSource",
         "layer_type": "fill",
@@ -141,9 +140,9 @@ let map_layer_config = [
         "layer_filter": null
     },
     {
-        "layer_title": "双线路的覆盖",
-        "layer_id": "bothCoverLayer",
-        "source_id": "bothCoverSource",
+        "layer_title": "增加的覆盖区域",
+        "layer_id": "doubleAddLayer",
+        "source_id": "doubleAddSource",
         "layer_type": "fill",
         "layer_layout": {
             "visibility": "visible"
@@ -155,9 +154,9 @@ let map_layer_config = [
         "layer_filter": null
     },
     {
-        "layer_title": "双线路的未覆盖",
-        "layer_id": "bothUnCoverLayer",
-        "source_id": "bothUnCoverSource",
+        "layer_title": "减少的覆盖区域",
+        "layer_id": "doubleMinLayer",
+        "source_id": "doubleMinSource",
         "layer_type": "fill",
         "layer_layout": {
             "visibility": "visible"

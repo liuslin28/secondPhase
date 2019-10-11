@@ -50,10 +50,14 @@ function test() {
 
 
 function getData(params) {
+    // 缺少清空给所有图层数据功能
+    removeAllLayer();
+
     axios.get('./dataSample/data.json', {params:params})
         .then(function (response) {
             originalIs = false;
             modifiedIs = false;
+
             let orginalData = {
                 "type": "FeatureCollection",
                 "features": []
@@ -164,6 +168,15 @@ function maskLayer(checkValue) {
             }
         });
     }
+}
+
+function removeAllLayer() {
+    map_layer_config.forEach(function (value) {
+        if(map.getLayer(value.layer_id)) {
+            map.removeLayer(value.layer_id);
+            map.removeSource(value.source_id);
+        }
+    })
 }
 
 
