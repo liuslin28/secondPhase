@@ -18,6 +18,26 @@ let source_layer_config = [
         "source_id": "modifiedLaneSource",
         "source_title": "修改的公交专用道",
         "source_type": "geojson"
+    },
+    {
+        "source_id": "singleCoverSource",
+        "source_title": "单线路的覆盖",
+        "source_type": "geojson"
+    },
+    {
+        "source_id": "singleUnCoverSource",
+        "source_title": "单线路的未覆盖",
+        "source_type": "geojson"
+    },
+    {
+        "source_id": "bothCoverSource",
+        "source_title": "双线路的覆盖",
+        "source_type": "geojson"
+    },
+    {
+        "source_id": "bothUnCoverSource",
+        "source_title": "双线路的未覆盖",
+        "source_type": "geojson"
     }
 ];
 
@@ -89,6 +109,62 @@ let map_layer_config = [
             "line-color": "#e9701c",
             "line-opacity": 1,
             "line-width": 2
+        },
+        "layer_filter": null
+    },
+    {
+        "layer_title": "单线路的覆盖",
+        "layer_id": "singleCoverLayer",
+        "source_id": "singleCoverSource",
+        "layer_type": "fill",
+        "layer_layout": {
+            "visibility": "visible"
+        },
+        "layer_paint": {
+            'fill-color': '#79ada9',
+            'fill-opacity': 0.2
+        },
+        "layer_filter": null
+    },
+    {
+        "layer_title": "单线路的未覆盖",
+        "layer_id": "singleUnCoverLayer",
+        "source_id": "singleUnCoverSource",
+        "layer_type": "fill",
+        "layer_layout": {
+            "visibility": "visible"
+        },
+        "layer_paint": {
+            'fill-color': '#8ead59',
+            'fill-opacity': 0.2
+        },
+        "layer_filter": null
+    },
+    {
+        "layer_title": "双线路的覆盖",
+        "layer_id": "bothCoverLayer",
+        "source_id": "bothCoverSource",
+        "layer_type": "fill",
+        "layer_layout": {
+            "visibility": "visible"
+        },
+        "layer_paint": {
+            'fill-color': '#79ada9',
+            'fill-opacity': 0.2
+        },
+        "layer_filter": null
+    },
+    {
+        "layer_title": "双线路的未覆盖",
+        "layer_id": "bothUnCoverLayer",
+        "source_id": "bothUnCoverSource",
+        "layer_type": "fill",
+        "layer_layout": {
+            "visibility": "visible"
+        },
+        "layer_paint": {
+            'fill-color': '#8ead59',
+            'fill-opacity': 0.2
         },
         "layer_filter": null
     }
