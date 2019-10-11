@@ -29,11 +29,13 @@ $(document).ready(function () {
 
 
     map.on("load", function () {
+        // calSingleBuffer();
         let params = {
             routeId1: "aaaaa-01",
             routeId2: "bbbbb-01"
         };
         getData(params);
+        // aaa();
     });
 
 });
@@ -80,11 +82,28 @@ function getData(params) {
                     // 2个都有数据
                     orginalDataGet(orginalData);
                     modifiedDataGet(modifiedData);
+
+                    axios.get('./dataSample/geoRoute1011.json')
+                        .then(function (response) {
+                            if(response.status === 200) {
+                                calSingleBuffer(response.data);
+                            }
+                        })
+
+
                 } else if (originalIs || modifiedData) {
                     // 1个有数据
                     if (originalIs) {
                         orginalDataGet(orginalData);
                         modifiedEmptyHtml();
+
+                        axios.get('./dataSample/geoRoute1011.json')
+                            .then(function (response) {
+                                if(response.status === 200) {
+                                    calSingleBuffer(response.data);
+                                }
+                            })
+
                     } else {
                         modifiedDataGet(modifiedData);
                         originalEmptyHtml();
@@ -356,6 +375,7 @@ function modifiedEmptyHtml() {
 }
 
 // ----------------GP服务-------------------
+// 计算公交专用道长度
 function calLaneLength(data) {
     require(["esri/SpatialReference", "esri/graphic", "esri/tasks/Geoprocessor"], function (SpatialReference, Graphic, Geoprocessor) {
         let lineFeature = {
@@ -425,7 +445,8 @@ function calLaneLength(data) {
                 axios.get(outUrl)
                     .then(function (response) {
                         if(response.status === 200) {
-                            let outputData = transData(response.data.features);
+                            let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(response.data);
+                            // let outputData = transData(response.data.features);
                             addMapLayer(outputData, 'originalLaneLayer', 'originalLaneSource');
                             map.moveLayer('originalLaneLayer');
 
@@ -512,7 +533,7 @@ function calLaneLength2(data) {
                 axios.get(outUrl)
                     .then(function (response) {
                         if(response.status === 200) {
-                            let outputData = transData(response.data.features);
+                            let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(response.data);
                             addMapLayer(outputData, 'modifiedLaneLayer', 'modifiedLaneSource');
                             map.moveLayer('modifiedLaneLayer');
 
@@ -525,36 +546,109 @@ function calLaneLength2(data) {
     });
 }
 
+
+// 计算单条线路的缓冲区
+function calSingleBuffer(data) {
+    let newData =  ArcgisToGeojsonUtils.geojsonToArcGIS(data);
+    require(["esri/SpatialReference", "esri/graphic", "esri/tasks/Geoprocessor"], function (SpatialReference, Graphic, Geoprocessor) {
+
+        let routesFeature = {
+            "displayFieldName" : "",
+            "fieldAliases" : {
+                "FID" : "FID",
+                "route_id" : "route_id",
+                "geocode" : "geocode",
+                "route_stop" : "route_stop",
+                "from_stop" : "from_stop",
+                "to_stop" : "to_stop",
+                "route_name" : "route_name"
+            },
+            "geometryType" : "esriGeometryPolyline",
+            "spatialReference" : {
+                "wkid" : 4326,
+                "latestWkid" : 4326
+            },
+            "fields" : [
+                {
+                    "name" : "FID",
+                    "type" : "esriFieldTypeOID",
+                    "alias" : "FID"
+                },
+                {
+                    "name" : "route_id",
+                    "type" : "esriFieldTypeString",
+                    "alias" : "route_id",
+                    "length" : 254
+                },
+                {
+                    "name" : "geocode",
+                    "type" : "esriFieldTypeString",
+                    "alias" : "geocode",
+                    "length" : 254
+                },
+                {
+                    "name" : "route_stop",
+                    "type" : "esriFieldTypeString",
+                    "alias" : "route_stop",
+                    "length" : 254
+                },
+                {
+                    "name" : "from_stop",
+                    "type" : "esriFieldTypeString",
+                    "alias" : "from_stop",
+                    "length" : 254
+                },
+                {
+                    "name" : "to_stop",
+                    "type" : "esriFieldTypeString",
+                    "alias" : "to_stop",
+                    "length" : 254
+                },
+                {
+                    "name" : "route_name",
+                    "type" : "esriFieldTypeString",
+                    "alias" : "route_name",
+                    "length" : 254
+                }
+            ],
+            "features" :newData
+        };
+
+        let Dis = {
+            "distance": 500,
+            "units": "esriMeters"
+        };
+        let busRouteFeatureSet = new esri.tasks.FeatureSet(routesFeature);
+        busRouteFeatureSet.spatialReference = new SpatialReference({wkid: 4326});
+        let gptask = new Geoprocessor("https://192.168.207.165:6443/arcgis/rest/services/GPTool/lineSingleBuffer/GPServer/lineSingleBuffer");
+        let gpParams = {
+            "Dis": Dis,
+            "routes": busRouteFeatureSet
+        };
+        gptask.submitJob(gpParams, completeCallback, statusCallback);
+        // 结果图加载
+        function completeCallback(jobInfo) {
+            // 未覆盖区域
+            gptask.getResultData(jobInfo.jobId, "output_cover").then(function (value) {
+                let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(value.value);
+                addMapLayer(outputData, 'singleCoverLayer', 'singleCoverSource');
+                map.moveLayer('singleCoverLayer');
+            });
+            // 覆盖区域
+            gptask.getResultData(jobInfo.jobId, "output_uncover").then(function (value) {
+                let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(value.value);
+                addMapLayer(outputData, 'singleUnCoverLayer', 'singleUnCoverSource');
+                map.moveLayer('singleUnCoverLayer');
+            });
+
+        }
+    });
+}
+
+
+
 // 运行状态显示
 function statusCallback(jobInfo) {
     console.log(jobInfo.jobStatus);
     // statusModel(jobInfo.jobStatus);
 }
-
-//数据格式
-function transData(data) {
-    let lineFeature = {
-        "type": "FeatureCollection",
-        "features": []
-    };
-    let lineGeometry;
-    data.forEach(function (value) {
-        console.log(value);
-        lineGeometry = {
-            "type": "Feature",
-            "geometry": {
-                "type": "LineString",
-                "coordinates":value.geometry.paths[0]
-            }
-        };
-        // value.geometry.paths.forEach(function (valueA) {
-        //     lineGeometry.geometry.coordinates.push(valueA);
-        // });
-        // console.log(value.geometry.paths);
-
-        lineFeature.features.push(lineGeometry)
-    });
-    console.log(lineFeature);
-    return lineFeature;
-}
-
