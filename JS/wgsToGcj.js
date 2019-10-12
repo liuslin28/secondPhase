@@ -124,7 +124,7 @@ function wgsToGcj(wgsData) {
                 console.log("error");
                 break;
         }
-        value.geometry.coordinates = geoData;
+        value.geometry.coordinates = gcjData;
         gcjFeatureData.push(value);
     });
 
