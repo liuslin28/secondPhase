@@ -55,7 +55,7 @@ function getData(params) {
     let originalIs = false; //原始数据是否有值返回
     let modifiedIs = false; //修改后数据是否有值返回
 
-    axios.get('./dataSample/data.json', {params:params})
+    axios.get('./dataSample/data.json', {params: params})
         .then(function (response) {
             originalIs = false;
             modifiedIs = false;
@@ -71,7 +71,7 @@ function getData(params) {
             if (response.status === 200) {
 
                 // 若果无数据，直接返回，显示提示框
-                if(response.data.features.length === 0) {
+                if (response.data.features.length === 0) {
                     return;
                 }
 
@@ -97,8 +97,8 @@ function getData(params) {
 
                     axios.get('./dataSample/geoRoute1011.json')
                         .then(function (response) {
-                            if(response.status === 200) {
-                                let oldData  = {
+                            if (response.status === 200) {
+                                let oldData = {
                                     "type": "FeatureCollection",
                                     "features": []
                                 };
@@ -124,8 +124,8 @@ function getData(params) {
                         orginalDataGet(orginalData);
                         axios.get('./dataSample/geoRoute1011.json')
                             .then(function (response) {
-                                if(response.status === 200) {
-                                    let oldData  = {
+                                if (response.status === 200) {
+                                    let oldData = {
                                         "type": "FeatureCollection",
                                         "features": []
                                     };
@@ -140,7 +140,7 @@ function getData(params) {
                         modifiedDataGet(modifiedData);
                         axios.get('./dataSample/geoRoute1011.json')
                             .then(function (response) {
-                                if(response.status === 200) {
+                                if (response.status === 200) {
                                     let newData = {
                                         "type": "FeatureCollection",
                                         "features": []
@@ -211,7 +211,7 @@ function maskLayer(checkValue) {
 
 function removeAllLayer() {
     map_layer_config.forEach(function (value) {
-        if(map.getLayer(value.layer_id)) {
+        if (map.getLayer(value.layer_id)) {
             map.removeLayer(value.layer_id);
             map.removeSource(value.source_id);
         }
@@ -280,7 +280,8 @@ function calculateData(data) {
     let nonlinearIs = routeData[0].geometry.properties.isLoop; //是否环线
     let stationCount = routeData[0].geometry.properties.stationNum; //公交站点数量
     let routeStationList = routeData[0].geometry.properties.stationList; //公交站点坐标
-    let routeDataType = routeData[0].geometry.properties.type;
+    let routeDataType = routeData[0].geometry.properties.type; //数据类型
+    let repetitonList = routeData[0].geometry.properties.repetitonList; //数据类型
 
     if (!routeLength) {
         routeLength = (turf.length(data, {units: 'kilometers'})).toFixed(2);
@@ -312,12 +313,18 @@ function calculateData(data) {
         stationDistanceList.push(length);
     }
 
+    // 公交站300米覆盖率
     calPointWithin(routeStationList, routeDataType);
 
+    // 公交专用道 和 路段重复系数
     if (routeDataType === '1') {
         calLaneLength(routeCoordinate);
+        let routeOriginal = calFrequency(routeCoordinate, repetitonList);
+        addMapLayer(routeOriginal, 'originalFreLayer', 'originalFreSource');
     } else {
         calLaneLength2(routeCoordinate);
+        let routeModified = calFrequency(routeCoordinate, repetitonList);
+        addMapLayer(routeModified, 'modifiedFreLayer', 'modifiedFreSource');
     }
 
     let calResult = {
@@ -329,6 +336,29 @@ function calculateData(data) {
     };
 
     return calResult;
+}
+
+// 路段重复系数
+function calFrequency(route, repetitonList) {
+    let routeFeature = turf.lineString(route);
+    let lineFeature = {
+        "type":
+            "FeatureCollection",
+        "features":
+            []
+    };
+    repetitonList.forEach(function (value) {
+        // console.log(value[0])
+        let start = turf.point(value[0]);
+        console.log(start)
+        let stop = turf.point(value[1]);
+        console.log(stop)
+
+        let sliced = turf.lineSlice(start, stop, routeFeature);
+        console.log(sliced);
+        lineFeature.features.push(sliced);
+    });
+    return lineFeature;
 }
 
 //轨道交通接驳能力计算
@@ -496,7 +526,7 @@ function calLaneLength(data) {
                 // console.log(outUrl);
                 axios.get(outUrl)
                     .then(function (response) {
-                        if(response.status === 200) {
+                        if (response.status === 200) {
                             let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(response.data);
                             // let outputData = transData(response.data.features);
                             addMapLayer(outputData, 'originalLaneLayer', 'originalLaneSource');
@@ -584,7 +614,7 @@ function calLaneLength2(data) {
                 // console.log(outUrl);
                 axios.get(outUrl)
                     .then(function (response) {
-                        if(response.status === 200) {
+                        if (response.status === 200) {
                             let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(response.data);
                             addMapLayer(outputData, 'modifiedLaneLayer', 'modifiedLaneSource');
                             map.moveLayer('modifiedLaneLayer');
@@ -600,62 +630,62 @@ function calLaneLength2(data) {
 
 // 计算两条线路的缓冲区
 function calDoubleBuffer(data1, data2) {
-    let oldData =  ArcgisToGeojsonUtils.geojsonToArcGIS(data1);
-    let newData =  ArcgisToGeojsonUtils.geojsonToArcGIS(data2);
+    let oldData = ArcgisToGeojsonUtils.geojsonToArcGIS(data1);
+    let newData = ArcgisToGeojsonUtils.geojsonToArcGIS(data2);
     require(["esri/SpatialReference", "esri/graphic", "esri/tasks/Geoprocessor"], function (SpatialReference, Graphic, Geoprocessor) {
 
         let routesFeature1 = {
-            "displayFieldName" : "",
-            "fieldAliases" : {
-                "FID" : "FID",
-                "route_id" : "route_id"
+            "displayFieldName": "",
+            "fieldAliases": {
+                "FID": "FID",
+                "route_id": "route_id"
             },
-            "geometryType" : "esriGeometryPolyline",
-            "spatialReference" : {
-                "wkid" : 4326,
-                "latestWkid" : 4326
+            "geometryType": "esriGeometryPolyline",
+            "spatialReference": {
+                "wkid": 4326,
+                "latestWkid": 4326
             },
-            "fields" : [
+            "fields": [
                 {
-                    "name" : "FID",
-                    "type" : "esriFieldTypeOID",
-                    "alias" : "FID"
+                    "name": "FID",
+                    "type": "esriFieldTypeOID",
+                    "alias": "FID"
                 },
                 {
-                    "name" : "route_id",
-                    "type" : "esriFieldTypeString",
-                    "alias" : "route_id",
-                    "length" : 254
+                    "name": "route_id",
+                    "type": "esriFieldTypeString",
+                    "alias": "route_id",
+                    "length": 254
                 }
             ],
-            "features" :oldData
+            "features": oldData
         };
 
         let routesFeature2 = {
-            "displayFieldName" : "",
-            "fieldAliases" : {
-                "FID" : "FID",
-                "route_id" : "route_id"
+            "displayFieldName": "",
+            "fieldAliases": {
+                "FID": "FID",
+                "route_id": "route_id"
             },
-            "geometryType" : "esriGeometryPolyline",
-            "spatialReference" : {
-                "wkid" : 4326,
-                "latestWkid" : 4326
+            "geometryType": "esriGeometryPolyline",
+            "spatialReference": {
+                "wkid": 4326,
+                "latestWkid": 4326
             },
-            "fields" : [
+            "fields": [
                 {
-                    "name" : "FID",
-                    "type" : "esriFieldTypeOID",
-                    "alias" : "FID"
+                    "name": "FID",
+                    "type": "esriFieldTypeOID",
+                    "alias": "FID"
                 },
                 {
-                    "name" : "route_id",
-                    "type" : "esriFieldTypeString",
-                    "alias" : "route_id",
-                    "length" : 254
+                    "name": "route_id",
+                    "type": "esriFieldTypeString",
+                    "alias": "route_id",
+                    "length": 254
                 }
             ],
-            "features" :newData
+            "features": newData
         };
 
         let Dis = {
@@ -673,6 +703,7 @@ function calDoubleBuffer(data1, data2) {
             "routesNew": routesFeatureSet2
         };
         gptask.submitJob(gpParams, completeCallback, statusCallback);
+
         // 结果图加载
         function completeCallback(jobInfo) {
             // 未覆盖区域
@@ -693,7 +724,6 @@ function calDoubleBuffer(data1, data2) {
         }
     });
 }
-
 
 
 // 运行状态显示

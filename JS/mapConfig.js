@@ -20,6 +20,16 @@ let source_layer_config = [
         "source_type": "geojson"
     },
     {
+        "source_id": "originalFreSource",
+        "source_title": "调整前的重复路段",
+        "source_type": "geojson"
+    },
+    {
+        "source_id": "modifiedFreSource",
+        "source_title": "调整后的重复路段",
+        "source_type": "geojson"
+    },
+    {
         "source_id": "doubleAddSource",
         "source_title": "增加的覆盖区域",
         "source_type": "geojson"
@@ -78,7 +88,7 @@ let map_layer_config = [
             "visibility": "visible"
         },
         "layer_paint": {
-            "line-color": "#d8d90e",
+            "line-color": "#3cd94b",
             "line-opacity": 1,
             "line-width": 2
         },
@@ -88,6 +98,40 @@ let map_layer_config = [
         "layer_title": "调整后的公交专用道",
         "layer_id": "modifiedLaneLayer",
         "source_id": "modifiedLaneSource",
+        "layer_type": "line",
+        "layer_layout": {
+            "line-join": "round",
+            "line-cap": "round",
+            "visibility": "visible"
+        },
+        "layer_paint": {
+            "line-color": "#e0e942",
+            "line-opacity": 1,
+            "line-width": 2
+        },
+        "layer_filter": null
+    },
+    {
+        "layer_title": "调整前的重复路段",
+        "layer_id": "originalFreLayer",
+        "source_id": "originalFreSource",
+        "layer_type": "line",
+        "layer_layout": {
+            "line-join": "round",
+            "line-cap": "round",
+            "visibility": "visible"
+        },
+        "layer_paint": {
+            "line-color": "#d95159",
+            "line-opacity": 1,
+            "line-width": 2
+        },
+        "layer_filter": null
+    },
+    {
+        "layer_title": "调整后的重复路段",
+        "layer_id": "modifiedFreLayer",
+        "source_id": "modifiedFreSource",
         "layer_type": "line",
         "layer_layout": {
             "line-join": "round",
