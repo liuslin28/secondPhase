@@ -48,6 +48,8 @@ function test() {
 function getData(params) {
     // 缺少清空给所有图层数据功能
     removeAllLayer();
+    setLayerNoSelect();
+
     originalEmptyHtml();
     modifiedEmptyHtml();
     let originalIs = false; //原始数据是否有值返回
@@ -255,6 +257,7 @@ function setMapLayer(sourceId) {
                     });
                 }
             }
+            setLayerSelect(value.layer_id);
         } else {
             return false;
         }
