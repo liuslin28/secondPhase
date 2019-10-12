@@ -20,16 +20,6 @@ let source_layer_config = [
         "source_type": "geojson"
     },
     {
-        "source_id": "singleCoverSource",
-        "source_title": "线路覆盖区域",
-        "source_type": "geojson"
-    },
-    {
-        "source_id": "singleUnCoverSource",
-        "source_title": "线路未覆盖区域",
-        "source_type": "geojson"
-    },
-    {
         "source_id": "doubleAddSource",
         "source_title": "增加的覆盖区域",
         "source_type": "geojson"
@@ -108,34 +98,6 @@ let map_layer_config = [
             "line-color": "#e9701c",
             "line-opacity": 1,
             "line-width": 2
-        },
-        "layer_filter": null
-    },
-    {
-        "layer_title": "线路覆盖区域",
-        "layer_id": "singleCoverLayer",
-        "source_id": "singleCoverSource",
-        "layer_type": "fill",
-        "layer_layout": {
-            "visibility": "visible"
-        },
-        "layer_paint": {
-            'fill-color': '#79ada9',
-            'fill-opacity': 0.2
-        },
-        "layer_filter": null
-    },
-    {
-        "layer_title": "线路未覆盖区域",
-        "layer_id": "singleUnCoverLayer",
-        "source_id": "singleUnCoverSource",
-        "layer_type": "fill",
-        "layer_layout": {
-            "visibility": "visible"
-        },
-        "layer_paint": {
-            'fill-color': '#8ead59',
-            'fill-opacity': 0.2
         },
         "layer_filter": null
     },
