@@ -314,7 +314,8 @@ function calculateData(data) {
     }
 
     // 公交站300米覆盖率
-    calPointWithin(routeStationList, routeDataType);
+    // calPointWithin(routeStationList, routeDataType);
+    calPointWithin2(routeStationList, routeDataType);
 
     // 公交专用道 和 路段重复系数
     if (routeDataType === '1') {
@@ -348,14 +349,9 @@ function calFrequency(route, repetitonList) {
             []
     };
     repetitonList.forEach(function (value) {
-        // console.log(value[0])
         let start = turf.point(value[0]);
-        console.log(start)
         let stop = turf.point(value[1]);
-        console.log(stop)
-
         let sliced = turf.lineSlice(start, stop, routeFeature);
-        console.log(sliced);
         lineFeature.features.push(sliced);
     });
     return lineFeature;
@@ -369,7 +365,7 @@ function calPointWithin(pointData, type) {
     let searchWithin;
     let connectRatio;
 
-    axios.get('./dataSample/suzhouDistrict.json')
+    axios.get('./dataSample/gusu.json')
         .then(function (response) {
             if (response.status === 200) {
                 response.data.features.forEach(function (value) {
@@ -410,6 +406,44 @@ function calPointWithin(pointData, type) {
             console.log(error);
         });
 }
+
+//轨道交通接驳能力计算2
+function calPointWithin2(pointData, type) {
+    let searchWithin;
+    let connectRatio;
+    let count = 0;
+
+    axios.get('./dataSample/gusu.json')
+        .then(function (response) {
+            if (response.status === 200) {
+                response.data.features.forEach(function (value) {
+                    if (value.geometry.type === "MultiPolygon") {
+                        searchWithin = turf.multiPolygon(value.geometry.coordinates);
+                    } else {
+                        searchWithin = turf.polygon(value.geometry.coordinates);
+                    }
+                    pointData.forEach(function (value) {
+                        let  pt = turf.point(value);
+                        let isInside = turf.booleanPointInPolygon(pt, searchWithin);
+                        if(isInside) {
+                            count += 1;
+                        }
+                    })
+                });
+                connectRatio = ((count / pointData.length) * 100).toFixed(2);
+                // console.log(connectRatio);
+                if (type === '1') {
+                    $('#original-connect').empty().text(connectRatio + "%");
+                } else {
+                    $('#modify-connect').empty().text(connectRatio + "%");
+                }
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
 
 
 // 调整前数据赋值
