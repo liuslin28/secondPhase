@@ -21,8 +21,6 @@ label {
     border: none;
 }
 
-
-
 .card-body {
     padding: 0.5rem;
 }
@@ -53,8 +51,6 @@ label {
 }
 
 
-
-
 /*------------图层切换页面------------------*/
 .layerWrapper{
     width: 10%;
@@ -74,7 +70,10 @@ label {
     width: 90%;
 }
 .layerWrapper-check {
-    margin: 3px auto;
+    margin: 8px auto;
+}
+.layerWrapper-check-label {
+    margin-left: 10px;
 }
 
 
