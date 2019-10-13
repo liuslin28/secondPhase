@@ -29,8 +29,20 @@ $(document).ready(function () {
 
 
     map.on("load", function () {
+        let t = setInterval(function () {
+            //if (map && 其它业务判断) {
+            if (map) {
+                if (map.isStyleLoaded()) {
+                    //加载成功后 loading 隐藏 , 加载其它数据
+                    clearInterval(t);
+                    $('.waitWrapper-backgroud').hide();
+                    $('.waitWrapper').hide();
+                }
+            } else {
+                clearInterval(t);
+            }
+        }, 1000);
     });
-
 });
 
 

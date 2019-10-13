@@ -92,3 +92,69 @@ label {
 .autocomplete-suggestions {
     background-color: white;
 }
+
+
+/*------------加载等待框------------*/
+.waitWrapper-backgroud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(96,96,96, 0.2);
+}
+
+.waitWrapper {
+    position: absolute;
+    left: calc((100% - 200px)/2);
+    top: calc((100% - 180px)/2);
+    width: 200px;
+    height: 90px;
+    z-index: 199;
+    text-align: center;
+    /*display: none;*/
+}
+.waitWrapper-title {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #999;
+    margin-bottom: 1rem;
+}
+
+/*等待动画*/
+.lds-facebook {
+    display: inline-block;
+    position: relative;
+    width: 64px;
+    height: 64px;
+}
+.lds-facebook div {
+    display: inline-block;
+    position: absolute;
+    left: 6px;
+    width: 8px;
+    background: #999;
+    animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+.lds-facebook div:nth-child(1) {
+    left: 6px;
+    animation-delay: -0.24s;
+}
+.lds-facebook div:nth-child(2) {
+    left: 26px;
+    animation-delay: -0.12s;
+}
+.lds-facebook div:nth-child(3) {
+    left: 45px;
+    animation-delay: 0;
+}
+@keyframes lds-facebook {
+    0% {
+        top: 6px;
+        height: 51px;
+    }
+    50%, 100% {
+        top: 19px;
+        height: 26px;
+    }
+}
