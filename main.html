@@ -19,7 +19,7 @@
     <!--加载等待框-->
     <div class="waitWrapper-backgroud"></div>
     <div class="waitWrapper">
-        <div class="waitWrapper-title">
+        <div class="waitWrapper-title letter-space">
             地图加载中
         </div>
         <div class="waitWrapper-loading">
@@ -29,18 +29,18 @@
     <div class="selectWrapper">
         <div class="input-group">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">调整前</span>
+                <span class="input-group-text letter-space" id="basic-addon1">调整前</span>
             </div>
             <input type="text" class="form-control" placeholder="请输入线路" id="originalRoute" aria-label="originalRoute"
                    aria-describedby="basic-addon1">
 
             <div class="input-group-prepend" style="margin-left: 30px;">
-                <span class="input-group-text" id="basic-addon2">调整后</span>
+                <span class="input-group-text letter-space" id="basic-addon2">调整后</span>
             </div>
             <input type="text" class="form-control" placeholder="请输入线路" id="modifiedRoute" aria-label="modifiedRoute"
                    aria-describedby="basic-addon2">
 
-            <button style="display: inline-block;margin-left: 30px;" onclick="selectRoute()">查询</button>
+            <button class="searchButton letter-space" onclick="selectRoute()">查询</button>
         </div>
 
     </div>
@@ -49,7 +49,7 @@
             <div class="layerWrapper-angle">
                 <i class="fa fa-angle-double-up"></i>
             </div>
-            <ul class="layerWrapper-list">
+            <ul class="layerWrapper-list letter-space">
                 <li class="layerWrapper-check">
                     <input class="layerWrapper-check-input" type="checkbox" value="" name="originalRouteLayer">
                     <label class="layerWrapper-check-label">

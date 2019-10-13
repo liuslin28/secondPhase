@@ -29,6 +29,10 @@ label {
     margin-bottom: 0;
 }
 
+.letter-space {
+    letter-spacing: 1px;
+}
+
 /*------------地图页面------------------*/
 .mapWrapper {
     width: 100%;
@@ -50,6 +54,26 @@ label {
     left: 1%;
 }
 
+.searchButton {
+    padding: 0;
+    margin-left: 30px;
+    display: inline-block;
+    width: 80px;
+    vertical-align: middle;
+    overflow: hidden;
+    color: #dcdcdc;
+    font-weight: 600;
+    background: rgba(25, 38, 52, 0.8);
+    border: 1px solid;
+    border-color: #1b1b1b;
+}
+
+.searchButton:hover {
+    background-color: #fff;
+    color: #3f51b5;
+    border-color: #fff;
+}
+
 
 /*------------图层切换页面------------------*/
 .layerWrapper{
@@ -58,10 +82,9 @@ label {
     top: 10%;
     left: 1%;
     background-color: rgba(25, 38, 52, 0.8);
-    -moz-box-shadow: 2px 2px 5px #000000;
-    -webkit-box-shadow: 2px 2px 5px #000000;
     color: #dcdcdc;
-    box-shadow: 2px 2px 5px #000000;
+    border: 1px solid;
+    border-color: #1b1b1b;
     padding: 10px;
 }
 
