@@ -81,6 +81,8 @@ function getData(params) {
 
                 if (originalIs && modifiedIs) {
                     // 2个都有数据
+                    originalLoadingHtml();
+                    modifiedLoadingHtml();
                     orginalDataGet(orginalData);
                     modifiedDataGet(modifiedData);
 
@@ -110,6 +112,8 @@ function getData(params) {
                 } else if (originalIs || modifiedIs) {
                     // 1个有数据
                     if (originalIs) {
+                        originalLoadingHtml();
+
                         orginalDataGet(orginalData);
                         axios.get('./dataSample/geoRoute1011.json')
                             .then(function (response) {
@@ -126,6 +130,8 @@ function getData(params) {
                                 }
                             })
                     } else {
+                        modifiedLoadingHtml();
+
                         modifiedDataGet(modifiedData);
                         axios.get('./dataSample/geoRoute1011.json')
                             .then(function (response) {
@@ -457,6 +463,16 @@ function originalEmptyHtml() {
     $('#original-lane').empty().text("/");
 }
 
+// 调整前，计算中赋值
+function originalLoadingHtml() {
+    $('#original-length').empty().text("计算中");
+    $('#original-nonlinear').empty().text("计算中");
+    $('#original-repetition').empty().text("计算中");
+    $('#original-dis').empty().text("计算中");
+    $('#original-connect').empty().text("计算中");
+    $('#original-lane').empty().text("计算中");
+}
+
 // 调整后数据赋值
 function modifiedHtml(data) {
     $('#modify-length').empty().text(data.routeLength + "km");
@@ -467,6 +483,16 @@ function modifiedHtml(data) {
     }
     $('#modify-repetition').empty().text(data.routeRepetition + "%");
     $('#modify-dis').empty().text(data.stationDistance + "km");
+}
+
+// 调整后，计算中赋值
+function modifiedLoadingHtml() {
+    $('#modify-length').empty().text("计算中");
+    $('#modify-nonlinear').empty().text("计算中");
+    $('#modify-repetition').empty().text("计算中");
+    $('#modify-dis').empty().text("计算中");
+    $('#modify-connect').empty().text("计算中");
+    $('#modify-lane').empty().text("计算中");
 }
 
 // 调整后，无数据赋空值
