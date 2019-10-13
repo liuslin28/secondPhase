@@ -1,5 +1,4 @@
 let map; //地图Map
-
 let polyData = [];
 
 /**
@@ -8,6 +7,8 @@ let polyData = [];
  */
 
 $(document).ready(function () {
+    initSelect();
+
     minemap.domainUrl = conf_domainUrl;
     minemap.dataDomainUrl = conf_dataDomainUrl;
     minemap.spriteUrl = conf_spriteUrl;
@@ -28,22 +29,10 @@ $(document).ready(function () {
 
 
     map.on("load", function () {
-        let params = {
-            routeId1: "aaaaa-01",
-            routeId2: "bbbbb-01"
-        };
-        getData(params);
     });
 
 });
 
-function test() {
-    let params = {
-        routeId1: "aaaaa-01",
-        routeId2: "bbbbb-01"
-    };
-    getData(params);
-}
 
 function getData(params) {
     // 缺少清空给所有图层数据功能
@@ -672,7 +661,7 @@ function calDoubleBuffer(data1, data2) {
             "displayFieldName": "",
             "fieldAliases": {
                 "FID": "FID",
-                "route_id": "route_id"
+                "routeId": "routeId"
             },
             "geometryType": "esriGeometryPolyline",
             "spatialReference": {
@@ -686,9 +675,9 @@ function calDoubleBuffer(data1, data2) {
                     "alias": "FID"
                 },
                 {
-                    "name": "route_id",
+                    "name": "routeId",
                     "type": "esriFieldTypeString",
-                    "alias": "route_id",
+                    "alias": "routeId",
                     "length": 254
                 }
             ],
@@ -699,7 +688,7 @@ function calDoubleBuffer(data1, data2) {
             "displayFieldName": "",
             "fieldAliases": {
                 "FID": "FID",
-                "route_id": "route_id"
+                "routeId": "routeId"
             },
             "geometryType": "esriGeometryPolyline",
             "spatialReference": {
@@ -713,9 +702,9 @@ function calDoubleBuffer(data1, data2) {
                     "alias": "FID"
                 },
                 {
-                    "name": "route_id",
+                    "name": "routeId",
                     "type": "esriFieldTypeString",
-                    "alias": "route_id",
+                    "alias": "routeId",
                     "length": 254
                 }
             ],

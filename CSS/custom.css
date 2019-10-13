@@ -44,7 +44,7 @@ label {
 
 /*------------选择框页面------------------*/
 .selectWrapper{
-    width: 20%;
+    width: 600px;
     position: absolute;
     top: 2%;
     left: 1%;
@@ -85,4 +85,10 @@ label {
     right: 1%;
     margin: 0;
 
+}
+
+/*------------线路调整结果页面------------------*/
+
+.autocomplete-suggestions {
+    background-color: white;
 }
