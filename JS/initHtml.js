@@ -62,6 +62,15 @@ function getOriginalSearch() {
     $('#originalRoute').autocomplete({
         lookup: originalRouteList,
         width: 300,
+        autoSelectFirst: true,
+        onHint: function (hint) {
+            // console.log(hint)
+            originalRouteList.forEach(function (item) {
+                if(item.value === hint) {
+                    originalRouteId = item.data;
+                }
+            })
+        },
         onSelect: function (suggestion) {
             originalRouteId = suggestion.data;
             // console.log(originalRouteId);
@@ -74,6 +83,15 @@ function getModifiedSearch() {
     $('#modifiedRoute').autocomplete({
         lookup: modifiedRouteList,
         width: 300,
+        autoSelectFirst: true,
+        onHint: function (hint) {
+            // console.log(hint)
+            originalRouteList.forEach(function (item) {
+                if(item.value === hint) {
+                    modifiedRouteId = item.data;
+                }
+            })
+        },
         onSelect: function (suggestion) {
             modifiedRouteId = suggestion.data;
             // console.log(modifiedRouteId);
@@ -84,12 +102,17 @@ function getModifiedSearch() {
 
 // 获得选择线路数据,进行计算
 function selectRoute() {
-    if ($('#originalRoute').val() === "") {
+    let originalSelect = $('#originalRoute').val();
+    // console.log(originalSelect);
+    let modifiedSelect = $('#modifiedRoute').val();
+    // console.log(modifiedSelect);
+
+    if (originalSelect === "") {
         originalRouteId = null;
     } else {
     }
 
-    if($('#modifiedRoute').val() === "") {
+    if(modifiedSelect === "") {
         modifiedRouteId = null;
     } else {
     }
