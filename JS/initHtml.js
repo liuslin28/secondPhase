@@ -24,7 +24,7 @@ function setLayerNoSelect() {
     })
 }
 
-// 添加图层选择
+// 添加图层控制框选择
 function setLayerSelect(layerId) {
     let inputs = document.getElementsByName(layerId);
     for (let i = 0; i < inputs.length; i++) {

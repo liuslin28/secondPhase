@@ -240,6 +240,8 @@ function maskLayer(checkValue) {
     }
 }
 
+
+// 移除所有图层
 function removeAllLayer() {
     map_layer_config.forEach(function (value) {
         if (map.getLayer(value.layer_id)) {
@@ -249,6 +251,7 @@ function removeAllLayer() {
     })
 }
 
+// 添加图层
 function addMapLayer(data, LayerId, SourceId) {
     let gcjData = wgsToGcj(data);
     if (map.getLayer(LayerId)) {
@@ -263,6 +266,7 @@ function addMapLayer(data, LayerId, SourceId) {
     }
 }
 
+// 设置图层样式
 function setMapLayer(sourceId) {
     map_layer_config.forEach(function (value) {
         if (value.source_id === sourceId) {
