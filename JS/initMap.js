@@ -181,7 +181,6 @@ function getData(params) {
         .then(function (response) {
             if(response.status === 200) {
                 addMapLayer(response.data, 'stationLayer', 'stationSource');
-                map.moveLayer('stationLayer');
             }
         })
         .catch(function (error) {
@@ -254,6 +253,12 @@ function removeAllLayer() {
 // 添加图层
 function addMapLayer(data, LayerId, SourceId) {
     let gcjData = wgsToGcj(data);
+
+    // 缩放至公交线路范围
+    if(LayerId === "originalRouteLayer" || LayerId === "modifiedRouteLayer") {
+        setBoundry(gcjData);
+    }
+
     if (map.getLayer(LayerId)) {
         map.getSource(SourceId).setData(gcjData);
         layerVisibilityToggle(LayerId, 'visible');
@@ -263,6 +268,11 @@ function addMapLayer(data, LayerId, SourceId) {
             'data': gcjData
         });
         setMapLayer(SourceId);
+    }
+
+    // 将站点图层置顶
+    if(map.getLayer('stationLayer')) {
+        map.moveLayer('stationLayer');
     }
 }
 
@@ -295,6 +305,24 @@ function setMapLayer(sourceId) {
         } else {
             return false;
         }
+    })
+}
+
+// 缩放至要素所在区域
+function setBoundry(data) {
+    map.setPitch(0);
+    map.setZoom(13);
+    let bbox = turf.bbox(data);
+    let minX = bbox[0];
+    let minY = bbox[1];
+    let maxX = bbox[2];
+    let maxY = bbox[3];
+    let center = turf.center(data);
+    let centerPoint = turf.getCoord(center);
+    let arr = [[minX - 0.015, minY - 0.015], [maxX + 0.015, maxY + 0.015]];
+    map.fitBounds(minemap.LngLatBounds.convert(arr));
+    map.flyTo({
+        center: [centerPoint[0] + 0.01, centerPoint[1]]
     })
 }
 
@@ -618,7 +646,7 @@ function calLaneLength(data) {
                             let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(response.data);
                             // let outputData = transData(response.data.features);
                             addMapLayer(outputData, 'originalLaneLayer', 'originalLaneSource');
-                            map.moveLayer('originalLaneLayer');
+                            // map.moveLayer('originalLaneLayer');
 
                         } else {
                             console.log(response.status);
@@ -705,7 +733,7 @@ function calLaneLength2(data) {
                         if (response.status === 200) {
                             let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(response.data);
                             addMapLayer(outputData, 'modifiedLaneLayer', 'modifiedLaneSource');
-                            map.moveLayer('modifiedLaneLayer');
+                            // map.moveLayer('modifiedLaneLayer');
 
                         } else {
                             console.log(response.status);
@@ -799,14 +827,14 @@ function calDoubleBuffer(data1, data2) {
                 console.log(value);
                 let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(value.value);
                 addMapLayer(outputData, 'doubleMinLayer', 'doubleMinSource');
-                map.moveLayer('doubleMinLayer');
+                // map.moveLayer('doubleMinLayer');
             });
             // 覆盖区域
             gptask.getResultData(jobInfo.jobId, "output_add_Select").then(function (value) {
                 console.log(value);
                 let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(value.value);
                 addMapLayer(outputData, 'doubleAddLayer', 'doubleAddSource');
-                map.moveLayer('doubleAddLayer');
+                // map.moveLayer('doubleAddLayer');
             });
 
         }
