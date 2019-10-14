@@ -532,12 +532,12 @@ function originalEmptyHtml() {
 
 // 调整前，计算中赋值
 function originalLoadingHtml() {
-    $('#original-length').empty().text("计算中");
-    $('#original-nonlinear').empty().text("计算中");
-    $('#original-repetition').empty().text("计算中");
-    $('#original-dis').empty().text("计算中");
-    $('#original-connect').empty().text("计算中");
-    $('#original-lane').empty().text("计算中");
+    $('#original-length').empty().text("计算中...");
+    $('#original-nonlinear').empty().text("计算中...");
+    $('#original-repetition').empty().text("计算中...");
+    $('#original-dis').empty().text("计算中...");
+    $('#original-connect').empty().text("计算中...");
+    $('#original-lane').empty().text("计算中...");
 }
 
 // 调整后数据赋值
@@ -554,12 +554,12 @@ function modifiedHtml(data) {
 
 // 调整后，计算中赋值
 function modifiedLoadingHtml() {
-    $('#modify-length').empty().text("计算中");
-    $('#modify-nonlinear').empty().text("计算中");
-    $('#modify-repetition').empty().text("计算中");
-    $('#modify-dis').empty().text("计算中");
-    $('#modify-connect').empty().text("计算中");
-    $('#modify-lane').empty().text("计算中");
+    $('#modify-length').empty().text("计算中...");
+    $('#modify-nonlinear').empty().text("计算中...");
+    $('#modify-repetition').empty().text("计算中...");
+    $('#modify-dis').empty().text("计算中...");
+    $('#modify-connect').empty().text("计算中...");
+    $('#modify-lane').empty().text("计算中...");
 }
 
 // 调整后，无数据赋空值
@@ -622,7 +622,6 @@ function calLaneLength(data) {
         };
 
         gptask.submitJob(gpParams, completeCallback, statusCallback);
-        // gptask.on("get-result-data-complete", displayResults);
 
         // 结果图加载
         function completeCallback(jobInfo) {
@@ -644,9 +643,7 @@ function calLaneLength(data) {
                     .then(function (response) {
                         if (response.status === 200) {
                             let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(response.data);
-                            // let outputData = transData(response.data.features);
                             addMapLayer(outputData, 'originalLaneLayer', 'originalLaneSource');
-                            // map.moveLayer('originalLaneLayer');
 
                         } else {
                             console.log(response.status);
@@ -711,7 +708,6 @@ function calLaneLength2(data) {
         };
 
         gptask.submitJob(gpParams, completeCallback, statusCallback);
-        // gptask.on("get-result-data-complete", displayResults);
 
         // 结果图加载
         function completeCallback(jobInfo) {
@@ -733,7 +729,6 @@ function calLaneLength2(data) {
                         if (response.status === 200) {
                             let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(response.data);
                             addMapLayer(outputData, 'modifiedLaneLayer', 'modifiedLaneSource');
-                            // map.moveLayer('modifiedLaneLayer');
 
                         } else {
                             console.log(response.status);
@@ -827,14 +822,12 @@ function calDoubleBuffer(data1, data2) {
                 console.log(value);
                 let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(value.value);
                 addMapLayer(outputData, 'doubleMinLayer', 'doubleMinSource');
-                // map.moveLayer('doubleMinLayer');
             });
             // 覆盖区域
             gptask.getResultData(jobInfo.jobId, "output_add_Select").then(function (value) {
                 console.log(value);
                 let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(value.value);
                 addMapLayer(outputData, 'doubleAddLayer', 'doubleAddSource');
-                // map.moveLayer('doubleAddLayer');
             });
 
         }
@@ -845,5 +838,4 @@ function calDoubleBuffer(data1, data2) {
 // 运行状态显示
 function statusCallback(jobInfo) {
     console.log(jobInfo.jobStatus);
-    // statusModel(jobInfo.jobStatus);
 }

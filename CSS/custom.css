@@ -33,6 +33,12 @@ label {
     letter-spacing: 1px;
 }
 
+/*------------bootstrap------------------*/
+
+.input-group-text {
+    border-radius: 0!important;
+}
+
 /*------------地图页面------------------*/
 .mapWrapper {
     width: 100%;
@@ -50,8 +56,16 @@ label {
 .selectWrapper{
     width: 600px;
     position: absolute;
-    top: 2%;
+    top: 4%;
     left: 1%;
+}
+
+.input-text {
+    color: #dcdcdc;
+    background: rgba(25, 38, 52, 0.8);
+    border: 1px solid;
+    border-color: #1b1b1b;
+    font-weight: 600;
 }
 
 .searchButton {
@@ -70,14 +84,14 @@ label {
 
 .searchButton:hover {
     background-color: #fff;
-    color: #3f51b5;
+    color: #17212e;
     border-color: #fff;
 }
 
 
 /*------------图层切换页面------------------*/
 .layerWrapper{
-    width: 10%;
+    width: 11%;
     position: absolute;
     top: 10%;
     left: 1%;
