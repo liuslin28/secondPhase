@@ -37,6 +37,8 @@ $(document).ready(function () {
                     clearInterval(t);
                     $('.waitWrapper-backgroud').hide();
                     $('.waitWrapper').hide();
+
+                    addMapIcon();
                 }
             } else {
                 clearInterval(t);
@@ -55,7 +57,7 @@ function getData(params) {
     modifiedEmptyHtml();
     let originalIs = false; //原始数据是否有值返回
     let modifiedIs = false; //修改后数据是否有值返回
-
+    //
     axios.get('./dataSample/data.json', {params: params})
         .then(function (response) {
             originalIs = false;
@@ -170,7 +172,17 @@ function getData(params) {
             } else {
                 alert(response.status);
             }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 
+    axios.get('./dataSample/warningPoint.json', {params:params})
+        .then(function (response) {
+            if(response.status === 200) {
+                addMapLayer(response.data, 'stationLayer', 'stationSource');
+                map.moveLayer('stationLayer');
+            }
         })
         .catch(function (error) {
             console.log(error);
@@ -192,6 +204,18 @@ function modifiedDataGet(data) {
 }
 
 // -----------------------------------
+
+// 加载图标
+function addMapIcon() {
+    icon_config.forEach(function (value) {
+        map.loadImage(value.icon_path, function (error, image) {
+            if (error) throw error;
+            map.addImage(value.icon_id, image);
+        });
+    });
+}
+
+
 // 图层显示切换
 function layerVisibilityToggle(layerName, checkValue) {
     if (map.getLayer(layerName)) {
@@ -227,7 +251,6 @@ function removeAllLayer() {
 
 function addMapLayer(data, LayerId, SourceId) {
     let gcjData = wgsToGcj(data);
-
     if (map.getLayer(LayerId)) {
         map.getSource(SourceId).setData(gcjData);
         layerVisibilityToggle(LayerId, 'visible');
