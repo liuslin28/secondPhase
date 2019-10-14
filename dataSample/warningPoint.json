@@ -5,9 +5,9 @@
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          120.75098183,
-          31.31326912
+        "coordinates":  [
+          120.575127,
+          31.296749
         ]
       },
       "properties": {
@@ -21,8 +21,8 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          120.75098183,
-          31.31326912
+          120.570946,
+          31.312252
         ]
       },
       "properties": {
@@ -36,8 +36,38 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          120.75098183,
-          31.31326912
+          120.622833,
+          31.329617
+        ]
+      },
+      "properties": {
+        "routeId": "aaaa-01",
+        "stationType": "removeConnect",
+        "connectRoute": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.645172,
+          31.315516
+        ]
+      },
+      "properties": {
+        "routeId": "aaaa-01",
+        "stationType": "addOD",
+        "connectRoute": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.615463,
+          31.303127
         ]
       },
       "properties": {

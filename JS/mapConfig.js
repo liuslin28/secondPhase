@@ -1,3 +1,26 @@
+let icon_config = [
+    {
+        "icon_path": './CSS/svg/add1.png',
+        "icon_id": 'addOD'
+    },
+    {
+        "icon_path": './CSS/svg/remove1.png',
+        "icon_id": 'removeOD'
+    },
+    {
+        "icon_path": './CSS/svg/add2.png',
+        "icon_id": 'addConnect'
+    },
+    {
+        "icon_path": './CSS/svg/remove2.png',
+        "icon_id": 'removeConnect'
+    },
+    {
+        "icon_path": './CSS/svg/warning.png',
+        "icon_id": 'pass'
+    }
+];
+
 let source_layer_config = [
     {
         "source_id": "originalSource",
@@ -37,6 +60,11 @@ let source_layer_config = [
     {
         "source_id": "doubleMinSource",
         "source_title": "减少的覆盖区域",
+        "source_type": "geojson"
+    },
+    {
+        "source_id": "stationSource",
+        "source_title": "站点",
         "source_type": "geojson"
     }
 ];
@@ -170,6 +198,20 @@ let map_layer_config = [
         "layer_paint": {
             'fill-color': '#8ead59',
             'fill-opacity': 0.2
+        },
+        "layer_filter": null
+    },
+    {
+        "layer_title": "站点",
+        "layer_id": "stationLayer",
+        "source_id": "stationSource",
+        "layer_type": "symbol",
+        "layer_layout": {
+            "visibility": "visible",
+            "icon-image": "{stationType}" ,
+            "icon-size": 0.3,
+        },
+        "layer_paint": {
         },
         "layer_filter": null
     }
