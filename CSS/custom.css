@@ -118,10 +118,9 @@ label {
 .lineResultWrapper{
     width: 17.5%;
     position: absolute;
-    top:3%;
+    top:10%;
     right: 1%;
     margin: 0;
-
 }
 
 /*------------线路调整结果页面------------------*/
@@ -157,6 +156,55 @@ label {
     color: #999;
     margin-bottom: 1rem;
 }
+
+
+
+/*------------地图弹出框------------*/
+.minemap-popup-content {
+    border-radius: 0;
+
+}
+
+
+.popup-station-type {
+    display: inline-block;
+    margin-right: 4px;
+    padding: 4px 8px;
+    /*border-radius: 5px;*/
+    border: 1px solid #fff;
+    color: #fff;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.popup-station-normal {
+    background-color: #3E4756;
+}
+
+.popup-station-add {
+    background-color: #34A4FF;
+}
+
+.popup-station-remove {
+    background-color: #00BCA8;
+}
+
+.popup-station-pass {
+    background-color: #F97A48;
+}
+
+.popup-station-header {
+    margin-left: 8px;
+    margin-right: 8px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.popup-station-info {
+    display: block;
+    margin-top: 0.5rem;
+}
+
 
 /*等待动画*/
 .lds-facebook {

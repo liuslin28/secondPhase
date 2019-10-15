@@ -1,4 +1,5 @@
 let map; //地图Map
+let stationPopup; //站点信息弹出框
 let polyData = [];
 
 /**
@@ -27,6 +28,11 @@ $(document).ready(function () {
         logoControl: false  /*logo控件是否显示，不加该参数时默认显示*/
     });
 
+    stationPopup = new minemap.Popup({
+        closeButton: true,
+        closeOnClick: false,
+        offset: [0, 0]
+    });
 
     map.on("load", function () {
         let t = setInterval(function () {
@@ -169,7 +175,7 @@ function getData(params) {
                 }
                 $('.layerWrapper').show();
                 $('.lineResultWrapper').show();
-
+                map.on("mousemove", infoPopup)
             } else {
                 alert(response.status);
             }
@@ -178,9 +184,9 @@ function getData(params) {
             console.log(error);
         });
 
-    axios.get('./dataSample/warningPoint.json', {params:params})
+    axios.get('./dataSample/warningPoint.json', {params: params})
         .then(function (response) {
-            if(response.status === 200) {
+            if (response.status === 200) {
                 addMapLayer(response.data, 'stationLayer', 'stationSource');
             }
         })
@@ -256,7 +262,7 @@ function addMapLayer(data, LayerId, SourceId) {
     let gcjData = wgsToGcj(data);
 
     // 缩放至公交线路范围
-    if(LayerId === "originalRouteLayer" || LayerId === "modifiedRouteLayer") {
+    if (LayerId === "originalRouteLayer" || LayerId === "modifiedRouteLayer") {
         setBoundry(gcjData);
     }
 
@@ -272,7 +278,7 @@ function addMapLayer(data, LayerId, SourceId) {
     }
 
     // 将站点图层置顶
-    if(map.getLayer('stationLayer')) {
+    if (map.getLayer('stationLayer')) {
         map.moveLayer('stationLayer');
     }
 }
@@ -325,6 +331,66 @@ function setBoundry(data) {
     map.flyTo({
         center: [centerPoint[0] + 0.01, centerPoint[1]]
     })
+}
+
+// 站点弹出框
+function infoPopup(e) {
+    if (e) {
+
+        let features = map.queryRenderedFeatures([[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]], {layers: ['stationLayer']});
+        if (features.length === 0) {
+            stationPopup.remove();
+        } else {
+            let feature = features[0];
+            let popupLatLng = [Number(feature.geometry.coordinates[0]), Number(feature.geometry.coordinates[1])];
+            let infoHtml = setInfoHtml(feature.properties);
+            stationPopup.setLngLat(popupLatLng)
+                .setHTML(infoHtml)
+                .addTo(map);
+        }
+    }
+}
+
+// 设置弹出框内容
+function setInfoHtml(data) {
+    let dataTypeName;  //站点类型
+    let dataInfo;
+    let stationInfoHtml;
+    console.log(data.stationType);
+
+    switch (data.stationType) {
+        case "addOD":
+            dataTypeName = "新增站点";
+            dataInfo = "承担大客流站点。";
+            stationInfoHtml = "<span class='popup-station-type popup-station-add'>" + dataTypeName + "</span>" + "<span class='popup-station-header'>" + data.StationName + "</span>" + "<span class='popup-station-info'>" + dataInfo + "</span>";
+            break;
+        case "removeOD":
+            dataTypeName = "移除站点";
+            dataInfo = "承担大客流站点。";
+            stationInfoHtml = "<span class='popup-station-type popup-station-remove'>" + dataTypeName + "</span>" + "<span class='popup-station-header'>" + data.StationName + "</span>" + "<span class='popup-station-info'>" + dataInfo + "</span>";
+            break;
+        case "addConnect":
+            dataTypeName = "新增站点";
+            dataInfo = "接驳轨道站点。";
+            let dataDetal = "接驳客流前5的线路：" + data.connectRoute;
+            stationInfoHtml = "<span class='popup-station-type popup-station-add'>" + dataTypeName + "</span>" + "<span class='popup-station-header'>" + data.StationName + "</span>" + "<span class='popup-station-info'>" + dataInfo + dataDetal + "</span>";
+            break;
+        case "removeConnect":
+            dataTypeName = "移除站点";
+            dataInfo = "接驳轨道站点。";
+            stationInfoHtml = "<span class='popup-station-type popup-station-remove'>" + dataTypeName + "</span>" + "<span class='popup-station-header'>" + data.StationName + "</span>" + "<span class='popup-station-info'>" + dataInfo + "</span>";
+            break;
+        case "pass":
+            dataTypeName = "预警站点";
+            dataInfo = "超过10条公交线路停靠站点。";
+            stationInfoHtml = "<span class='popup-station-type popup-station-pass'>" + dataTypeName + "</span>" + "<span class='popup-station-header'>" + data.StationName + "</span>" + "<span class='popup-station-info'>" + dataInfo + "</span>";
+            break;
+        default:
+            dataTypeName = "普通站点";
+            stationInfoHtml = "<span class='popup-station-type popup-station-normal'>" + dataTypeName + "</span>" + "<span class='popup-station-header'>" + data.StationName + "</span>";
+    }
+
+    return stationInfoHtml;
 }
 
 // -----------------------------------
@@ -486,9 +552,9 @@ function calPointWithin2(pointData, type) {
                         searchWithin = turf.polygon(value.geometry.coordinates);
                     }
                     pointData.forEach(function (value) {
-                        let  pt = turf.point(value);
+                        let pt = turf.point(value);
                         let isInside = turf.booleanPointInPolygon(pt, searchWithin);
-                        if(isInside) {
+                        if (isInside) {
                             count += 1;
                         }
                     })
@@ -506,7 +572,6 @@ function calPointWithin2(pointData, type) {
             console.log(error);
         });
 }
-
 
 
 // 调整前数据赋值
