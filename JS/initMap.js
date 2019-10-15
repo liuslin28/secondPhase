@@ -74,7 +74,7 @@ function getData(params) {
             if (response.status === 200) {
 
                 // 若果无数据，直接返回，显示提示框
-                if (response.data.features.length === 0) {
+                if (response.data === [] || response.data.features.length === 0) {
                     return;
                 }
 
@@ -167,6 +167,7 @@ function getData(params) {
                     //都没有数据
 
                 }
+                $('.layerWrapper').show();
                 $('.lineResultWrapper').show();
 
             } else {

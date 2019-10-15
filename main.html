@@ -29,22 +29,21 @@
     <div class="selectWrapper">
         <div class="input-group">
             <div class="input-group-prepend">
-                <span class="input-group-text letter-space" id="basic-addon1">调整前</span>
+                <span class="input-group-text input-text letter-space" id="basic-addon1">调整前</span>
             </div>
             <input type="text" class="form-control" placeholder="请输入线路" id="originalRoute" aria-label="originalRoute"
                    aria-describedby="basic-addon1">
 
             <div class="input-group-prepend" style="margin-left: 30px;">
-                <span class="input-group-text letter-space" id="basic-addon2">调整后</span>
+                <span class="input-group-text input-text letter-space" id="basic-addon2">调整后</span>
             </div>
             <input type="text" class="form-control" placeholder="请输入线路" id="modifiedRoute" aria-label="modifiedRoute"
                    aria-describedby="basic-addon2">
 
             <button class="searchButton letter-space" onclick="selectRoute()">查询</button>
         </div>
-
     </div>
-    <div class="layerWrapper">
+    <div class="layerWrapper" style="display: none;">
         <div class="layerWrapper-boundary">
             <div class="layerWrapper-angle">
                 <i class="fa fa-angle-double-up"></i>
@@ -148,33 +147,6 @@
                     </tr>
                     </tbody>
                 </table>
-
-                <table class="table">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">提醒信息</th>
-                        <th scope="col">详情</th>
-                    </tr>
-                    </thead>
-                    <tbody class="table-active">
-                    <tr>
-                        <th scope="row">经过的站点</th>
-                        <td>A</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">线路长度</th>
-                        <td>B</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">新增站点</th>
-                        <td>C</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">删除站点</th>
-                        <td>D</td>
-                    </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
@@ -194,7 +166,6 @@
 <script type="text/javascript" src="JS/initMap.js"></script>
 <script type="text/javascript" src="JS/initHtml.js"></script>
 <script src="JS/library/bootstrap.js"></script>
-
 <!--Esri-->
 <link rel="stylesheet" href="http://localhost/arcgis_js_api/library/3.28/3.28/esri/css/esri.css">
 <script src="http://localhost/arcgis_js_api/library/3.28/3.28/init.js"></script>
