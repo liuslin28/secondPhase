@@ -89,6 +89,55 @@ label {
 }
 
 
+
+/*------------选择提示框页面------------------*/
+.popupWrapper {
+    width:350px;
+    height:130px;
+    position: absolute;
+    left: calc((100% - 350px)/2);
+    top: calc((100% - 300px)/2);
+    background: rgba(25, 38, 52, 0.8);
+    border: 1px solid;
+    border-color: #1b1b1b;
+    color: #f8f9fa;
+    display: none;
+}
+
+.popupWrapper-container-header {
+    height: 50px;
+    padding: 15px 30px;
+    vertical-align: center;
+    background: rgb(25, 38, 52);
+    font-weight: 600;
+
+}
+.popupWrapper-container-header span{
+    height: 20px;
+}
+.popupWrapper-header-close {
+    width:32px;
+    height:32px;
+    display:block;
+    float:right;
+    color: #f8f9fa;
+}
+
+.popupWrapper-header-close:hover {
+    color: #d95159;
+}
+
+.popupWrapper-container-content {
+    height: 80px;
+    padding: 30px 30px;
+    background: #f8f9fa;
+    color: #0f0f0f;
+    text-align: center;
+}
+.popupWrapper-container-content span {
+    height: 20px;
+}
+
 /*------------图层切换页面------------------*/
 .layerWrapper{
     width: 11%;

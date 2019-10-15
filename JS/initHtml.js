@@ -17,6 +17,11 @@ $('.layerWrapper-check-input').click(function (e) {
     layerVisibilityToggle(layerName, value)
 });
 
+//关闭提示框
+$('.popupWrapper-header-close').click(function () {
+    $('.popupWrapper').hide();
+});
+
 // 清空所有图层的选择
 function setLayerNoSelect() {
     $('.layerWrapper-check-input').each(function () {
@@ -66,7 +71,7 @@ function getOriginalSearch() {
         onHint: function (hint) {
             // console.log(hint)
             originalRouteList.forEach(function (item) {
-                if(item.value === hint) {
+                if (item.value === hint) {
                     originalRouteId = item.data;
                 }
             })
@@ -87,7 +92,7 @@ function getModifiedSearch() {
         onHint: function (hint) {
             // console.log(hint)
             originalRouteList.forEach(function (item) {
-                if(item.value === hint) {
+                if (item.value === hint) {
                     modifiedRouteId = item.data;
                 }
             })
@@ -112,15 +117,19 @@ function selectRoute() {
     } else {
     }
 
-    if(modifiedSelect === "") {
+    if (modifiedSelect === "") {
         modifiedRouteId = null;
     } else {
     }
 
-    let params = {
-        routeId1: originalRouteId,
-        routeId2: modifiedRouteId
-    };
-    // console.log(params);
-    getData(params);
+    if (originalRouteId === null && modifiedRouteId === null) {
+        $('.popupWrapper').show();
+    } else  {
+        let params = {
+            routeId1: originalRouteId,
+            routeId2: modifiedRouteId
+        };
+        // console.log(params);
+        getData(params);
+    }
 }
