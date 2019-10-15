@@ -29,7 +29,7 @@ $(document).ready(function () {
     });
 
     stationPopup = new minemap.Popup({
-        closeButton: true,
+        closeButton: false,
         closeOnClick: false,
         offset: [0, 0]
     });
@@ -187,7 +187,34 @@ function getData(params) {
     axios.get('./dataSample/warningPoint.json', {params: params})
         .then(function (response) {
             if (response.status === 200) {
-                addMapLayer(response.data, 'stationLayer', 'stationSource');
+                let stationList = response.data;
+                stationList.features.forEach(function (item) {
+                    switch (item.properties.stationType) {
+                        case "normal":
+                            item.properties.iconType = "normal";
+                            break;
+                        case "addOD":
+                            item.properties.iconType = "add";
+                            break;
+                        case "removeOD":
+                            item.properties.iconType = "remove";
+                            break;
+                        case "addConnect":
+                            item.properties.iconType = "add";
+                            break;
+                        case "removeConnect":
+                            item.properties.iconType = "remove";
+                            break;
+                        case "pass":
+                            item.properties.iconType = "warning";
+                            break;
+                        default:
+                            item.properties.iconType = "normal";
+
+
+                    }
+                });
+                addMapLayer(stationList, 'stationLayer', 'stationSource');
             }
         })
         .catch(function (error) {

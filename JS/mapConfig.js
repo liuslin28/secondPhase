@@ -1,23 +1,19 @@
 let icon_config = [
     {
-        "icon_path": './CSS/svg/add1.png',
-        "icon_id": 'addOD'
+        "icon_path": './CSS/svg/add.png',
+        "icon_id": 'add'
     },
     {
-        "icon_path": './CSS/svg/remove1.png',
-        "icon_id": 'removeOD'
-    },
-    {
-        "icon_path": './CSS/svg/add2.png',
-        "icon_id": 'addConnect'
-    },
-    {
-        "icon_path": './CSS/svg/remove2.png',
-        "icon_id": 'removeConnect'
+        "icon_path": './CSS/svg/remove.png',
+        "icon_id": 'remove'
     },
     {
         "icon_path": './CSS/svg/warning.png',
-        "icon_id": 'pass'
+        "icon_id": 'warning'
+    },
+    {
+        "icon_path": './CSS/svg/station.png',
+        "icon_id": 'normal'
     }
 ];
 
@@ -208,7 +204,7 @@ let map_layer_config = [
         "layer_type": "symbol",
         "layer_layout": {
             "visibility": "visible",
-            "icon-image": "{stationType}" ,
+            "icon-image": "{iconType}" ,
             "icon-size": 0.3,
         },
         "layer_paint": {
