@@ -123,7 +123,7 @@ function selectRoute() {
     }
 
     if (originalRouteId === null && modifiedRouteId === null) {
-        $('.popupWrapper').show();
+        $('#popupWrapper-select').show();
     } else  {
         let params = {
             routeId1: originalRouteId,

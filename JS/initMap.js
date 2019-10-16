@@ -82,8 +82,11 @@ function getData(params) {
                 // 若果无数据，直接返回，显示提示框
                 if (response.data === [] || response.data.features.length === 0) {
                     $('.chartWrapper').hide();
+                    $('.lineResultWrapper').hide();
+                    $('#popupWrapper-return').show();
                     return;
                 }
+                getStationData(params);
 
                 response.data.features.forEach(function (value) {
                     let dataType = value.geometry.properties.type;
@@ -190,6 +193,9 @@ function getData(params) {
         .catch(function (error) {
             console.log(error);
         });
+}
+
+function getStationData(params) {
 
     axios.get('./dataSample/warningPoint.json', {params: params})
         .then(function (response) {
@@ -228,6 +234,7 @@ function getData(params) {
             console.log(error);
         });
 }
+
 
 function orginalDataGet(data) {
     let orData = data;
