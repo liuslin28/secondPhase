@@ -463,13 +463,13 @@ function calculateData(data) {
 
     let routeData = data['features'];
     let routeCoordinate = routeData[0].geometry.coordinates; //线路坐标
-    let routeTurf = turf.lineString(routeCoordinate);
     routeLength = routeData[0].geometry.properties.routeLength;
     let nonlinearIs = routeData[0].geometry.properties.isLoop; //是否环线
     let stationCount = routeData[0].geometry.properties.stationNum; //公交站点数量
     let routeStationList = routeData[0].geometry.properties.stationList; //公交站点坐标
     let routeDataType = routeData[0].geometry.properties.type; //数据类型
     let repetitonList = routeData[0].geometry.properties.repetitonList; //数据类型
+    let routeWaring = routeData[0].geometry.properties.routeWarning; //线路长度是否超限
 
     if (!routeLength) {
         routeLength = (turf.length(data, {units: 'kilometers'})).toFixed(2);
@@ -509,7 +509,8 @@ function calculateData(data) {
         "routeLength": routeLength,
         "nonlinear": nonlinear,
         "routeRepetition": routeRepetition,
-        "stationDistance": stationDistance
+        "stationDistance": stationDistance,
+        "routeWaring": routeWaring
     };
 
     return calResult;
@@ -664,7 +665,6 @@ function calPointWithin2(pointData, type) {
 
 // 调整前数据赋值
 function originalHtml(data) {
-    $('#original-length').empty().text(data.routeLength + "km");
     if (data.nonlinear === "None") {
         $('#original-nonlinear').empty().text("/");
     } else {
@@ -672,6 +672,11 @@ function originalHtml(data) {
     }
     $('#original-repetition').empty().text(data.routeRepetition + "%");
     $('#original-dis').empty().text(data.stationDistance + "km");
+
+    if(data.routeWaring) {
+        $('#original-length').empty().text(data.routeLength + "km").css({'color':'red','cursor':'pointer'}).tooltip({title:'线路长度超阈值'});
+    }
+
 }
 
 // 调整前，无数据赋空值
