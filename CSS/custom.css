@@ -163,6 +163,18 @@ label {
 }
 
 
+/*------------图表页面------------------*/
+.chartWrapper {
+    position: absolute;
+    bottom: 100px;
+    left: calc((100% - 80%)/2);
+    height: 120px;
+    width: 80%;
+    background-color: rgba(96,96,96, 0.2);
+    display: none;
+}
+
+
 /*------------线路调整结果页面------------------*/
 .lineResultWrapper{
     width: 17.5%;

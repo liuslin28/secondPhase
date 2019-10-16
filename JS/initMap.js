@@ -81,6 +81,7 @@ function getData(params) {
 
                 // 若果无数据，直接返回，显示提示框
                 if (response.data === [] || response.data.features.length === 0) {
+                    $('.chartWrapper').hide();
                     return;
                 }
 
@@ -103,8 +104,8 @@ function getData(params) {
                     // 2个都有数据
                     originalLoadingHtml();
                     modifiedLoadingHtml();
-                    orginalDataGet(orginalData);
-                    modifiedDataGet(modifiedData);
+                    calDistoChart(orginalData, modifiedData);
+
 
                     axios.get('./dataSample/geoRoute1011.json')
                         .then(function (response) {
@@ -126,15 +127,18 @@ function getData(params) {
                                 newData.features.push(modifiedData.features);
                                 calDoubleBuffer(oldData, newData);
                             }
-                        })
+                        });
+
+                    orginalDataGet(orginalData);
+                    modifiedDataGet(modifiedData);
 
 
                 } else if (originalIs || modifiedIs) {
                     // 1个有数据
                     if (originalIs) {
                         originalLoadingHtml();
+                        calDistoChart(orginalData, null);
 
-                        orginalDataGet(orginalData);
                         axios.get('./dataSample/geoRoute1011.json')
                             .then(function (response) {
                                 if (response.status === 200) {
@@ -148,11 +152,13 @@ function getData(params) {
                                     oldData.features.push(orginalData.features);
                                     calDoubleBuffer(oldData, response.data);
                                 }
-                            })
+                            });
+                        orginalDataGet(orginalData);
+
                     } else {
                         modifiedLoadingHtml();
+                        calDistoChart(null, modifiedData);
 
-                        modifiedDataGet(modifiedData);
                         axios.get('./dataSample/geoRoute1011.json')
                             .then(function (response) {
                                 if (response.status === 200) {
@@ -167,11 +173,12 @@ function getData(params) {
                                     newData.features.push(modifiedData.features);
                                     calDoubleBuffer(response.data, newData);
                                 }
-                            })
+                            });
+                        modifiedDataGet(modifiedData);
+
                     }
                 } else {
                     //都没有数据
-
                 }
                 $('.layerWrapper').show();
                 $('.lineResultWrapper').show();
@@ -426,7 +433,6 @@ function calculateData(data) {
     let routeLength; //线路长度 km
     let nonlinear; //非直线系数
     let stationDistance; //平均站间距 km
-    let stationDistanceList = []; //站间距 km
     let routeRepetition; //与其它线路的重复比例
 
     let routeData = data['features'];
@@ -458,17 +464,6 @@ function calculateData(data) {
     // 平均站间距计算
     stationDistance = (routeLength / stationCount).toFixed(2);
 
-    // 站间距计算
-    for (let i = 0; i < routeStationList.length - 1; i++) {
-        let startCoordinate = routeStationList[i];
-        let endCoordinate = routeStationList[i + 1];
-        let start = turf.point(startCoordinate);
-        let stop = turf.point(endCoordinate);
-        let sliced = turf.lineSlice(start, stop, routeTurf);
-        let length = Number(turf.length(sliced, {units: 'kilometers'}).toFixed(2));
-        stationDistanceList.push(length);
-    }
-
     // 公交站300米覆盖率
     // calPointWithin(routeStationList, routeDataType);
     calPointWithin2(routeStationList, routeDataType);
@@ -488,11 +483,51 @@ function calculateData(data) {
         "routeLength": routeLength,
         "nonlinear": nonlinear,
         "routeRepetition": routeRepetition,
-        "stationDistance": stationDistance,
-        "stationDistanceList": stationDistanceList
+        "stationDistance": stationDistance
     };
 
     return calResult;
+}
+
+// 站间距数据展示，调用图表功能
+function calDistoChart(originalData, modifiedData) {
+    $('.chartWrapper').show();
+    let originalDisList =[];
+    let modifiedDisList = [];
+    if(originalData) {
+        originalDisList = calDis(originalData);
+    }
+    if(modifiedData) {
+        modifiedDisList =  calDis(modifiedData);
+    }
+
+    let disChartData = {
+        "originalDis": originalDisList,
+        "modifiedDis": modifiedDisList
+    };
+    initDisChart(disChartData);
+}
+
+// 站间距计算
+function calDis(data) {
+    let stationDistanceList = []; //站间距 km
+
+    let routeData = data['features'];
+    let routeCoordinate = routeData[0].geometry.coordinates; //线路坐标
+    let routeTurf = turf.lineString(routeCoordinate);
+    let routeStationList = routeData[0].geometry.properties.stationList; //公交站点坐标
+
+    // 站间距计算
+    for (let i = 0; i < routeStationList.length - 2; i++) {
+        let startCoordinate = routeStationList[i];
+        let endCoordinate = routeStationList[i + 1];
+        let start = turf.point(startCoordinate);
+        let stop = turf.point(endCoordinate);
+        let sliced = turf.lineSlice(start, stop, routeTurf);
+        let length = Number(turf.length(sliced, {units: 'kilometers'}).toFixed(2));
+        stationDistanceList.push(length);
+    }
+    return stationDistanceList;
 }
 
 // 路段重复系数
