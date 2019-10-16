@@ -1,7 +1,4 @@
-
-
 function initDisChart(data) {
-    // myChart.clear();
     let myChart = echarts.init(document.getElementById('chartWrapper'));
 
     let originalLen = data.originalDis.length;
@@ -74,7 +71,7 @@ function initDisChart(data) {
     let option = {
 
         grid: {
-            left: '3%',
+            left: '5%',
             right: '3%',
             bottom: '20%',
             top: '20%',

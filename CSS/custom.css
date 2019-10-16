@@ -166,8 +166,8 @@ label {
 /*------------图表页面------------------*/
 .chartWrapper {
     position: absolute;
-    bottom: 100px;
-    left: calc((100% - 80%)/2);
+    bottom: 4%;
+    right: 1%;
     height: 120px;
     width: 80%;
     background-color: rgba(96,96,96, 0.2);
@@ -227,7 +227,6 @@ label {
     max-width: 300px;
 
 }
-
 
 .popup-station-type {
     display: inline-block;
