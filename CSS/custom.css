@@ -223,6 +223,8 @@ label {
 /*------------地图弹出框------------*/
 .minemap-popup-content {
     border-radius: 0;
+    overflow : visible;
+    max-width: 300px;
 
 }
 

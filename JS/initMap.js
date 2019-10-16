@@ -202,7 +202,10 @@ function getStationData(params) {
             if (response.status === 200) {
                 let stationList = response.data;
                 stationList.features.forEach(function (item) {
-                    switch (item.properties.stationType) {
+                    let itemTypeList = item.properties.stationType.split(",");
+
+                    //取第一个属性赋样式
+                    switch (itemTypeList[0]) {
                         case "normal":
                             item.properties.iconType = "normal";
                             break;
@@ -223,8 +226,6 @@ function getStationData(params) {
                             break;
                         default:
                             item.properties.iconType = "normal";
-
-
                     }
                 });
                 addMapLayer(stationList, 'stationLayer', 'stationSource');
@@ -395,40 +396,58 @@ function infoPopup(e) {
 // 设置弹出框内容
 function setInfoHtml(data) {
     let dataTypeName;  //站点类型
-    let dataInfo;
+    let dataInfo = "详情:";
     let stationInfoHtml;
-    console.log(data.stationType);
+    let dataDetail = null;
 
-    switch (data.stationType) {
-        case "addOD":
+    let itemTypeList = data.stationType.split(",");
+
+    switch (data.iconType) {
+        case "add":
             dataTypeName = "新增站点";
-            dataInfo = "承担大客流站点。";
-            stationInfoHtml = "<span class='popup-station-type popup-station-add'>" + dataTypeName + "</span>" + "<span class='popup-station-header'>" + data.StationName + "</span>" + "<span class='popup-station-info'>" + dataInfo + "</span>";
+            stationInfoHtml = "<span class='popup-station-type popup-station-add'>" + dataTypeName + "</span>";
             break;
-        case "removeOD":
+        case "remove":
             dataTypeName = "移除站点";
-            dataInfo = "承担大客流站点。";
-            stationInfoHtml = "<span class='popup-station-type popup-station-remove'>" + dataTypeName + "</span>" + "<span class='popup-station-header'>" + data.StationName + "</span>" + "<span class='popup-station-info'>" + dataInfo + "</span>";
+            stationInfoHtml = "<span class='popup-station-type popup-station-remove'>" + dataTypeName + "</span>";
             break;
-        case "addConnect":
-            dataTypeName = "新增站点";
-            dataInfo = "接驳轨道站点。";
-            let dataDetal = "接驳客流前5的线路：" + data.connectRoute;
-            stationInfoHtml = "<span class='popup-station-type popup-station-add'>" + dataTypeName + "</span>" + "<span class='popup-station-header'>" + data.StationName + "</span>" + "<span class='popup-station-info'>" + dataInfo + dataDetal + "</span>";
-            break;
-        case "removeConnect":
-            dataTypeName = "移除站点";
-            dataInfo = "接驳轨道站点。";
-            stationInfoHtml = "<span class='popup-station-type popup-station-remove'>" + dataTypeName + "</span>" + "<span class='popup-station-header'>" + data.StationName + "</span>" + "<span class='popup-station-info'>" + dataInfo + "</span>";
-            break;
-        case "pass":
+        case "warning":
             dataTypeName = "预警站点";
-            dataInfo = "超过10条公交线路停靠站点。";
-            stationInfoHtml = "<span class='popup-station-type popup-station-pass'>" + dataTypeName + "</span>" + "<span class='popup-station-header'>" + data.StationName + "</span>" + "<span class='popup-station-info'>" + dataInfo + "</span>";
+            stationInfoHtml = "<span class='popup-station-type popup-station-pass'>" + dataTypeName + "</span>";
             break;
         default:
             dataTypeName = "普通站点";
-            stationInfoHtml = "<span class='popup-station-type popup-station-normal'>" + dataTypeName + "</span>" + "<span class='popup-station-header'>" + data.StationName + "</span>";
+            stationInfoHtml = "<span class='popup-station-type popup-station-normal'>" + dataTypeName + "</span>";
+    }
+
+    itemTypeList.forEach(function (item) {
+        switch (item) {
+            case "addOD":
+                dataInfo += "承担大客流站点。";
+                break;
+            case "removeOD":
+                dataInfo += "承担大客流站点。";
+                break;
+            case "addConnect":
+                dataInfo += "接驳轨道站点。";
+                dataDetail = "接驳客流前5的线路：" + data.connectRoute;
+
+                break;
+            case "removeConnect":
+                dataInfo += "接驳轨道站点。";
+                break;
+            case "pass":
+                dataInfo += "超过10条公交线路停靠站点。";
+                break;
+            default:
+                dataInfo += '无。';
+        }
+    });
+
+    if(dataDetail) {
+        stationInfoHtml += "<span class='popup-station-header'>" + data.StationName + "</span>" + "<span class='popup-station-info'>" + dataInfo + dataDetail + "</span>";
+    } else {
+        stationInfoHtml += "<span class='popup-station-header'>" + data.StationName + "</span>" + "<span class='popup-station-info'>" + dataInfo + "</span>";
     }
 
     return stationInfoHtml;
