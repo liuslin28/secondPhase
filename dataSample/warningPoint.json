@@ -13,8 +13,8 @@
       "properties": {
         "routeId": "aaaa-01",
         "StationName": "中央公园",
-        "stationType": "pass",
-        "connectRoute": ""
+        "stationType": "pass,addConnect",
+        "connectRoute": "1, 4, 19, 22, 89"
       }
     },
     {
@@ -45,7 +45,7 @@
       "properties": {
         "routeId": "aaaa-01",
         "StationName": "中央公园",
-        "stationType": "removeConnect",
+        "stationType": "removeConnect,pass",
         "connectRoute": ""
       }
     },
