@@ -42,7 +42,8 @@ function initSelect() {
     axios.get('./dataSample/routeData.json')
         .then(function (response) {
             if (response.status === 200) {
-                response.data.data.map(item => originalRouteList.push({
+                // console.log(response.data.Document.Data);
+                response.data.Document.Data.map(item => originalRouteList.push({
                     data: item.routeId,
                     value: `${item.routeName}（${item.routeDirection}）`
                 }));
@@ -53,7 +54,7 @@ function initSelect() {
     axios.get('./dataSample/routeData.json')
         .then(function (response) {
             if (response.status === 200) {
-                response.data.data.map(item => modifiedRouteList.push({
+                response.data.Document.Data.map(item => modifiedRouteList.push({
                     data: item.routeId,
                     value: `${item.routeName}（${item.routeDirection}）`
                 }));
@@ -63,6 +64,7 @@ function initSelect() {
         });
 }
 
+// 调整前线路筛选
 function getOriginalSearch() {
     $('#originalRoute').autocomplete({
         lookup: originalRouteList,
@@ -84,6 +86,7 @@ function getOriginalSearch() {
 
 }
 
+// 调整后线路筛选
 function getModifiedSearch() {
     $('#modifiedRoute').autocomplete({
         lookup: modifiedRouteList,
