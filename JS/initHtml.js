@@ -2,6 +2,8 @@ let originalRouteList = []; //调整前的线路列表
 let modifiedRouteList = []; //调整后的线路列表
 let originalRouteId = null; //调整前获取到的线路ID
 let modifiedRouteId = null; //调整后获取到的线路ID
+let originalData; //调整前的线路原始数据
+let modifiedData; //调整后的线路原始数据
 
 // 图层显示切换
 $('.layerWrapper-check-input').click(function (e) {
@@ -42,6 +44,7 @@ function initSelect() {
     axios.get('./dataSample/routeData.json')
         .then(function (response) {
             if (response.status === 200) {
+                originalData = response.data.Document.Data;
                 // console.log(response.data.Document.Data);
                 response.data.Document.Data.map(item => originalRouteList.push({
                     data: item.routeId,
@@ -54,6 +57,7 @@ function initSelect() {
     axios.get('./dataSample/routeData.json')
         .then(function (response) {
             if (response.status === 200) {
+                modifiedData = response.data.Document.Data;
                 response.data.Document.Data.map(item => modifiedRouteList.push({
                     data: item.routeId,
                     value: `${item.routeName}（${item.routeDirection}）`
@@ -70,13 +74,14 @@ function getOriginalSearch() {
         lookup: originalRouteList,
         width: 300,
         autoSelectFirst: true,
-        onHint: function (hint) {
-            // console.log(hint)
-            originalRouteList.forEach(function (item) {
-                if (item.value === hint) {
-                    originalRouteId = item.data;
+        onHint: function () {
+            let originalInputValue = $('#originalRoute').val();
+            originalData.forEach(function (item) {
+                if(item.routeName === originalInputValue) {
+                    originalRouteId = item.routeId;
+                    // console.log(item.routeName );
                 }
-            })
+            });
         },
         onSelect: function (suggestion) {
             originalRouteId = suggestion.data;
@@ -92,13 +97,14 @@ function getModifiedSearch() {
         lookup: modifiedRouteList,
         width: 300,
         autoSelectFirst: true,
-        onHint: function (hint) {
-            // console.log(hint)
-            originalRouteList.forEach(function (item) {
-                if (item.value === hint) {
-                    modifiedRouteId = item.data;
+        onHint: function () {
+            let modifiedInputValue = $('#modifiedRoute').val();
+            modifiedData.forEach(function (item) {
+                if(item.routeName === modifiedInputValue) {
+                    modifiedRouteId = item.routeId;
+                    // console.log(item.routeName );
                 }
-            })
+            });
         },
         onSelect: function (suggestion) {
             modifiedRouteId = suggestion.data;
@@ -111,9 +117,9 @@ function getModifiedSearch() {
 // 获得选择线路数据,进行计算
 function selectRoute() {
     let originalSelect = $('#originalRoute').val();
-    // console.log(originalSelect);
+    console.log(originalSelect);
     let modifiedSelect = $('#modifiedRoute').val();
-    // console.log(modifiedSelect);
+    console.log(modifiedSelect);
 
     if (originalSelect === "") {
         originalRouteId = null;
@@ -127,12 +133,12 @@ function selectRoute() {
 
     if (originalRouteId === null && modifiedRouteId === null) {
         $('#popupWrapper-select').show();
-    } else  {
+    } else {
         let params = {
             routeId1: originalRouteId,
             routeId2: modifiedRouteId
         };
-        // console.log(params);
-        getData(params);
+        console.log(params);
+        // getData(params);
     }
 }
