@@ -178,8 +178,8 @@ let map_layer_config = [
             "visibility": "visible"
         },
         "layer_paint": {
-            'fill-color': '#79ada9',
-            'fill-opacity': 0.2
+            'fill-color': '#FF6F91',
+            'fill-opacity': 0.8
         },
         "layer_filter": null
     },
@@ -192,8 +192,8 @@ let map_layer_config = [
             "visibility": "visible"
         },
         "layer_paint": {
-            'fill-color': '#8ead59',
-            'fill-opacity': 0.2
+            'fill-color': '#845EC2',
+            'fill-opacity': 0.8
         },
         "layer_filter": null
     },
