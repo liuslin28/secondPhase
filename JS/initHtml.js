@@ -73,6 +73,7 @@ function getOriginalSearch() {
     $('#originalRoute').autocomplete({
         lookup: originalRouteList,
         width: 300,
+        maxHeight: 300,
         autoSelectFirst: true,
         onHint: function () {
             let originalInputValue = $('#originalRoute').val();
@@ -96,6 +97,7 @@ function getModifiedSearch() {
     $('#modifiedRoute').autocomplete({
         lookup: modifiedRouteList,
         width: 300,
+        maxHeight: 300,
         autoSelectFirst: true,
         onHint: function () {
             let modifiedInputValue = $('#modifiedRoute').val();
