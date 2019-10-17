@@ -83,7 +83,10 @@ function getData(params) {
                 if (response.data === [] || response.data.features.length === 0) {
                     $('.chartWrapper').hide();
                     $('.lineResultWrapper').hide();
+                    $('.layerWrapper').hide();
+                    $('.legendWrapper').hide();
                     $('#popupWrapper-return').show();
+
                     return;
                 }
                 getStationData(params);
@@ -183,6 +186,7 @@ function getData(params) {
                 } else {
                     //都没有数据
                 }
+                $('.legendWrapper').show();
                 $('.layerWrapper').show();
                 $('.lineResultWrapper').show();
                 map.on("mousemove", infoPopup)

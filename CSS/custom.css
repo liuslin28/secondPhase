@@ -36,7 +36,7 @@ label {
 /*------------bootstrap------------------*/
 
 .input-group-text {
-    border-radius: 0!important;
+    border-radius: 0 !important;
 }
 
 /*------------地图页面------------------*/
@@ -50,10 +50,8 @@ label {
     border: none;
 }
 
-
-
 /*------------选择框页面------------------*/
-.selectWrapper{
+.selectWrapper {
     width: 600px;
     position: absolute;
     top: 4%;
@@ -88,15 +86,13 @@ label {
     border-color: #fff;
 }
 
-
-
 /*------------选择提示框页面------------------*/
 .popupWrapper {
-    width:350px;
-    height:130px;
+    width: 350px;
+    height: 130px;
     position: absolute;
-    left: calc((100% - 350px)/2);
-    top: calc((100% - 300px)/2);
+    left: calc((100% - 350px) / 2);
+    top: calc((100% - 300px) / 2);
     background: rgba(25, 38, 52, 0.8);
     border: 1px solid;
     border-color: #1b1b1b;
@@ -112,14 +108,16 @@ label {
     font-weight: 600;
 
 }
-.popupWrapper-container-header span{
+
+.popupWrapper-container-header span {
     height: 20px;
 }
+
 .popupWrapper-header-close {
-    width:32px;
-    height:32px;
-    display:block;
-    float:right;
+    width: 32px;
+    height: 32px;
+    display: block;
+    float: right;
     color: #f8f9fa;
 }
 
@@ -134,12 +132,13 @@ label {
     color: #0f0f0f;
     text-align: center;
 }
+
 .popupWrapper-container-content span {
     height: 20px;
 }
 
 /*------------图层切换页面------------------*/
-.layerWrapper{
+.layerWrapper {
     width: 11%;
     position: absolute;
     top: 10%;
@@ -155,13 +154,14 @@ label {
     margin: auto;
     width: 90%;
 }
+
 .layerWrapper-check {
     margin: 8px auto;
 }
+
 .layerWrapper-check-label {
     margin-left: 10px;
 }
-
 
 /*------------图表页面------------------*/
 .chartWrapper {
@@ -170,16 +170,15 @@ label {
     right: 1%;
     height: 120px;
     width: 80%;
-    background-color: rgba(96,96,96, 0.2);
+    background-color: rgba(96, 96, 96, 0.2);
     display: none;
 }
 
-
 /*------------线路调整结果页面------------------*/
-.lineResultWrapper{
+.lineResultWrapper {
     width: 17.5%;
     position: absolute;
-    top:10%;
+    top: 10%;
     right: 1%;
     margin: 0;
 }
@@ -190,6 +189,87 @@ label {
     background-color: white;
 }
 
+/*-------------图例页面-----------------*/
+.legendWrapper {
+    width: 320px;
+    left: 20px;
+    bottom: 20px;
+    position: absolute;
+    background-color: rgba(25, 38, 52, 0.8);
+    border: 1px solid;
+    border-color: #1b1b1b;
+    z-index: 199;
+}
+
+.legendWrapper-boundary {
+    margin: 16px;
+}
+
+.legendWrapper-title {
+    color: white;
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.legendWrapper-list {
+    color: white;
+    height: 30px;
+    line-height: 30px;
+    width: 100%;
+}
+
+.legendWrapper-list span {
+    width: 100px;
+    font-size: small;
+}
+
+.legendWrapper-list-icon {
+    margin: auto;
+    width: 80%;
+    height: 30px;
+    line-height: 30px;
+}
+
+.legend-icon {
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    margin: auto 50px auto 30px;
+}
+
+.legend-line {
+    width: 60px;
+    height: 15px;
+    margin: auto 32px 16px;
+    display: inline-block;
+}
+
+.legend-lineA {
+    color: #34a4ff;
+}
+
+.legend-lineB {
+    color: #e95db5;
+}
+
+.legend-lineC {
+    color: #25A982;
+}
+
+.legend-lineD {
+    color: #E2AF32;
+}
+
+.legend-lineE {
+    color: #d95159;
+}
+
+.legend-lineF {
+    color: #F2E5E7;
+}
 
 /*------------加载等待框------------*/
 .waitWrapper-backgroud {
@@ -198,19 +278,20 @@ label {
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: rgba(96,96,96, 0.2);
+    background-color: rgba(96, 96, 96, 0.2);
 }
 
 .waitWrapper {
     position: absolute;
-    left: calc((100% - 200px)/2);
-    top: calc((100% - 180px)/2);
+    left: calc((100% - 200px) / 2);
+    top: calc((100% - 180px) / 2);
     width: 200px;
     height: 90px;
     z-index: 199;
     text-align: center;
     /*display: none;*/
 }
+
 .waitWrapper-title {
     font-size: 1rem;
     font-weight: bold;
@@ -218,12 +299,10 @@ label {
     margin-bottom: 1rem;
 }
 
-
-
 /*------------地图弹出框------------*/
 .minemap-popup-content {
     border-radius: 0;
-    overflow : visible;
+    overflow: visible;
     max-width: 300px;
 
 }
@@ -267,7 +346,6 @@ label {
     margin-top: 0.5rem;
 }
 
-
 /*等待动画*/
 .lds-facebook {
     display: inline-block;
@@ -275,6 +353,7 @@ label {
     width: 64px;
     height: 64px;
 }
+
 .lds-facebook div {
     display: inline-block;
     position: absolute;
@@ -283,18 +362,22 @@ label {
     background: #999;
     animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
 }
+
 .lds-facebook div:nth-child(1) {
     left: 6px;
     animation-delay: -0.24s;
 }
+
 .lds-facebook div:nth-child(2) {
     left: 26px;
     animation-delay: -0.12s;
 }
+
 .lds-facebook div:nth-child(3) {
     left: 45px;
     animation-delay: 0;
 }
+
 @keyframes lds-facebook {
     0% {
         top: 6px;

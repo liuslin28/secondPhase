@@ -177,28 +177,84 @@
         </div>
     </div>
     <div class="chartWrapper" id="chartWrapper"></div>
-</div>
 
-<script src="//minedata.cn/minemapapi/v2.0.0/minemap.js"></script>
-<script src="JS/library/axios.js"></script>
-<script src="JS/library/popper.js"></script>
+    <div class="legendWrapper" style="display: none;">
+        <div class="legendWrapper-boundary">
+            <div class="legendWrapper-title letter-space ">图例
+            </div>
+            <ul id="legendWrapper-connectivity">
+                <li class="legendWrapper-list">
+                    <div class="legendWrapper-list-icon">
+                        <img src="CSS/svg/station.png" class="legend-icon">
+                        <span>普通站点</span>
+                    </div>
+                </li>
+                <li class="legendWrapper-list">
+                    <div class="legendWrapper-list-icon">
+                        <img src="CSS/svg/warning.png" class="legend-icon">
+                        <span>预警站点</span>
+                    </div>
+                </li>
+                <li class="legendWrapper-list">
+                    <div class="legendWrapper-list-icon">
+                        <img src="CSS/svg/add.png" class="legend-icon">
+                        <span>新增站点</span>
+                    </div>
+                </li>
+                <li class="legendWrapper-list">
+                    <div class="legendWrapper-list-icon">
+                        <img src="CSS/svg/remove.png" class="legend-icon">
+                        <span>移除站点</span>
+                    </div>
+                </li>
+                <li class="legendWrapper-list">
+                    <div class="legend-line legend-lineA">————</div>
+                    <span>调整前的公交线路</span>
+                </li>
+                <li class="legendWrapper-list">
+                    <div class="legend-line legend-lineB">————</div>
+                    <span>调整后的公交线路</span>
+                </li>
+                <li class="legendWrapper-list">
+                    <div class="legend-line legend-lineC">————</div>
+                    <span>调整前的公交专用道</span>
+                </li>
+                <li class="legendWrapper-list">
+                    <div class="legend-line legend-lineD">————</div>
+                    <span>调整后的公交专用道</span>
+                </li>
+                <li class="legendWrapper-list">
+                    <div class="legend-line legend-lineE">————</div>
+                    <span>调整前的重复路段</span>
+                </li>
+                <li class="legendWrapper-list">
+                    <div class="legend-line legend-lineF">————</div>
+                    <span>调整后的重复路段</span>
+                </li>
+            </ul>
+        </div>
+    </div>
 
-<script src="JS/library/turf.min.js"></script>
-<script src="JS/library/wgs2mars.min.js"></script>
-<script src="JS/wgsToGcj.js"></script>
-<script src="JS/library/arcgis-to-geojson-utils.js"></script>
-<script src="JS/library/jquery.autocomplete.js"></script>
-<script src="JS/library/echarts.min.js"></script>
+    <script src="//minedata.cn/minemapapi/v2.0.0/minemap.js"></script>
+    <script src="JS/library/axios.js"></script>
+    <script src="JS/library/popper.js"></script>
 
-<script type="text/javascript" src="JS/config.js"></script>
-<script type="text/javascript" src="JS/mapConfig.js"></script>
-<script type="text/javascript" src="JS/initMap.js"></script>
-<script type="text/javascript" src="JS/initHtml.js"></script>
-<script type="text/javascript" src="JS/initCharts.js"></script>
-<script src="JS/library/bootstrap.js"></script>
-<!--Esri-->
-<link rel="stylesheet" href="http://localhost/arcgis_js_api/library/3.28/3.28/esri/css/esri.css">
-<script src="http://localhost/arcgis_js_api/library/3.28/3.28/init.js"></script>
+    <script src="JS/library/turf.min.js"></script>
+    <script src="JS/library/wgs2mars.min.js"></script>
+    <script src="JS/wgsToGcj.js"></script>
+    <script src="JS/library/arcgis-to-geojson-utils.js"></script>
+    <script src="JS/library/jquery.autocomplete.js"></script>
+    <script src="JS/library/echarts.min.js"></script>
+
+    <script type="text/javascript" src="JS/config.js"></script>
+    <script type="text/javascript" src="JS/mapConfig.js"></script>
+    <script type="text/javascript" src="JS/initMap.js"></script>
+    <script type="text/javascript" src="JS/initHtml.js"></script>
+    <script type="text/javascript" src="JS/initCharts.js"></script>
+    <script src="JS/library/bootstrap.js"></script>
+    <!--Esri-->
+    <link rel="stylesheet" href="http://localhost/arcgis_js_api/library/3.28/3.28/esri/css/esri.css">
+    <script src="http://localhost/arcgis_js_api/library/3.28/3.28/init.js"></script>
 
 </body>
 </html>
