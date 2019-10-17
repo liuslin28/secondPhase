@@ -94,7 +94,7 @@
 */
 
 function wgsToGcj(wgsData) {
-    let wgsFeatrueData = wgsData.features;
+    let wgsFeatrueData =  JSON.parse(JSON.stringify(wgsData.features));
     let gcjFeatureData = [];
     wgsFeatrueData.forEach(function (value) {
         let geoType = value.geometry.type;
