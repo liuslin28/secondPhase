@@ -86,7 +86,6 @@ function getData(params) {
                     $('.layerWrapper').hide();
                     $('.legendWrapper').hide();
                     $('#popupWrapper-return').show();
-
                     return;
                 }
                 getStationData(params);
@@ -111,7 +110,8 @@ function getData(params) {
                     originalLoadingHtml();
                     modifiedLoadingHtml();
                     calDistoChart(orginalData, modifiedData);
-
+                    orginalDataGet(orginalData);
+                    modifiedDataGet(modifiedData);
 
                     axios.get('./dataSample/geoRoute1011.json')
                         .then(function (response) {
@@ -135,15 +135,12 @@ function getData(params) {
                             }
                         });
 
-                    orginalDataGet(orginalData);
-                    modifiedDataGet(modifiedData);
-
-
                 } else if (originalIs || modifiedIs) {
                     // 1个有数据
                     if (originalIs) {
                         originalLoadingHtml();
                         calDistoChart(orginalData, null);
+                        orginalDataGet(orginalData);
 
                         axios.get('./dataSample/geoRoute1011.json')
                             .then(function (response) {
@@ -159,11 +156,11 @@ function getData(params) {
                                     calDoubleBuffer(oldData, response.data);
                                 }
                             });
-                        orginalDataGet(orginalData);
 
                     } else {
                         modifiedLoadingHtml();
                         calDistoChart(null, modifiedData);
+                        modifiedDataGet(modifiedData);
 
                         axios.get('./dataSample/geoRoute1011.json')
                             .then(function (response) {
@@ -180,8 +177,6 @@ function getData(params) {
                                     calDoubleBuffer(response.data, newData);
                                 }
                             });
-                        modifiedDataGet(modifiedData);
-
                     }
                 } else {
                     //都没有数据
