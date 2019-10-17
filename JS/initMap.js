@@ -203,8 +203,12 @@ function getStationData(params) {
     axios.get('./dataSample/warningPoint.json', {params: params})
         .then(function (response) {
             if (response.status === 200) {
-                let stationList = response.data;
-                stationList.features.forEach(function (item) {
+                let stationList = response.data.Document.StationInfo;
+                let stationFeature = {
+                    "type" : "FeatureCollection",
+                    "features" : stationList
+                };
+                stationFeature.features.forEach(function (item) {
                     let itemTypeList = item.properties.stationType.split(",");
 
                     //取第一个属性赋样式
@@ -231,7 +235,7 @@ function getStationData(params) {
                             item.properties.iconType = "normal";
                     }
                 });
-                addMapLayer(stationList, 'stationLayer', 'stationSource');
+                addMapLayer(stationFeature, 'stationLayer', 'stationSource');
             }
         })
         .catch(function (error) {
@@ -1063,10 +1067,12 @@ function statusCallback(jobInfo) {
     }
 }
 
+// 停止正在进行的GP服务
+// 先停止GP服务，后将HTML数据置空
 function removeGP() {
-    console.log('removeGP');
-    console.log(gpList);
-    console.log(jobId);
+    // console.log('removeGP');
+    // console.log(gpList);
+    // console.log(jobId);
 
     gpList.forEach(function (gpItem) {
         jobId.forEach(function (jobItem) {
