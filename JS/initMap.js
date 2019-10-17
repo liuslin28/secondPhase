@@ -1,6 +1,7 @@
 let map; //地图Map
 let stationPopup; //站点信息弹出框
-let polyData = [];
+let jobId = [];
+let gpList = [];
 
 /**
  * 基本地图加载
@@ -55,12 +56,11 @@ $(document).ready(function () {
 
 
 function getData(params) {
-    // 缺少清空给所有图层数据功能
+    // 缺少清空给所有图层数据功能,停止未完成的GP服务
     removeAllLayer();
     setLayerNoSelect();
+    removeGP();
 
-    originalEmptyHtml();
-    modifiedEmptyHtml();
     let originalIs = false; //原始数据是否有值返回
     let modifiedIs = false; //修改后数据是否有值返回
     //
@@ -181,6 +181,10 @@ function getData(params) {
                 } else {
                     //都没有数据
                 }
+
+                // 样例
+                // calDoubleBufferSample();
+
                 $('.legendWrapper').show();
                 $('.layerWrapper').show();
                 $('.lineResultWrapper').show();
@@ -443,7 +447,7 @@ function setInfoHtml(data) {
         }
     });
 
-    if(dataDetail) {
+    if (dataDetail) {
         stationInfoHtml += "<span class='popup-station-header'>" + data.StationName + "</span>" + "<span class='popup-station-info'>" + dataInfo + dataDetail + "</span>";
     } else {
         stationInfoHtml += "<span class='popup-station-header'>" + data.StationName + "</span>" + "<span class='popup-station-info'>" + dataInfo + "</span>";
@@ -518,13 +522,13 @@ function calculateData(data) {
 // 站间距数据展示，调用图表功能
 function calDistoChart(originalData, modifiedData) {
     $('.chartWrapper').show();
-    let originalDisList =[];
+    let originalDisList = [];
     let modifiedDisList = [];
-    if(originalData) {
+    if (originalData) {
         originalDisList = calDis(originalData);
     }
-    if(modifiedData) {
-        modifiedDisList =  calDis(modifiedData);
+    if (modifiedData) {
+        modifiedDisList = calDis(modifiedData);
     }
 
     let disChartData = {
@@ -672,8 +676,11 @@ function originalHtml(data) {
     $('#original-repetition').empty().text(data.routeRepetition + "%");
     $('#original-dis').empty().text(data.stationDistance + "km");
 
-    if(data.routeWaring) {
-        $('#original-length').empty().text(data.routeLength + "km").css({'color':'red','cursor':'pointer'}).tooltip({title:'线路长度超阈值'});
+    if (data.routeWaring) {
+        $('#original-length').empty().text(data.routeLength + "km").css({
+            'color': 'red',
+            'cursor': 'pointer'
+        }).tooltip({title: '线路长度超阈值'});
     }
 
 }
@@ -778,8 +785,8 @@ function calLaneLength(data) {
             "Dis1": Dis1,
             "line": busRouteFeatureSet
         };
-
         gptask.submitJob(gpParams, completeCallback, statusCallback);
+        gpList.push(gptask);
 
         // 结果图加载
         function completeCallback(jobInfo) {
@@ -866,6 +873,7 @@ function calLaneLength2(data) {
         };
 
         gptask.submitJob(gpParams, completeCallback, statusCallback);
+        gpList.push(gptask);
 
         // 结果图加载
         function completeCallback(jobInfo) {
@@ -972,6 +980,7 @@ function calDoubleBuffer(data1, data2) {
             "routesNew": routesFeatureSet2
         };
         gptask.submitJob(gpParams, completeCallback, statusCallback);
+        gpList.push(gptask);
 
         // 结果图加载
         function completeCallback(jobInfo) {
@@ -992,8 +1001,83 @@ function calDoubleBuffer(data1, data2) {
     });
 }
 
+// 计算两条线路的缓冲区  样例
+// function calDoubleBufferSample() {
+//     require(["esri/SpatialReference", "esri/graphic", "esri/tasks/Geoprocessor"], function (SpatialReference, Graphic, Geoprocessor) {
+//
+//         let routesFeature1;
+//         let routesFeature2;
+//
+//         let Dis = {
+//             "distance": 500,
+//             "units": "esriMeters"
+//         };
+//
+//         axios.get('./dataSample/routeSample1.json')
+//             .then(function (response) {
+//                 routesFeature1 = response.data;
+//                 axios.get('./dataSample/routeSample2.json')
+//                     .then(function (response2) {
+//                         routesFeature2 = response2.data;
+//                         let routesFeatureSet1 = new esri.tasks.FeatureSet(routesFeature1);
+//                         routesFeatureSet1.spatialReference = new SpatialReference({wkid: 4326});
+//                         let routesFeatureSet2 = new esri.tasks.FeatureSet(routesFeature2);
+//                         routesFeatureSet2.spatialReference = new SpatialReference({wkid: 4326});
+//                         let gptask = new Geoprocessor("https://192.168.207.165:6443/arcgis/rest/services/GPTool/lineDoubleBuffer/GPServer/lineDoubleBuffer");
+//                         let gpParams = {
+//                             "Dis": Dis,
+//                             "routesOld": routesFeatureSet1,
+//                             "routesNew": routesFeatureSet2
+//                         };
+//                         gptask.submitJob(gpParams, completeCallback, statusCallback);
+//
+//                         // 结果图加载
+//                         function completeCallback(jobInfo) {
+//                             // 未覆盖区域
+//                             gptask.getResultData(jobInfo.jobId, "output_min_Select").then(function (value) {
+//                                 console.log(value);
+//                                 let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(value.value);
+//                                 addMapLayer(outputData, 'doubleMinLayer', 'doubleMinSource');
+//                             });
+//                             // 覆盖区域
+//                             gptask.getResultData(jobInfo.jobId, "output_add_Select").then(function (value) {
+//                                 console.log(value);
+//                                 let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(value.value);
+//                                 addMapLayer(outputData, 'doubleAddLayer', 'doubleAddSource');
+//                             });
+//
+//                         }
+//                     })
+//             });
+//
+//     });
+// }
+
 
 // 运行状态显示
 function statusCallback(jobInfo) {
     console.log(jobInfo.jobStatus);
+    let jobIdIndex =  jobId.indexOf(jobInfo.jobId);
+    if(jobIdIndex === -1) {
+        jobId.push(jobInfo.jobId);
+    }
+}
+
+function removeGP() {
+    console.log('removeGP');
+    console.log(gpList);
+    console.log(jobId);
+
+    gpList.forEach(function (gpItem) {
+        jobId.forEach(function (jobItem) {
+            gpItem.cancelJob(jobItem)
+        })
+
+    });
+    gpList = [];
+    jobId = [];
+
+    // 清空HTML
+    originalEmptyHtml();
+    modifiedEmptyHtml();
 }
