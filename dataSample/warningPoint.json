@@ -1,105 +1,101 @@
 {
-  "Document": {
-    "@TaskGuid": "d761d8f5-4af0-4d54-b2dc-eb4eedf6aa6f",
-    "@DataGuid": "",
-    "@DataType": "StationYHList",
-    "StationInfo": [
-      {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            120.575127,
-            31.296749
-          ]
-        },
-        "properties": {
-          "routeId": "aaaa-01",
-          "StationName": "中央公园",
-          "stationType": "pass,addConnect",
-          "connectRoute": "1, 4, 19, 22, 89"
-        }
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.575127,
+          31.296749
+        ]
       },
-      {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            120.570946,
-            31.312252
-          ]
-        },
-        "properties": {
-          "routeId": "aaaa-01",
-          "StationName": "中央公园",
-          "stationType": "addConnect",
-          "connectRoute": "1, 4, 19, 22, 89"
-        }
-      },
-      {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            120.622833,
-            31.329617
-          ]
-        },
-        "properties": {
-          "routeId": "aaaa-01",
-          "StationName": "中央公园",
-          "stationType": "removeConnect,pass",
-          "connectRoute": ""
-        }
-      },
-      {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            120.645172,
-            31.315516
-          ]
-        },
-        "properties": {
-          "routeId": "aaaa-01",
-          "StationName": "中央公园",
-          "stationType": "addOD",
-          "connectRoute": ""
-        }
-      },
-      {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            120.615463,
-            31.303127
-          ]
-        },
-        "properties": {
-          "routeId": "aaaa-01",
-          "StationName": "中央公园",
-          "stationType": "removeOD",
-          "connectRoute": ""
-        }
-      },
-      {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            120.633507,
-            31.311703
-          ]
-        },
-        "properties": {
-          "routeId": "aaaa-01",
-          "StationName": "中央公园",
-          "stationType": "normal",
-          "connectRoute": ""
-        }
+      "properties": {
+        "routeId": "aaaa-01",
+        "StationName": "中央公园",
+        "stationType": "pass,addConnect",
+        "connectRoute": "1, 4, 19, 22, 89"
       }
-    ]
-  }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.570946,
+          31.312252
+        ]
+      },
+      "properties": {
+        "routeId": "aaaa-01",
+        "StationName": "中央公园",
+        "stationType": "addConnect",
+        "connectRoute": "1, 4, 19, 22, 89"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.622833,
+          31.329617
+        ]
+      },
+      "properties": {
+        "routeId": "aaaa-01",
+        "StationName": "中央公园",
+        "stationType": "removeConnect,pass",
+        "connectRoute": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.645172,
+          31.315516
+        ]
+      },
+      "properties": {
+        "routeId": "aaaa-01",
+        "StationName": "中央公园",
+        "stationType": "addOD",
+        "connectRoute": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.615463,
+          31.303127
+        ]
+      },
+      "properties": {
+        "routeId": "aaaa-01",
+        "StationName": "中央公园",
+        "stationType": "removeOD",
+        "connectRoute": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.633507,
+          31.311703
+        ]
+      },
+      "properties": {
+        "routeId": "aaaa-01",
+        "StationName": "中央公园",
+        "stationType": "normal",
+        "connectRoute": ""
+      }
+    }
+  ]
 }

@@ -203,12 +203,9 @@ function getStationData(params) {
     axios.get('./dataSample/warningPoint.json', {params: params})
         .then(function (response) {
             if (response.status === 200) {
-                let stationList = response.data.Document.StationInfo;
-                let stationFeature = {
-                    "type" : "FeatureCollection",
-                    "features" : stationList
-                };
-                stationFeature.features.forEach(function (item) {
+                let stationList = response.data;
+                console.log(stationList.features)
+                stationList.features.forEach(function (item) {
                     let itemTypeList = item.properties.stationType.split(",");
 
                     //取第一个属性赋样式
@@ -235,7 +232,7 @@ function getStationData(params) {
                             item.properties.iconType = "normal";
                     }
                 });
-                addMapLayer(stationFeature, 'stationLayer', 'stationSource');
+                addMapLayer(stationList, 'stationLayer', 'stationSource');
             }
         })
         .catch(function (error) {
