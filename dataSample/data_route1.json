@@ -824,7 +824,7 @@
           "type": "1",
           "routeName": "1(苏州站北广场公交枢纽-公交一路新村)",
           "stationNum": 23,
-          "routeLength": null,
+          "routeLength": 14.1,
           "repetition": 12.00,
           "repetitonList": [
             [
