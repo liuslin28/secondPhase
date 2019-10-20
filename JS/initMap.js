@@ -244,15 +244,15 @@ function getStationData(params) {
 function orginalDataGet(data) {
     let orData = data;
     let originalResult = calculateData(data);
-    originalHtml(originalResult);
     addMapLayer(orData, 'originalRouteLayer', 'originalSource');
+    originalHtml(originalResult);
 }
 
 function modifiedDataGet(data) {
     let orData = data;
     let modifiedResult = calculateData(data);
-    modifiedHtml(modifiedResult);
     addMapLayer(orData, 'modifiedRouteLayer', 'modifiedSource');
+    modifiedHtml(modifiedResult);
 }
 
 // -----------------------------------
@@ -323,6 +323,19 @@ function addMapLayer(data, LayerId, SourceId) {
         setMapLayer(SourceId);
     }
 
+    // 按照 线路，重复路段，通过公交专用道长度，站点 顺序展示
+    if(map.getLayer('originalFreLayer')) {
+        map.moveLayer('originalFreLayer');
+    }
+    if(map.getLayer('modifiedFreLayer')) {
+        map.moveLayer('modifiedFreLayer');
+    }
+    if(map.getLayer('originalLaneLayer')) {
+        map.moveLayer('originalLaneLayer');
+    }
+    if(map.getLayer('modifiedLaneLayer')) {
+        map.moveLayer('modifiedLaneLayer');
+    }
     // 将站点图层置顶
     if (map.getLayer('stationLayer')) {
         map.moveLayer('stationLayer');

@@ -114,7 +114,7 @@ let map_layer_config = [
         "layer_paint": {
             "line-color": "#25A982",
             "line-opacity": 1,
-            "line-width": 2
+            "line-width": 3
         },
         "layer_filter": null
     },
@@ -131,7 +131,7 @@ let map_layer_config = [
         "layer_paint": {
             "line-color": "#E2AF32",
             "line-opacity": 1,
-            "line-width": 2
+            "line-width": 3
         },
         "layer_filter": null
     },
@@ -148,7 +148,7 @@ let map_layer_config = [
         "layer_paint": {
             "line-color": "#d95159",
             "line-opacity": 1,
-            "line-width": 2
+            "line-width": 3
         },
         "layer_filter": null
     },
@@ -165,7 +165,7 @@ let map_layer_config = [
         "layer_paint": {
             "line-color": "#F2E5E7",
             "line-opacity": 1,
-            "line-width": 2
+            "line-width": 3
         },
         "layer_filter": null
     },
