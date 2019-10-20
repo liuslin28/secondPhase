@@ -204,7 +204,7 @@ function getStationData(params) {
         .then(function (response) {
             if (response.status === 200) {
                 let stationList = response.data;
-                console.log(stationList.features)
+                // console.log(stationList.features)
                 stationList.features.forEach(function (item) {
                     let itemTypeList = item.properties.stationType.split(",");
 
@@ -492,7 +492,8 @@ function calculateData(data) {
     routeRepetition = routeData[0].geometry.properties.repetition;
 
     // 平均站间距计算
-    stationDistance = (routeLength / stationCount).toFixed(2);
+    // console.log(stationCount);
+    stationDistance = (routeLength / (stationCount-1)).toFixed(2);
 
     // 公交站300米覆盖率
     // calPointWithin(routeStationList, routeDataType);
@@ -536,6 +537,7 @@ function calDistoChart(originalData, modifiedData) {
         "originalDis": originalDisList,
         "modifiedDis": modifiedDisList
     };
+    console.log(disChartData);
     initDisChart(disChartData);
 }
 
@@ -549,7 +551,7 @@ function calDis(data) {
     let routeStationList = routeData[0].geometry.properties.stationList; //公交站点坐标
 
     // 站间距计算
-    for (let i = 0; i < routeStationList.length - 2; i++) {
+    for (let i = 0; i < routeStationList.length - 1; i++) {
         let startCoordinate = routeStationList[i];
         let endCoordinate = routeStationList[i + 1];
         let start = turf.point(startCoordinate);
@@ -587,7 +589,7 @@ function calPointWithin(pointData, type) {
     let searchWithin;
     let connectRatio;
 
-    axios.get('./dataSample/gusu.json')
+    axios.get('./dataSample/EnterOutNu_Buffer_unP.json')
         .then(function (response) {
             if (response.status === 200) {
                 response.data.features.forEach(function (value) {
@@ -635,7 +637,7 @@ function calPointWithin2(pointData, type) {
     let connectRatio;
     let count = 0;
 
-    axios.get('./dataSample/gusu.json')
+    axios.get('./dataSample/EnterOutNu_Buffer_unP.json')
         .then(function (response) {
             if (response.status === 200) {
                 response.data.features.forEach(function (value) {
@@ -987,13 +989,13 @@ function calDoubleBuffer(data1, data2) {
         function completeCallback(jobInfo) {
             // 未覆盖区域
             gptask.getResultData(jobInfo.jobId, "output_min_Select").then(function (value) {
-                console.log(value);
+                // console.log(value);
                 let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(value.value);
                 addMapLayer(outputData, 'doubleMinLayer', 'doubleMinSource');
             });
             // 覆盖区域
             gptask.getResultData(jobInfo.jobId, "output_add_Select").then(function (value) {
-                console.log(value);
+                // console.log(value);
                 let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(value.value);
                 addMapLayer(outputData, 'doubleAddLayer', 'doubleAddSource');
             });
