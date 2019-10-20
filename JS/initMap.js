@@ -496,8 +496,7 @@ function calculateData(data) {
     stationDistance = (routeLength / (stationCount-1)).toFixed(2);
 
     // 公交站300米覆盖率
-    // calPointWithin(routeStationList, routeDataType);
-    calPointWithin2(routeStationList, routeDataType);
+    calPointWithin(routeStationList, routeDataType);
 
     // 公交专用道 和 路段重复系数
     if (routeDataType === '1') {
@@ -537,7 +536,7 @@ function calDistoChart(originalData, modifiedData) {
         "originalDis": originalDisList,
         "modifiedDis": modifiedDisList
     };
-    console.log(disChartData);
+    // console.log(disChartData);
     initDisChart(disChartData);
 }
 
@@ -583,56 +582,6 @@ function calFrequency(route, repetitonList) {
 
 //轨道交通接驳能力计算
 function calPointWithin(pointData, type) {
-    let ptsWithin = turf.points(pointData);
-    let insideData = ptsWithin;
-    let insideDataList = [];
-    let searchWithin;
-    let connectRatio;
-
-    axios.get('./dataSample/EnterOutNu_Buffer_unP.json')
-        .then(function (response) {
-            if (response.status === 200) {
-                response.data.features.forEach(function (value) {
-                    if (value.geometry.type === "MultiPolygon") {
-                        searchWithin = turf.multiPolygon(value.geometry.coordinates);
-                        insideData = turf.pointsWithinPolygon(ptsWithin, searchWithin);
-                        insideData.features.forEach(function (tempValue) {
-                            insideDataList.push(tempValue.geometry.coordinates);
-
-                        })
-                        // console.log(insideData);
-                    } else {
-                        searchWithin = turf.polygon(value.geometry.coordinates);
-                        insideData = turf.pointsWithinPolygon(ptsWithin, searchWithin);
-                        insideData.features.forEach(function (tempValue) {
-                            insideDataList.push(tempValue.geometry.coordinates);
-
-                        })
-                        // console.log(insideData);
-                    }
-                });
-                let allPoint = turf.multiPoint(insideDataList);
-                let insidePointList = turf.cleanCoords(allPoint).geometry.coordinates;  //无重复的站点数据
-                // console.log(insidePointList);
-
-                connectRatio = ((insidePointList.length / pointData.length) * 100).toFixed(2);
-                // console.log(connectRatio);
-
-                if (type === '1') {
-                    $('#original-connect').empty().text(connectRatio + "%");
-                } else {
-                    $('#modify-connect').empty().text(connectRatio + "%");
-
-                }
-            }
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-}
-
-//轨道交通接驳能力计算2
-function calPointWithin2(pointData, type) {
     let searchWithin;
     let connectRatio;
     let count = 0;
@@ -1005,56 +954,56 @@ function calDoubleBuffer(data1, data2) {
 }
 
 // 计算两条线路的缓冲区  样例
-// function calDoubleBufferSample() {
-//     require(["esri/SpatialReference", "esri/graphic", "esri/tasks/Geoprocessor"], function (SpatialReference, Graphic, Geoprocessor) {
-//
-//         let routesFeature1;
-//         let routesFeature2;
-//
-//         let Dis = {
-//             "distance": 500,
-//             "units": "esriMeters"
-//         };
-//
-//         axios.get('./dataSample/routeSample1.json')
-//             .then(function (response) {
-//                 routesFeature1 = response.data;
-//                 axios.get('./dataSample/routeSample2.json')
-//                     .then(function (response2) {
-//                         routesFeature2 = response2.data;
-//                         let routesFeatureSet1 = new esri.tasks.FeatureSet(routesFeature1);
-//                         routesFeatureSet1.spatialReference = new SpatialReference({wkid: 4326});
-//                         let routesFeatureSet2 = new esri.tasks.FeatureSet(routesFeature2);
-//                         routesFeatureSet2.spatialReference = new SpatialReference({wkid: 4326});
-//                         let gptask = new Geoprocessor("https://192.168.207.165:6443/arcgis/rest/services/GPTool/lineDoubleBuffer/GPServer/lineDoubleBuffer");
-//                         let gpParams = {
-//                             "Dis": Dis,
-//                             "routesOld": routesFeatureSet1,
-//                             "routesNew": routesFeatureSet2
-//                         };
-//                         gptask.submitJob(gpParams, completeCallback, statusCallback);
-//
-//                         // 结果图加载
-//                         function completeCallback(jobInfo) {
-//                             // 未覆盖区域
-//                             gptask.getResultData(jobInfo.jobId, "output_min_Select").then(function (value) {
-//                                 console.log(value);
-//                                 let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(value.value);
-//                                 addMapLayer(outputData, 'doubleMinLayer', 'doubleMinSource');
-//                             });
-//                             // 覆盖区域
-//                             gptask.getResultData(jobInfo.jobId, "output_add_Select").then(function (value) {
-//                                 console.log(value);
-//                                 let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(value.value);
-//                                 addMapLayer(outputData, 'doubleAddLayer', 'doubleAddSource');
-//                             });
-//
-//                         }
-//                     })
-//             });
-//
-//     });
-// }
+function calDoubleBufferSample() {
+    require(["esri/SpatialReference", "esri/graphic", "esri/tasks/Geoprocessor"], function (SpatialReference, Graphic, Geoprocessor) {
+
+        let routesFeature1;
+        let routesFeature2;
+
+        let Dis = {
+            "distance": 500,
+            "units": "esriMeters"
+        };
+
+        axios.get('./dataSample/routeSample1.json')
+            .then(function (response) {
+                routesFeature1 = response.data;
+                axios.get('./dataSample/routeSample2.json')
+                    .then(function (response2) {
+                        routesFeature2 = response2.data;
+                        let routesFeatureSet1 = new esri.tasks.FeatureSet(routesFeature1);
+                        routesFeatureSet1.spatialReference = new SpatialReference({wkid: 4326});
+                        let routesFeatureSet2 = new esri.tasks.FeatureSet(routesFeature2);
+                        routesFeatureSet2.spatialReference = new SpatialReference({wkid: 4326});
+                        let gptask = new Geoprocessor("https://192.168.207.165:6443/arcgis/rest/services/GPTool/lineDoubleBuffer/GPServer/lineDoubleBuffer");
+                        let gpParams = {
+                            "Dis": Dis,
+                            "routesOld": routesFeatureSet1,
+                            "routesNew": routesFeatureSet2
+                        };
+                        gptask.submitJob(gpParams, completeCallback, statusCallback);
+
+                        // 结果图加载
+                        function completeCallback(jobInfo) {
+                            // 未覆盖区域
+                            gptask.getResultData(jobInfo.jobId, "output_min_Select").then(function (value) {
+                                // console.log(value);
+                                let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(value.value);
+                                addMapLayer(outputData, 'doubleMinLayer', 'doubleMinSource');
+                            });
+                            // 覆盖区域
+                            gptask.getResultData(jobInfo.jobId, "output_add_Select").then(function (value) {
+                                // console.log(value);
+                                let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(value.value);
+                                addMapLayer(outputData, 'doubleAddLayer', 'doubleAddSource');
+                            });
+
+                        }
+                    })
+            });
+
+    });
+}
 
 
 // 运行状态显示
