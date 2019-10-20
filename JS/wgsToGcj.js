@@ -142,8 +142,6 @@ function pointWgsGcj(geoData) {
     const latWGS = Number(geoData[1]);  //纬度
     let gcjCoordinate = transformFromWGSToGCJ(lngWGS, latWGS);
     newData = [gcjCoordinate.lng, gcjCoordinate.lat];
-    // geoData[0] = gcjCoordinate.lng;
-    // geoData[1] = gcjCoordinate.lat;
     return newData;
 }
 
@@ -154,8 +152,6 @@ function multipointWgsGcj(geoData) {
         const latWGS = Number(value[1]);  //纬度
         let gcjCoordinate = transformFromWGSToGCJ(lngWGS, latWGS);
         newData.push([gcjCoordinate.lng, gcjCoordinate.lat]);
-        // value[0] = gcjCoordinate.lng;
-        // value[1] = gcjCoordinate.lat;
     });
     return newData;
 }
@@ -167,8 +163,6 @@ function lineWgsGcj(geoData) {
         const latWGS = Number(value[1]);  //纬度
         let gcjCoordinate = transformFromWGSToGCJ(lngWGS, latWGS);
         newData.push([gcjCoordinate.lng, gcjCoordinate.lat]);
-        // value[0] = gcjCoordinate.lng;
-        // value[1] = gcjCoordinate.lat;
     });
     return newData;
 }
@@ -182,8 +176,6 @@ function multilineWgsGcj(geoData) {
             const latWGS = Number(value[1]);  //纬度
             let gcjCoordinate = transformFromWGSToGCJ(lngWGS, latWGS);
             tempNewData.push([gcjCoordinate.lng, gcjCoordinate.lat]);
-            // value[0] = gcjCoordinate.lng;
-            // value[1] = gcjCoordinate.lat;
         });
         newData.push(tempNewData)
     });
@@ -199,8 +191,6 @@ function polyWgsGcj(geoData) {
             const latWGS = Number(value[1]);  //纬度
             let gcjCoordinate = transformFromWGSToGCJ(lngWGS, latWGS);
             tempNewData.push([gcjCoordinate.lng, gcjCoordinate.lat]);
-            // value[0] = gcjCoordinate.lng;
-            // value[1] = gcjCoordinate.lat;
         });
         newData.push(tempNewData)
     });
@@ -218,8 +208,6 @@ function multipolyWgsGcj(geoData) {
                 const latWGS = Number(value[1]);  //纬度
                 let gcjCoordinate = transformFromWGSToGCJ(lngWGS, latWGS);
                 tempNewData2.push([gcjCoordinate.lng, gcjCoordinate.lat]);
-                // value[0] = gcjCoordinate.lng;
-                // value[1] = gcjCoordinate.lat;
             });
             tempNewData1.push(tempNewData2);
         });
