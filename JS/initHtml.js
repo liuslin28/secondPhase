@@ -141,6 +141,6 @@ function selectRoute() {
             routeId2: modifiedRouteId
         };
         console.log(params);
-        // getData(params);
+        getData(params);
     }
 }
