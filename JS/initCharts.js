@@ -6,33 +6,38 @@ function initDisChart(data) {
     let yAxisData;
     let seriesData = [];
     let maxLen = Math.max(originalLen, modifiedLen);
-    if(originalLen>0 && modifiedLen>0) {
+    if (originalLen > 0 && modifiedLen > 0) {
         yAxisData = ['调整前', '调整后'];
-        for(let i=0; i<maxLen; i++) {
-            let originalItem = data.originalDis[i]?data.originalDis[i]:null;
-            let modifiedItem = data.modifiedDis[i]?data.modifiedDis[i]:null;
+        for (let i = 0; i < maxLen; i++) {
+            let originalItem = data.originalDis[i] ? data.originalDis[i] : null;
+            let modifiedItem = data.modifiedDis[i] ? data.modifiedDis[i] : null;
             let seriesItem = {
-                name: i,
+                name: i+1,
                 type: 'bar',
                 stack: '总量',
                 label: {
                     normal: {
                         show: true,
-                        position: 'insideRight'
+                        position: 'insideRight',
+                        fontSize: 8
                     }
                 },
+                tooltip: {
+                    formatter: '第{a}站: {c}km'
+                },
+                barMaxWidth: 25,
                 data: [originalItem, modifiedItem]
             };
             seriesData.push(seriesItem);
         }
     } else {
-        if(originalLen === 0) {
+        if (originalLen === 0) {
             yAxisData = ['调整后'];
             let i = 0;
             data.modifiedDis.forEach(function (item) {
                 i += 1;
                 let seriesItem = {
-                    name: i,
+                    name: i+1,
                     type: 'bar',
                     stack: '总量',
                     label: {
@@ -41,6 +46,10 @@ function initDisChart(data) {
                             position: 'insideRight'
                         }
                     },
+                    tooltip: {
+                        formatter: '第{a}站: {c}km'
+                    },
+                    barMaxWidth: 25,
                     data: [item]
                 };
                 seriesData.push(seriesItem);
@@ -51,7 +60,7 @@ function initDisChart(data) {
             data.originalDis.forEach(function (item) {
                 i += 1;
                 let seriesItem = {
-                    name: i,
+                    name: i+1,
                     type: 'bar',
                     stack: '总量',
                     label: {
@@ -60,6 +69,10 @@ function initDisChart(data) {
                             position: 'insideRight'
                         }
                     },
+                    tooltip: {
+                        formatter: '第{a}站: {c}km'
+                    },
+                    barMaxWidth:25,
                     data: [item]
                 };
                 seriesData.push(seriesItem);
@@ -69,22 +82,31 @@ function initDisChart(data) {
 
     // 指定图表的配置项和数据
     let option = {
-
         grid: {
             left: '5%',
             right: '3%',
             bottom: '20%',
-            top: '20%',
-            height: '60%',
+            top: '20%'
+        },
+        tooltip: {
+            show: true,
+            trigger: 'item'
         },
         xAxis: {
-            type: 'value'
-
+            type: 'value',
+            max: function(value) {
+                return value.max;
+            },
+            axisLabel: {
+                show: true,
+                textStyle: {
+                    color: '#dcdcdc'
+                }
+            }
         },
         yAxis: {
             type: 'category',
             data: yAxisData,
-            boundaryGap: ['40%', '40%'],
             // y轴的字体样式
             axisLabel: {
                 show: true,
@@ -99,6 +121,3 @@ function initDisChart(data) {
 // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(option);
 }
-
-
-
