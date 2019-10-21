@@ -133,53 +133,50 @@
         </div>
 
     </div>
+    <!--两条线路对比-->
     <div class="lineResultWrapper" style="display: none;">
-        <div class="card border-dark text-white">
-            <div class="card-header bg-dark">线路调整对比</div>
-            <div class="card-body bg-light">
-                <!--两条线路对比-->
-                <table class="table">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">指标名称</th>
-                        <th scope="col">调整前</th>
-                        <th scope="col">调整后</th>
-                    </tr>
-                    </thead>
-                    <tbody class="table-active">
-                    <tr>
-                        <th scope="row">线路长度</th>
-                        <td id="original-length">/</td>
-                        <td id="modify-length">/</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">非直线系数</th>
-                        <td id="original-nonlinear">/</td>
-                        <td id="modify-nonlinear">/</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">与其他线路的重复比例</th>
-                        <td id="original-repetition">/</td>
-                        <td id="modify-repetition">/</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">平均站间距</th>
-                        <td id="original-dis">/</td>
-                        <td id="modify-dis">/</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">途径专用道长度</th>
-                        <td id="original-lane">/</td>
-                        <td id="modify-lane">/</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">轨道交通接驳能力</th>
-                        <td id="original-connect">/</td>
-                        <td id="modify-connect">/</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="card-body bg-light">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">指标名称</th>
+                    <th scope="col">调整前</th>
+                    <th scope="col">调整后</th>
+                </tr>
+                </thead>
+                <tbody class="table-active">
+                <tr>
+                    <th scope="row">线路长度</th>
+                    <td id="original-length">/</td>
+                    <td id="modify-length">/</td>
+                </tr>
+                <tr>
+                    <th scope="row">非直线系数</th>
+                    <td id="original-nonlinear">/</td>
+                    <td id="modify-nonlinear">/</td>
+                </tr>
+                <tr>
+                    <th scope="row">与其他线路的重复比例</th>
+                    <td id="original-repetition">/</td>
+                    <td id="modify-repetition">/</td>
+                </tr>
+                <tr>
+                    <th scope="row">平均站间距</th>
+                    <td id="original-dis">/</td>
+                    <td id="modify-dis">/</td>
+                </tr>
+                <tr>
+                    <th scope="row">途径专用道长度</th>
+                    <td id="original-lane">/</td>
+                    <td id="modify-lane">/</td>
+                </tr>
+                <tr>
+                    <th scope="row">轨道交通接驳能力</th>
+                    <td id="original-connect">/</td>
+                    <td id="modify-connect">/</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <div class="chartWrapper" id="chartWrapper"></div>
@@ -250,26 +247,27 @@
     </div>
 </div>
 
-    <script src="//minedata.cn/minemapapi/v2.0.0/minemap.js"></script>
-    <script src="JS/library/axios.js"></script>
-    <script src="JS/library/popper.js"></script>
+<script src="//minedata.cn/minemapapi/v2.0.0/minemap.js"></script>
+<script src="JS/library/axios.js"></script>
+<script src="JS/library/popper.js"></script>
 
-    <script src="JS/library/turf.min.js"></script>
-    <script src="JS/library/wgs2mars.min.js"></script>
-    <script src="JS/wgsToGcj.js"></script>
-    <script src="JS/library/arcgis-to-geojson-utils.js"></script>
-    <script src="JS/library/jquery.autocomplete.js"></script>
-    <script src="JS/library/echarts.min.js"></script>
+<script src="JS/library/turf.min.js"></script>
+<script src="JS/library/wgs2mars.min.js"></script>
+<script src="JS/wgsToGcj.js"></script>
+<script src="JS/library/arcgis-to-geojson-utils.js"></script>
+<script src="JS/library/jquery.autocomplete.js"></script>
+<script src="JS/library/echarts.min.js"></script>
 
-    <script type="text/javascript" src="JS/config.js"></script>
-    <script type="text/javascript" src="JS/mapConfig.js"></script>
-    <script type="text/javascript" src="JS/initMap.js"></script>
-    <script type="text/javascript" src="JS/initHtml.js"></script>
-    <script type="text/javascript" src="JS/initCharts.js"></script>
-    <script src="JS/library/bootstrap.js"></script>
-    <!--Esri-->
-    <link rel="stylesheet" href="http://localhost/arcgis_js_api/library/3.28/3.28/esri/css/esri.css">
-    <script src="http://localhost/arcgis_js_api/library/3.28/3.28/init.js"></script>
-
+<script type="text/javascript" src="JS/config.js"></script>
+<script type="text/javascript" src="JS/mapConfig.js"></script>
+<script type="text/javascript" src="JS/initMap.js"></script>
+<script type="text/javascript" src="JS/initHtml.js"></script>
+<script type="text/javascript" src="JS/initCharts.js"></script>
+<script src="JS/library/bootstrap.js"></script>
+<!--Esri-->
+<link rel="stylesheet" href="http://localhost/arcgis_js_api/library/3.28/3.28/esri/css/esri.css">
+<script src="http://localhost/arcgis_js_api/library/3.28/3.28/init.js"></script>
+<!--<link rel="stylesheet" href="https://js.arcgis.com/3.29/esri/css/esri.css">-->
+<!--<script src="https://js.arcgis.com/3.29/"></script>-->
 </body>
 </html>

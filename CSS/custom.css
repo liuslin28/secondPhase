@@ -22,7 +22,7 @@ label {
 }
 
 .card-body {
-    padding: 0.5rem;
+    padding: 0;
 }
 
 .table {
@@ -163,7 +163,7 @@ label {
 
 /*------------图层切换页面------------------*/
 .layerWrapper {
-    width: 11%;
+    width: 280px;
     position: absolute;
     top: 10%;
     left: 1%;
@@ -197,7 +197,7 @@ label {
     bottom: 3%;
     right: 1%;
     height: 120px;
-    width: 70%;
+    width: 80%;
     background-color: rgba(25, 38, 52, 0.8);
     display: none;
 }
@@ -218,7 +218,7 @@ label {
 
 /*-------------图例页面-----------------*/
 .legendWrapper {
-    width: 320px;
+    width: 280px;
     left: 1%;
     bottom: 3%;
     position: absolute;
@@ -229,7 +229,7 @@ label {
 }
 
 .legendWrapper-boundary {
-    margin: 16px;
+    margin: 16px 4px;
 }
 
 .legendWrapper-title {
@@ -239,6 +239,7 @@ label {
     line-height: 30px;
     text-align: center;
     font-weight: 600;
+    margin-bottom: 16px;
 }
 
 .legendWrapper-list {
@@ -264,13 +265,13 @@ label {
     width: 16px;
     height: 16px;
     line-height: 16px;
-    margin: auto 50px auto 30px;
+    margin: auto 58px auto 16px;
 }
 
 .legend-line {
     width: 60px;
     height: 15px;
-    margin: auto 32px 16px;
+    margin: auto 40px auto 16px;
     display: inline-block;
 }
 
@@ -300,7 +301,7 @@ label {
 
 .legend-polygon {
     vertical-align: middle;
-    margin: auto 48px auto 52px;
+    margin: auto 54px auto 36px;
     width: 25px;
     height: 20px;
     display: inline-block;

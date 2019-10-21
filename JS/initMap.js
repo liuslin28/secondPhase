@@ -634,7 +634,7 @@ function calPointWithin(pointData, type) {
 // 调整前数据赋值
 function originalHtml(data) {
     if (data.nonlinear === "None") {
-        $('#original-nonlinear').empty().text("/");
+        $('#original-nonlinear').empty().text("/(环线)");
     } else {
         $('#original-nonlinear').empty().text(data.nonlinear);
     }
@@ -674,7 +674,7 @@ function originalLoadingHtml() {
 function modifiedHtml(data) {
     $('#modify-length').empty().text(data.routeLength + "km");
     if (data.nonlinear === "None") {
-        $('#modify-nonlinear').empty().text("/");
+        $('#modify-nonlinear').empty().text("/(环线)");
     } else {
         $('#modify-nonlinear').empty().text(data.nonlinear);
     }
