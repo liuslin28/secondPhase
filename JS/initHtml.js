@@ -44,9 +44,8 @@ function initSelect() {
     axios.get(url_get_original_list)
         .then(function (response) {
             if (response.status === 200) {
-                originalData = response.data.Document.Data;
-                // console.log(response.data.Document.Data);
-                response.data.Document.Data.map(item => originalRouteList.push({
+                originalData = response.data.data;
+                response.data.data.map(item => originalRouteList.push({
                     data: item.routeId,
                     value: `${item.routeName}（${item.routeDirection}）`
                 }));
@@ -57,8 +56,8 @@ function initSelect() {
     axios.get(url_get_modified_list)
         .then(function (response) {
             if (response.status === 200) {
-                modifiedData = response.data.Document.Data;
-                response.data.Document.Data.map(item => modifiedRouteList.push({
+                modifiedData = response.data.data;
+                response.data.data.map(item => modifiedRouteList.push({
                     data: item.routeId,
                     value: `${item.routeName}（${item.routeDirection}）`
                 }));
@@ -77,14 +76,14 @@ function getOriginalSearch() {
         autoSelectFirst: true,
         onHint: function () {
             let originalInputValue = $('#originalRoute').val();
-            originalData.forEach(function (item) {
-                if(item.routeName === originalInputValue) {
-                    originalRouteId = item.routeId;
-                    // console.log(item.routeName );
+            for(let i=0; i<originalData.length; i++) {
+                if (originalData[i].routeName === originalInputValue) {
+                    originalRouteId = originalData[i].routeId;
+                    break;
                 } else {
-                    originalRouteId = null;
+                    originalRouteId = null
                 }
-            });
+            }
         },
         onSelect: function (suggestion) {
             originalRouteId = suggestion.data;
@@ -103,14 +102,14 @@ function getModifiedSearch() {
         autoSelectFirst: true,
         onHint: function () {
             let modifiedInputValue = $('#modifiedRoute').val();
-            modifiedData.forEach(function (item) {
-                if(item.routeName === modifiedInputValue) {
-                    modifiedRouteId = item.routeId;
-                    // console.log(item.routeName );
+            for(let i=0; i<modifiedData.length; i++) {
+                if (modifiedData[i].routeName === modifiedInputValue) {
+                    modifiedRouteId = modifiedData[i].routeId;
+                    break;
                 } else {
                     modifiedRouteId = null;
                 }
-            });
+            }
         },
         onSelect: function (suggestion) {
             modifiedRouteId = suggestion.data;
