@@ -123,13 +123,19 @@ function getData(params) {
                                     "type": "FeatureCollection",
                                     "features": []
                                 };
-                                response.data.features.forEach(function (value) {
-                                    oldData.features.push(value);
-                                    newData.features.push(value);
-
+                                response.data.features.forEach(function (item) {
+                                    oldData.features.push(item);
+                                    newData.features.push(item);
                                 });
-                                oldData.features.push(orginalData.features);
-                                newData.features.push(modifiedData.features);
+                                orginalData.features.forEach(function (item) {
+                                    oldData.features.push(item)
+                                });
+                                modifiedData.features.forEach(function (item) {
+                                    newData.features.push(item)
+                                });
+                                // oldData.features.push(orginalData.features);
+                                // newData.features.push(modifiedData.features);
+                                // console.log(oldData)
                                 calDoubleBuffer(oldData, newData);
                             }
                         });
@@ -148,10 +154,12 @@ function getData(params) {
                                         "type": "FeatureCollection",
                                         "features": []
                                     };
-                                    response.data.features.forEach(function (value) {
-                                        oldData.features.push(value);
+                                    response.data.features.forEach(function (item) {
+                                        oldData.features.push(item);
                                     });
-                                    oldData.features.push(orginalData.features);
+                                    orginalData.features.forEach(function (item) {
+                                        oldData.features.push(item)
+                                    });
                                     calDoubleBuffer(oldData, response.data);
                                 }
                             });
@@ -168,11 +176,13 @@ function getData(params) {
                                         "type": "FeatureCollection",
                                         "features": []
                                     };
-                                    response.data.features.forEach(function (value) {
-                                        newData.features.push(value);
+                                    response.data.features.forEach(function (item) {
+                                        newData.features.push(item);
 
                                     });
-                                    newData.features.push(modifiedData.features);
+                                    modifiedData.features.forEach(function (item) {
+                                        newData.features.push(item)
+                                    });
                                     calDoubleBuffer(response.data, newData);
                                 }
                             });
@@ -205,30 +215,31 @@ function getStationData(params) {
                 let stationList = response.data;
                 // console.log(stationList.features)
                 stationList.features.forEach(function (item) {
-                    let itemTypeList = item.properties.stationType.split(",");
+                    // console.log(item.geometry);
+                    let itemTypeList = item.geometry.properties.stationType.split(",");
 
                     //取第一个属性赋样式
                     switch (itemTypeList[0]) {
                         case "normal":
-                            item.properties.iconType = "normal";
+                            item.geometry.properties.iconType = "normal";
                             break;
                         case "addOD":
-                            item.properties.iconType = "add";
+                            item.geometry.properties.iconType = "add";
                             break;
                         case "removeOD":
-                            item.properties.iconType = "remove";
+                            item.geometry.properties.iconType = "remove";
                             break;
                         case "addConnect":
-                            item.properties.iconType = "add";
+                            item.geometry.properties.iconType = "add";
                             break;
                         case "removeConnect":
-                            item.properties.iconType = "remove";
+                            item.geometry.properties.iconType = "remove";
                             break;
                         case "pass":
-                            item.properties.iconType = "warning";
+                            item.geometry.properties.iconType = "warning";
                             break;
                         default:
-                            item.properties.iconType = "normal";
+                            item.geometry.properties.iconType = "normal";
                     }
                 });
                 addMapLayer(stationList, 'stationLayer', 'stationSource');
@@ -459,9 +470,9 @@ function setInfoHtml(data) {
     });
 
     if (dataDetail) {
-        stationInfoHtml += "<span class='popup-station-header'>" + data.StationName + "</span>" + "<span class='popup-station-info'>" + dataInfo + dataDetail + "</span>";
+        stationInfoHtml += "<span class='popup-station-header'>" + data.stationName + "</span>" + "<span class='popup-station-info'>" + dataInfo + dataDetail + "</span>";
     } else {
-        stationInfoHtml += "<span class='popup-station-header'>" + data.StationName + "</span>" + "<span class='popup-station-info'>" + dataInfo + "</span>";
+        stationInfoHtml += "<span class='popup-station-header'>" + data.stationName + "</span>" + "<span class='popup-station-info'>" + dataInfo + "</span>";
     }
 
     return stationInfoHtml;
@@ -499,7 +510,7 @@ function calculateData(data) {
         nonlinear = (routeLength / terminalDistance).toFixed(2);
     }
 
-    routeRepetition = routeData[0].geometry.properties.repetition;
+    routeRepetition = (routeData[0].geometry.properties.repetition * 100).toFixed(2);
 
     // 平均站间距计算
     // console.log(stationCount);
@@ -876,7 +887,6 @@ function calDoubleBuffer(data1, data2) {
         let routesFeature1 = {
             "displayFieldName": "",
             "fieldAliases": {
-                "FID": "FID",
                 "routeId": "routeId"
             },
             "geometryType": "esriGeometryPolyline",
@@ -885,11 +895,6 @@ function calDoubleBuffer(data1, data2) {
                 "latestWkid": 4326
             },
             "fields": [
-                {
-                    "name": "FID",
-                    "type": "esriFieldTypeOID",
-                    "alias": "FID"
-                },
                 {
                     "name": "routeId",
                     "type": "esriFieldTypeString",
@@ -903,7 +908,6 @@ function calDoubleBuffer(data1, data2) {
         let routesFeature2 = {
             "displayFieldName": "",
             "fieldAliases": {
-                "FID": "FID",
                 "routeId": "routeId"
             },
             "geometryType": "esriGeometryPolyline",
@@ -912,11 +916,6 @@ function calDoubleBuffer(data1, data2) {
                 "latestWkid": 4326
             },
             "fields": [
-                {
-                    "name": "FID",
-                    "type": "esriFieldTypeOID",
-                    "alias": "FID"
-                },
                 {
                     "name": "routeId",
                     "type": "esriFieldTypeString",
@@ -941,6 +940,7 @@ function calDoubleBuffer(data1, data2) {
             "routesOld": routesFeatureSet1,
             "routesNew": routesFeatureSet2
         };
+        console.log(gpParams);
         gptask.submitJob(gpParams, completeCallback, statusCallback);
         gpList.push(gptask);
 
