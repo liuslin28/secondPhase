@@ -191,9 +191,6 @@ function getData(params) {
                     //都没有数据
                 }
 
-                // 样例
-                // calDoubleBufferSample();
-
                 $('.legendWrapper').show();
                 $('.layerWrapper').show();
                 $('.lineResultWrapper').show();
@@ -962,59 +959,6 @@ function calDoubleBuffer(data1, data2) {
         }
     });
 }
-
-// 计算两条线路的缓冲区  样例
-function calDoubleBufferSample() {
-    require(["esri/SpatialReference", "esri/graphic", "esri/tasks/Geoprocessor"], function (SpatialReference, Graphic, Geoprocessor) {
-
-        let routesFeature1;
-        let routesFeature2;
-
-        let Dis = {
-            "distance": 500,
-            "units": "esriMeters"
-        };
-
-        axios.get('./dataSample/routeSample1.json')
-            .then(function (response) {
-                routesFeature1 = response.data;
-                axios.get('./dataSample/routeSample2.json')
-                    .then(function (response2) {
-                        routesFeature2 = response2.data;
-                        let routesFeatureSet1 = new esri.tasks.FeatureSet(routesFeature1);
-                        routesFeatureSet1.spatialReference = new SpatialReference({wkid: 4326});
-                        let routesFeatureSet2 = new esri.tasks.FeatureSet(routesFeature2);
-                        routesFeatureSet2.spatialReference = new SpatialReference({wkid: 4326});
-                        let gptask = new Geoprocessor("https://192.168.207.165:6443/arcgis/rest/services/GPTool/lineDoubleBuffer/GPServer/lineDoubleBuffer");
-                        let gpParams = {
-                            "Dis": Dis,
-                            "routesOld": routesFeatureSet1,
-                            "routesNew": routesFeatureSet2
-                        };
-                        gptask.submitJob(gpParams, completeCallback, statusCallback);
-
-                        // 结果图加载
-                        function completeCallback(jobInfo) {
-                            // 未覆盖区域
-                            gptask.getResultData(jobInfo.jobId, "output_min_Select").then(function (value) {
-                                // console.log(value);
-                                let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(value.value);
-                                addMapLayer(outputData, 'doubleMinLayer', 'doubleMinSource');
-                            });
-                            // 覆盖区域
-                            gptask.getResultData(jobInfo.jobId, "output_add_Select").then(function (value) {
-                                // console.log(value);
-                                let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(value.value);
-                                addMapLayer(outputData, 'doubleAddLayer', 'doubleAddSource');
-                            });
-
-                        }
-                    })
-            });
-
-    });
-}
-
 
 // 运行状态显示
 function statusCallback(jobInfo) {
