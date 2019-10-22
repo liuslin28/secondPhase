@@ -109,9 +109,6 @@ function getData(params) {
                     }
                 });
 
-
-                getStationData(params);
-
                 // console.log(orginalData);
                 // console.log(modifiedData);
 
@@ -154,6 +151,7 @@ function getData(params) {
                 } else if (originalIs || modifiedIs) {
                     // 1个有数据
                     if (originalIs) {
+                        console.log(orginalData)
                         originalLoadingHtml();
                         calDistoChart(orginalData, null);
                         orginalDataGet(orginalData);
@@ -207,6 +205,7 @@ function getData(params) {
                     return;
                     //都没有数据
                 }
+                getStationData(params);
 
                 $('.legendWrapper').show();
                 $('.layerWrapper').show();
@@ -510,7 +509,8 @@ function calculateData(data) {
     let repetitonList = routeData[0].geometry.properties.repetitonList; //数据类型
     let routeWaring = routeData[0].geometry.properties.routeWarning; //线路长度是否超限
 
-    if (!routeLength) {
+    console.log(routeLength);
+    if (routeLength != null) {
         routeLength = (turf.length(data, {units: 'kilometers'})).toFixed(2);
     }
 
@@ -655,6 +655,14 @@ function calPointWithin(pointData, type) {
 
 // 调整前数据赋值
 function originalHtml(data) {
+    if (data.routeWaring) {
+        $('#original-length').empty().text(data.routeLength + "km").css({
+            'color': 'red',
+            'cursor': 'pointer'
+        }).tooltip({title: '线路长度超阈值'});
+    } else {
+        $('#original-length').empty().text(data.routeLength + "km")
+    }
     if (data.nonlinear === "None") {
         $('#original-nonlinear').empty().text("/(环线)");
     } else {
@@ -662,14 +670,6 @@ function originalHtml(data) {
     }
     $('#original-repetition').empty().text(data.routeRepetition + "%");
     $('#original-dis').empty().text(data.stationDistance + "km");
-
-    if (data.routeWaring) {
-        $('#original-length').empty().text(data.routeLength + "km").css({
-            'color': 'red',
-            'cursor': 'pointer'
-        }).tooltip({title: '线路长度超阈值'});
-    }
-
 }
 
 // 调整前，无数据赋空值
@@ -694,7 +694,14 @@ function originalLoadingHtml() {
 
 // 调整后数据赋值
 function modifiedHtml(data) {
-    $('#modify-length').empty().text(data.routeLength + "km");
+    if (data.routeWaring) {
+        $('#modify-length').empty().text(data.routeLength + "km").css({
+            'color': 'red',
+            'cursor': 'pointer'
+        }).tooltip({title: '线路长度超阈值'});
+    } else {
+        $('#modify-length').empty().text(data.routeLength + "km")
+    }
     if (data.nonlinear === "None") {
         $('#modify-nonlinear').empty().text("/(环线)");
     } else {
