@@ -41,7 +41,7 @@ function setLayerSelect(layerId) {
 
 // 获取线路数据,初始化线路选择框
 function initSelect() {
-    axios.get('./dataSample/routeData.json')
+    axios.get(url_get_original_list)
         .then(function (response) {
             if (response.status === 200) {
                 originalData = response.data.Document.Data;
@@ -54,7 +54,7 @@ function initSelect() {
                 getOriginalSearch();
             }
         });
-    axios.get('./dataSample/routeData.json')
+    axios.get(url_get_modified_list)
         .then(function (response) {
             if (response.status === 200) {
                 modifiedData = response.data.Document.Data;
@@ -119,9 +119,9 @@ function getModifiedSearch() {
 // 获得选择线路数据,进行计算
 function selectRoute() {
     let originalSelect = $('#originalRoute').val();
-    console.log(originalSelect);
+    // console.log(originalSelect);
     let modifiedSelect = $('#modifiedRoute').val();
-    console.log(modifiedSelect);
+    // console.log(modifiedSelect);
 
     if (originalSelect === "") {
         originalRouteId = null;

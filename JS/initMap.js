@@ -37,7 +37,6 @@ $(document).ready(function () {
 
     map.on("load", function () {
         let t = setInterval(function () {
-            //if (map && 其它业务判断) {
             if (map) {
                 if (map.isStyleLoaded()) {
                     //加载成功后 loading 隐藏 , 加载其它数据
@@ -64,7 +63,7 @@ function getData(params) {
     let originalIs = false; //原始数据是否有值返回
     let modifiedIs = false; //修改后数据是否有值返回
     //
-    axios.get('./dataSample/data.json', {params: params})
+    axios.get(url_get_route, {params: params})
         .then(function (response) {
             originalIs = false;
             modifiedIs = false;
@@ -113,7 +112,7 @@ function getData(params) {
                     orginalDataGet(orginalData);
                     modifiedDataGet(modifiedData);
 
-                    axios.get('./dataSample/geoRoute1011.json')
+                    axios.get(url_get_all_routes)
                         .then(function (response) {
                             if (response.status === 200) {
                                 let oldData = {
@@ -142,7 +141,7 @@ function getData(params) {
                         calDistoChart(orginalData, null);
                         orginalDataGet(orginalData);
 
-                        axios.get('./dataSample/geoRoute1011.json')
+                        axios.get(url_get_all_routes)
                             .then(function (response) {
                                 if (response.status === 200) {
                                     let oldData = {
@@ -162,7 +161,7 @@ function getData(params) {
                         calDistoChart(null, modifiedData);
                         modifiedDataGet(modifiedData);
 
-                        axios.get('./dataSample/geoRoute1011.json')
+                        axios.get(url_get_all_routes)
                             .then(function (response) {
                                 if (response.status === 200) {
                                     let newData = {
@@ -200,7 +199,7 @@ function getData(params) {
 
 function getStationData(params) {
 
-    axios.get('./dataSample/warningPoint.json', {params: params})
+    axios.get(url_get_station, {params: params})
         .then(function (response) {
             if (response.status === 200) {
                 let stationList = response.data;
@@ -395,7 +394,6 @@ function setBoundry(data) {
 // 站点弹出框
 function infoPopup(e) {
     if (e) {
-
         let features = map.queryRenderedFeatures([[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]], {layers: ['stationLayer']});
         if (features.length === 0) {
             stationPopup.remove();
@@ -448,7 +446,6 @@ function setInfoHtml(data) {
             case "addConnect":
                 dataInfo += "接驳轨道站点。";
                 dataDetail = "接驳客流前5的线路：" + data.connectRoute;
-
                 break;
             case "removeConnect":
                 dataInfo += "接驳轨道站点。";
@@ -599,7 +596,7 @@ function calPointWithin(pointData, type) {
     let connectRatio;
     let count = 0;
 
-    axios.get('./dataSample/EnterOutNu_Buffer_unP.json')
+    axios.get(url_get_rail_station)
         .then(function (response) {
             if (response.status === 200) {
                 response.data.features.forEach(function (value) {
