@@ -87,20 +87,31 @@ function getData(params) {
                     $('#popupWrapper-return').show();
                     return;
                 }
-                getStationData(params);
 
-                response.data.features.forEach(function (value) {
-                    let dataType = value.geometry.properties.type;
+                response.data.features.forEach(function (item) {
+                    let dataType = item.geometry.properties.type;
                     if (dataType === '1' && originalIs === false) {
-                        orginalData.features.push(value);
-                        originalIs = true;
+                        if(item.geometry.coordinates) {
+                            orginalData.features.push(item);
+                            originalIs = true;
+                        } else {
+                        }
+
                     } else if (dataType === '2' && modifiedIs === false) {
-                        modifiedData.features.push(value);
-                        modifiedIs = true;
+                        if(item.geometry.coordinates) {
+                            modifiedData.features.push(item);
+                            modifiedIs = true;
+                        } else {
+
+                        }
+
                     } else {
-                        return;
                     }
                 });
+
+
+                getStationData(params);
+
                 // console.log(orginalData);
                 // console.log(modifiedData);
 
@@ -188,6 +199,12 @@ function getData(params) {
                             });
                     }
                 } else {
+                    $('.chartWrapper').hide();
+                    $('.lineResultWrapper').hide();
+                    $('.layerWrapper').hide();
+                    $('.legendWrapper').hide();
+                    $('#popupWrapper-return').show();
+                    return;
                     //都没有数据
                 }
 
