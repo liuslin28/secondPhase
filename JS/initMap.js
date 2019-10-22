@@ -221,38 +221,36 @@ function getData(params) {
 }
 
 function getStationData(params) {
-
     axios.get(url_get_station, {params: params})
         .then(function (response) {
             if (response.status === 200) {
                 let stationList = response.data;
                 // console.log(stationList.features)
                 stationList.features.forEach(function (item) {
-                    // console.log(item.geometry);
-                    let itemTypeList = item.geometry.properties.stationType.split(",");
-
+                    let itemTypeList = item.properties.stationType.split(",");
+                    // console.log(itemTypeList);
                     //取第一个属性赋样式
                     switch (itemTypeList[0]) {
                         case "normal":
-                            item.geometry.properties.iconType = "normal";
+                            item.properties.iconType = "normal";
                             break;
                         case "addOD":
-                            item.geometry.properties.iconType = "add";
+                            item.properties.iconType = "add";
                             break;
                         case "removeOD":
-                            item.geometry.properties.iconType = "remove";
+                            item.properties.iconType = "remove";
                             break;
                         case "addConnect":
-                            item.geometry.properties.iconType = "add";
+                            item.properties.iconType = "add";
                             break;
                         case "removeConnect":
-                            item.geometry.properties.iconType = "remove";
+                            item.properties.iconType = "remove";
                             break;
                         case "pass":
-                            item.geometry.properties.iconType = "warning";
+                            item.properties.iconType = "warning";
                             break;
                         default:
-                            item.geometry.properties.iconType = "normal";
+                            item.properties.iconType = "normal";
                     }
                 });
                 addMapLayer(stationList, 'stationLayer', 'stationSource');
@@ -509,7 +507,7 @@ function calculateData(data) {
     let repetitonList = routeData[0].geometry.properties.repetitonList; //数据类型
     let routeWaring = routeData[0].geometry.properties.routeWarning; //线路长度是否超限
 
-    console.log(routeLength);
+    // console.log(routeLength);
     if (routeLength != null) {
         routeLength = (turf.length(data, {units: 'kilometers'})).toFixed(2);
     }
