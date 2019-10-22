@@ -81,6 +81,8 @@ function getOriginalSearch() {
                 if(item.routeName === originalInputValue) {
                     originalRouteId = item.routeId;
                     // console.log(item.routeName );
+                } else {
+                    originalRouteId = null;
                 }
             });
         },
@@ -105,6 +107,8 @@ function getModifiedSearch() {
                 if(item.routeName === modifiedInputValue) {
                     modifiedRouteId = item.routeId;
                     // console.log(item.routeName );
+                } else {
+                    modifiedRouteId = null;
                 }
             });
         },
