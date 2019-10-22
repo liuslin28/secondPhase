@@ -40,6 +40,7 @@ label {
 
 /*------------jquery.autocomplete------------------*/
 .autocomplete-suggestions {
+    background-color: white;
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -211,11 +212,6 @@ label {
     margin: 0;
 }
 
-/*------------线路调整结果页面------------------*/
-.autocomplete-suggestions {
-    background-color: white;
-}
-
 /*-------------图例页面-----------------*/
 .legendWrapper {
     width: 280px;
@@ -239,7 +235,7 @@ label {
     line-height: 30px;
     text-align: center;
     font-weight: 600;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
 }
 
 .legendWrapper-list {
