@@ -1,101 +1,69 @@
 {
-  "type": "FeatureCollection",
   "features": [
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Point",
         "coordinates": [
-          120.575127,
-          31.296749
-        ]
+          120.59185,
+          31.314367
+        ],
+        "type": "Point"
       },
       "properties": {
-        "routeId": "aaaa-01",
-        "StationName": "中央公园",
-        "stationType": "pass,addConnect",
-        "connectRoute": "1, 4, 19, 22, 89"
-      }
+        "stationName": "上津桥",
+        "stationType": "pass",
+        "connectRoute": null,
+        "routeId": "47c8aeb2-3174-4b09-8309-fe9bd645a011"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Point",
         "coordinates": [
-          120.570946,
-          31.312252
-        ]
+          120.609444,
+          31.268892
+        ],
+        "type": "Point"
       },
       "properties": {
-        "routeId": "aaaa-01",
-        "StationName": "中央公园",
-        "stationType": "addConnect",
-        "connectRoute": "1, 4, 19, 22, 89"
-      }
+        "stationName": "盘蠡新村",
+        "stationType": "pass",
+        "connectRoute": null,
+        "routeId": "dacc8193-334a-49cd-a6a8-47f993ae2b05"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Point",
         "coordinates": [
-          120.622833,
-          31.329617
-        ]
+          120.669739,
+          31.387074
+        ],
+        "type": "Point"
       },
       "properties": {
-        "routeId": "aaaa-01",
-        "StationName": "中央公园",
-        "stationType": "removeConnect,pass",
-        "connectRoute": ""
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          120.645172,
-          31.315516
-        ]
-      },
-      "properties": {
-        "routeId": "aaaa-01",
-        "StationName": "中央公园",
-        "stationType": "addOD",
-        "connectRoute": ""
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          120.615463,
-          31.303127
-        ]
-      },
-      "properties": {
-        "routeId": "aaaa-01",
-        "StationName": "中央公园",
+        "stationName": "苏大阳澄湖校区",
         "stationType": "removeOD",
-        "connectRoute": ""
-      }
+        "connectRoute": null,
+        "routeId": "AA8703FD-C8F9-13C1-E027-95BFD139486F"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Point",
         "coordinates": [
-          120.633507,
-          31.311703
-        ]
+          120.622383,
+          31.38876
+        ],
+        "type": "Point"
       },
       "properties": {
-        "routeId": "aaaa-01",
-        "StationName": "中央公园",
-        "stationType": "normal",
-        "connectRoute": ""
-      }
+        "stationName": "相城区市民服务中心",
+        "stationType": "addOD",
+        "connectRoute": null,
+        "routeId": "17C06936-9EEC-4510-833D-AC0E4ED0F0E8"
+      },
+      "type": "Feature"
     }
-  ]
+  ],
+  "type": "FeatureCollection"
 }
