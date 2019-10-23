@@ -726,7 +726,7 @@ function modifiedEmptyHtml() {
 // ----------------GP服务-------------------
 // 计算公交专用道长度
 function calLaneLength(data) {
-    require(["esri/SpatialReference", "esri/graphic", "esri/tasks/Geoprocessor"], function (SpatialReference, Graphic, Geoprocessor) {
+    require(["esri/SpatialReference", "esri/graphic", "esri/tasks/Geoprocessor" ,"esri/tasks/LinearUnit"], function (SpatialReference, Graphic, Geoprocessor, LinearUnit) {
         let lineFeature = {
             "displayFieldName": "",
             "fieldAliases": {
@@ -758,15 +758,12 @@ function calLaneLength(data) {
             ]
         };
 
-        let Dis1 = {
-            "distance": 3,
-            "units": "esriMeters"
-        };
-        let Dis2 = {
-            "distance": 5,
-            "units": "esriMeters"
-        };
-
+        let Dis1 = new LinearUnit();
+        Dis1.distance = 3;
+        Dis1.units = "esriMeters";
+        let Dis2 = new LinearUnit();
+        Dis2.distance = 5;
+        Dis2.units = "esriMeters";
         let busRouteFeatureSet = new esri.tasks.FeatureSet(lineFeature);
         busRouteFeatureSet.spatialReference = new SpatialReference({wkid: 4326});
 
@@ -810,7 +807,7 @@ function calLaneLength(data) {
 
 
 function calLaneLength2(data) {
-    require(["esri/SpatialReference", "esri/graphic", "esri/tasks/Geoprocessor"], function (SpatialReference, Graphic, Geoprocessor) {
+    require(["esri/SpatialReference", "esri/graphic", "esri/tasks/Geoprocessor" ,"esri/tasks/LinearUnit"], function (SpatialReference, Graphic, Geoprocessor, LinearUnit) {
         let lineFeature = {
             "displayFieldName": "",
             "fieldAliases": {
@@ -842,15 +839,13 @@ function calLaneLength2(data) {
             ]
         };
 
-        let Dis1 = {
-            "distance": 3,
-            "units": "esriMeters"
-        };
+        let Dis1 = new LinearUnit();
+        Dis1.distance = 3;
+        Dis1.units = "esriMeters";
 
-        let Dis2 = {
-            "distance": 5,
-            "units": "esriMeters"
-        };
+        let Dis2 = new LinearUnit();
+        Dis2.distance = 5;
+        Dis2.units = "esriMeters";
         let busRouteFeatureSet = new esri.tasks.FeatureSet(lineFeature);
         busRouteFeatureSet.spatialReference = new SpatialReference({wkid: 4326});
         let gptask = new Geoprocessor("https://192.168.207.165:6443/arcgis/rest/services/GPTool/laneLength2/GPServer/laneLength2");
@@ -895,7 +890,7 @@ function calLaneLength2(data) {
 function calDoubleBuffer(data1, data2) {
     let oldData = ArcgisToGeojsonUtils.geojsonToArcGIS(data1);
     let newData = ArcgisToGeojsonUtils.geojsonToArcGIS(data2);
-    require(["esri/SpatialReference", "esri/graphic", "esri/tasks/Geoprocessor"], function (SpatialReference, Graphic, Geoprocessor) {
+    require(["esri/SpatialReference", "esri/graphic", "esri/tasks/Geoprocessor" ,"esri/tasks/LinearUnit"], function (SpatialReference, Graphic, Geoprocessor, LinearUnit) {
 
         let routesFeature1 = {
             "displayFieldName": "",
@@ -939,10 +934,10 @@ function calDoubleBuffer(data1, data2) {
             "features": newData
         };
 
-        let Dis = {
-            "distance": 500,
-            "units": "esriMeters"
-        };
+        let Dis = new LinearUnit();
+        Dis.distance = 500;
+        Dis.units = "esriMeters";
+
         let routesFeatureSet1 = new esri.tasks.FeatureSet(routesFeature1);
         routesFeatureSet1.spatialReference = new SpatialReference({wkid: 4326});
         let routesFeatureSet2 = new esri.tasks.FeatureSet(routesFeature2);
