@@ -12,7 +12,7 @@ function initDisChart(data) {
             let originalItem = data.originalDis[i] ? data.originalDis[i] : null;
             let modifiedItem = data.modifiedDis[i] ? data.modifiedDis[i] : null;
             let seriesItem = {
-                name: i+1,
+                name: i + 1,
                 type: 'bar',
                 stack: '总量',
                 label: {
@@ -37,7 +37,7 @@ function initDisChart(data) {
             data.modifiedDis.forEach(function (item) {
                 i += 1;
                 let seriesItem = {
-                    name: i+1,
+                    name: i + 1,
                     type: 'bar',
                     stack: '总量',
                     label: {
@@ -60,7 +60,7 @@ function initDisChart(data) {
             data.originalDis.forEach(function (item) {
                 i += 1;
                 let seriesItem = {
-                    name: i+1,
+                    name: i + 1,
                     type: 'bar',
                     stack: '总量',
                     label: {
@@ -72,7 +72,7 @@ function initDisChart(data) {
                     tooltip: {
                         formatter: '第{a}站: {c}km'
                     },
-                    barMaxWidth:25,
+                    barMaxWidth: 25,
                     data: [item]
                 };
                 seriesData.push(seriesItem);
@@ -94,13 +94,16 @@ function initDisChart(data) {
         },
         xAxis: {
             type: 'value',
-            max: function(value) {
+            max: function (value) {
                 return value.max;
             },
             axisLabel: {
                 show: true,
                 textStyle: {
                     color: '#dcdcdc'
+                },
+                formatter: function (v) {
+                    return Math.ceil(v)//表示整数。其他数值类型以此类推
                 }
             }
         },
