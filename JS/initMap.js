@@ -141,8 +141,6 @@ function getData(params) {
                                 modifiedData.features.forEach(function (item) {
                                     newData.features.push(item)
                                 });
-                                // oldData.features.push(orginalData.features);
-                                // newData.features.push(modifiedData.features);
                                 // console.log(oldData)
                                 calDoubleBuffer(oldData, newData);
                             }
@@ -151,7 +149,6 @@ function getData(params) {
                 } else if (originalIs || modifiedIs) {
                     // 1个有数据
                     if (originalIs) {
-                        console.log(orginalData)
                         originalLoadingHtml();
                         calDistoChart(orginalData, null);
                         orginalDataGet(orginalData);
@@ -507,7 +504,6 @@ function calculateData(data) {
     let repetitonList = routeData[0].geometry.properties.repetitonList; //数据类型
     let routeWaring = routeData[0].geometry.properties.routeWarning; //线路长度是否超限
 
-    // console.log(routeLength);
     if (routeLength != null) {
         routeLength = (turf.length(data, {units: 'kilometers'})).toFixed(2);
     }
@@ -525,7 +521,6 @@ function calculateData(data) {
     routeRepetition = (routeData[0].geometry.properties.repetition * 100).toFixed(2);
 
     // 平均站间距计算
-    // console.log(stationCount);
     stationDistance = (routeLength / (stationCount-1)).toFixed(2);
 
     // 公交站300米覆盖率
@@ -637,7 +632,6 @@ function calPointWithin(pointData, type) {
                     })
                 });
                 connectRatio = ((count / pointData.length) * 100).toFixed(2);
-                // console.log(connectRatio);
                 if (type === '1') {
                     $('#original-connect').empty().text(connectRatio + "%");
                 } else {
@@ -793,15 +787,12 @@ function calLaneLength(data) {
             });
 
             gptask.getResultData(jobInfo.jobId, "output_json").then(function (value) {
-                // console.log(value);
                 let outUrl = value.value.url;
-                // console.log(outUrl);
                 axios.get(outUrl)
                     .then(function (response) {
                         if (response.status === 200) {
                             let outputData = ArcgisToGeojsonUtils.arcgisToGeoJSON(response.data);
                             addMapLayer(outputData, 'originalLaneLayer', 'originalLaneSource');
-
                         } else {
                             console.log(response.status);
                         }
@@ -879,9 +870,7 @@ function calLaneLength2(data) {
                 }
             });
             gptask.getResultData(jobInfo.jobId, "output_json").then(function (value) {
-                // console.log(value);
                 let outUrl = value.value.url;
-                // console.log(outUrl);
                 axios.get(outUrl)
                     .then(function (response) {
                         if (response.status === 200) {
@@ -959,7 +948,7 @@ function calDoubleBuffer(data1, data2) {
             "routesOld": routesFeatureSet1,
             "routesNew": routesFeatureSet2
         };
-        console.log(gpParams);
+        // console.log(gpParams);
         gptask.submitJob(gpParams, completeCallback, statusCallback);
         gpList.push(gptask);
 
@@ -994,10 +983,6 @@ function statusCallback(jobInfo) {
 // 停止正在进行的GP服务
 // 先停止GP服务，后将HTML数据置空
 function removeGP() {
-    // console.log('removeGP');
-    // console.log(gpList);
-    // console.log(jobId);
-
     gpList.forEach(function (gpItem) {
         jobId.forEach(function (jobItem) {
             gpItem.cancelJob(jobItem)
