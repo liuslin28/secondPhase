@@ -759,7 +759,7 @@ function calLaneLength(data) {
         };
 
         let Dis1 = {
-            "distance": 5,
+            "distance": 3,
             "units": "esriMeters"
         };
         let Dis2 = {
@@ -843,7 +843,7 @@ function calLaneLength2(data) {
         };
 
         let Dis1 = {
-            "distance": 5,
+            "distance": 3,
             "units": "esriMeters"
         };
 
