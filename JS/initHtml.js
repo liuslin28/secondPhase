@@ -49,7 +49,6 @@ function initSelect() {
                     data: item.routeId,
                     value: `${item.routeName}（${item.routeDirection}）`
                 }));
-                // console.log(originalRouteList);
                 getOriginalSearch();
             }
         });
@@ -87,7 +86,6 @@ function getOriginalSearch() {
         },
         onSelect: function (suggestion) {
             originalRouteId = suggestion.data;
-            // console.log(originalRouteId);
         }
     });
 
@@ -113,7 +111,6 @@ function getModifiedSearch() {
         },
         onSelect: function (suggestion) {
             modifiedRouteId = suggestion.data;
-            // console.log(modifiedRouteId);
         }
 
     });
@@ -122,9 +119,7 @@ function getModifiedSearch() {
 // 获得选择线路数据,进行计算
 function selectRoute() {
     let originalSelect = $('#originalRoute').val();
-    // console.log(originalSelect);
     let modifiedSelect = $('#modifiedRoute').val();
-    // console.log(modifiedSelect);
 
     if (originalSelect === "") {
         originalRouteId = null;
@@ -143,7 +138,7 @@ function selectRoute() {
             routeId1: originalRouteId,
             routeId2: modifiedRouteId
         };
-        console.log(params);
+        // console.log(params);
         getData(params);
     }
 }
