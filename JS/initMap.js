@@ -759,7 +759,11 @@ function calLaneLength(data) {
         };
 
         let Dis1 = {
-            "distance": 20,
+            "distance": 5,
+            "units": "esriMeters"
+        };
+        let Dis2 = {
+            "distance": 5,
             "units": "esriMeters"
         };
 
@@ -769,6 +773,7 @@ function calLaneLength(data) {
         let gptask = new Geoprocessor("https://192.168.207.165:6443/arcgis/rest/services/GPTool/laneLength2/GPServer/laneLength2");
         let gpParams = {
             "Dis1": Dis1,
+            "Dis2": Dis2,
             "line": busRouteFeatureSet
         };
         gptask.submitJob(gpParams, completeCallback, statusCallback);
@@ -838,12 +843,12 @@ function calLaneLength2(data) {
         };
 
         let Dis1 = {
-            "distance": 20,
+            "distance": 5,
             "units": "esriMeters"
         };
 
         let Dis2 = {
-            "distance": 30,
+            "distance": 5,
             "units": "esriMeters"
         };
         let busRouteFeatureSet = new esri.tasks.FeatureSet(lineFeature);
