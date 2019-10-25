@@ -44,8 +44,12 @@ function initSelect() {
     axios.get(url_get_original_list)
         .then(function (response) {
             if (response.status === 200) {
-                originalData = response.data.data;
-                response.data.data.map(item => originalRouteList.push({
+                if(typeof(response.data) === "string") {
+                    originalData = $.parseJSON(response.data).data;
+                } else {
+                    originalData = response.data.data;
+                }
+                originalData.map(item => originalRouteList.push({
                     data: item.routeId,
                     value: `${item.routeName}（${item.routeDirection}）`
                 }));
@@ -55,8 +59,12 @@ function initSelect() {
     axios.get(url_get_modified_list)
         .then(function (response) {
             if (response.status === 200) {
-                modifiedData = response.data.data;
-                response.data.data.map(item => modifiedRouteList.push({
+                if(typeof(response.data) === "string") {
+                    modifiedData = $.parseJSON(response.data).data;
+                } else {
+                    modifiedData = response.data.data;
+                }
+                modifiedData.map(item => modifiedRouteList.push({
                     data: item.routeId,
                     value: `${item.routeName}（${item.routeDirection}）`
                 }));
